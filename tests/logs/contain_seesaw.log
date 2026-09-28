@@ -1,0 +1,71 @@
+﻿seesaw2#0 dims [2, 2, 2, 2] kappa (4, 4) dH (16,16) GYNI 0.569401 | W valid: a 5.6e-17 b 5.6e-17 c 5.6e-17 tr 0.0e+00 mineig -9.8e-17 | Lemma1: iso/unitary 6.7e-16, M=T.L.J 1.4e-15, Phi(M~)=M 1.1e-15
+   L=2: V2 max|res| 1.1e-15  PSD min eig blocks -1.8e-15 full -3.1e-15  |obj-I| 2.2e-16  |p_Gamma-p| 8.9e-16  herm 4.4e-16
+        sym-avg: ALL rows 1.4e-15 (V2 1.1e-15 fx 1.4e-15 fy 1.4e-15 swap 2.2e-16)  min eig -1.8e-16  |obj-I| 4.4e-16  orbit I spread 5.6e-16
+   L=3: V2 max|res| 1.8e-15  PSD min eig blocks -4.9e-15 full -5.1e-15  |obj-I| 2.2e-16  |p_Gamma-p| 7.8e-16  herm 5.6e-16
+        sym-avg: ALL rows 2.4e-15 (V2 1.8e-15 fx 2.4e-15 fy 2.3e-15 swap 3.3e-16)  min eig -1.1e-15  |obj-I| 4.4e-16  orbit I spread 5.6e-16
+   L=4: V2 max|res| 1.9e-15  PSD min eig blocks -1.1e-14 full -1.4e-14  |obj-I| 1.1e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 2.9e-15 (V2 2.4e-15 fx 2.8e-15 fy 2.9e-15 swap 4.4e-16)  min eig -2.8e-15  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=5: V2 max|res| 2.2e-15  PSD min eig blocks -2.0e-14 full -3.1e-14  |obj-I| 2.2e-16  |p_Gamma-p| 7.8e-16  herm 5.6e-16
+        sym-avg: ALL rows 4.1e-15 (V2 2.9e-15 fx 4.1e-15 fy 4.1e-15 swap 4.4e-16)  min eig -4.3e-15  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=6: V2 max|res| 2.4e-15  PSD min eig blocks -3.1e-14 full -5.1e-14  |obj-I| 1.1e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 4.8e-15 (V2 3.6e-15 fx 4.8e-15 fy 4.8e-15 swap 4.4e-16)  min eig -7.0e-15  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=7: V2 max|res| 2.9e-15  PSD min eig blocks -2.3e-14 full -3.8e-14  |obj-I| 2.2e-16  |p_Gamma-p| 7.8e-16  herm 5.6e-16
+        sym-avg: ALL rows 5.8e-15 (V2 4.0e-15 fx 5.8e-15 fy 5.8e-15 swap 4.4e-16)  min eig -9.5e-15  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=8: V2 max|res| 3.2e-15  PSD min eig blocks -3.5e-14 full -8.7e-14  |obj-I| 1.1e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 6.4e-15 (V2 4.7e-15 fx 6.4e-15 fy 6.4e-15 swap 4.4e-16)  min eig -1.2e-14  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+seesaw2#1 dims [2, 2, 2, 2] kappa (4, 4) dH (16,16) GYNI 0.569401 | W valid: a 2.8e-17 b 7.3e-17 c 5.6e-17 tr 2.7e-15 mineig -4.4e-17 | Lemma1: iso/unitary 1.3e-15, M=T.L.J 1.9e-15, Phi(M~)=M 1.9e-15
+   L=2: V2 max|res| 4.3e-15  PSD min eig blocks -2.4e-15 full -2.5e-15  |obj-I| 4.4e-16  |p_Gamma-p| 1.7e-15  herm 4.4e-16
+        sym-avg: ALL rows 1.4e-15 (V2 1.4e-15 fx 7.2e-16 fy 7.8e-16 swap 2.2e-16)  min eig -2.3e-16  |obj-I| 1.1e-16  orbit I spread 6.7e-16
+   L=3: V2 max|res| 6.6e-15  PSD min eig blocks -5.8e-15 full -5.2e-15  |obj-I| 4.4e-16  |p_Gamma-p| 1.6e-15  herm 4.5e-16
+        sym-avg: ALL rows 2.2e-15 (V2 2.2e-15 fx 9.4e-16 fy 1.1e-15 swap 2.2e-16)  min eig -8.8e-16  |obj-I| 2.2e-16  orbit I spread 5.6e-16
+   L=4: V2 max|res| 6.9e-15  PSD min eig blocks -8.8e-15 full -1.3e-14  |obj-I| 3.3e-16  |p_Gamma-p| 1.7e-15  herm 5.6e-16
+        sym-avg: ALL rows 3.1e-15 (V2 3.1e-15 fx 1.2e-15 fy 1.2e-15 swap 3.3e-16)  min eig -2.3e-15  |obj-I| 1.1e-16  orbit I spread 6.7e-16
+   L=5: V2 max|res| 9.4e-15  PSD min eig blocks -1.9e-14 full -1.9e-14  |obj-I| 3.3e-16  |p_Gamma-p| 1.6e-15  herm 5.6e-16
+        sym-avg: ALL rows 3.7e-15 (V2 3.7e-15 fx 1.4e-15 fy 1.4e-15 swap 3.3e-16)  min eig -3.6e-15  |obj-I| 1.1e-16  orbit I spread 5.6e-16
+   L=6: V2 max|res| 9.7e-15  PSD min eig blocks -2.5e-14 full -4.7e-14  |obj-I| 3.3e-16  |p_Gamma-p| 1.7e-15  herm 6.7e-16
+        sym-avg: ALL rows 4.6e-15 (V2 4.6e-15 fx 1.7e-15 fy 1.8e-15 swap 3.3e-16)  min eig -6.6e-15  |obj-I| 2.2e-16  orbit I spread 6.7e-16
+   L=7: V2 max|res| 1.2e-14  PSD min eig blocks -2.9e-14 full -4.0e-14  |obj-I| 3.3e-16  |p_Gamma-p| 1.6e-15  herm 6.7e-16
+        sym-avg: ALL rows 5.2e-15 (V2 5.2e-15 fx 1.9e-15 fy 1.9e-15 swap 3.3e-16)  min eig -6.0e-15  |obj-I| 1.1e-16  orbit I spread 5.6e-16
+   L=8: V2 max|res| 1.3e-14  PSD min eig blocks -4.9e-14 full -7.2e-14  |obj-I| 3.3e-16  |p_Gamma-p| 1.7e-15  herm 6.7e-16
+        sym-avg: ALL rows 6.2e-15 (V2 6.2e-15 fx 2.4e-15 fy 2.4e-15 swap 3.3e-16)  min eig -1.5e-14  |obj-I| 1.1e-16  orbit I spread 6.7e-16
+seesaw3#0 dims [3, 3, 3, 3] kappa (9, 9) dH (54,54) GYNI 0.604633 | W valid: a 4.2e-17 b 6.9e-18 c 8.3e-17 tr 0.0e+00 mineig -6.2e-18 | Lemma1: iso/unitary 1.1e-15, M=T.L.J 2.6e-15, Phi(M~)=M 2.8e-15
+   L=2: V2 max|res| 4.7e-15  PSD min eig blocks 7.6e-06 full 7.6e-06  |obj-I| 1.9e-15  |p_Gamma-p| 3.6e-15  herm 3.3e-16
+        sym-avg: ALL rows 4.4e-15 (V2 4.4e-15 fx 2.9e-15 fy 3.0e-15 swap 4.4e-16)  min eig 1.6e-02  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+   L=3: V2 max|res| 7.2e-15  PSD min eig blocks -2.8e-16 full -1.4e-16  |obj-I| 2.0e-15  |p_Gamma-p| 3.6e-15  herm 4.4e-16
+        sym-avg: ALL rows 6.0e-15 (V2 6.0e-15 fx 3.0e-15 fy 3.0e-15 swap 4.4e-16)  min eig 6.1e-04  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+   L=4: V2 max|res| 9.8e-15  PSD min eig blocks -7.7e-16 full -6.2e-16  |obj-I| 1.9e-15  |p_Gamma-p| 3.6e-15  herm 5.6e-16
+        sym-avg: ALL rows 7.8e-15 (V2 7.8e-15 fx 3.0e-15 fy 3.0e-15 swap 4.4e-16)  min eig 1.3e-04  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+   L=5: V2 max|res| 1.2e-14  PSD min eig blocks -1.0e-15 full -1.2e-15  |obj-I| 1.9e-15  |p_Gamma-p| 3.6e-15  herm 5.6e-16
+        sym-avg: ALL rows 9.5e-15 (V2 9.5e-15 fx 3.1e-15 fy 3.1e-15 swap 4.4e-16)  min eig 2.2e-05  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+   L=6: V2 max|res| 1.4e-14  PSD min eig blocks -1.7e-15 full -2.7e-15  |obj-I| 1.9e-15  |p_Gamma-p| 3.6e-15  herm 6.7e-16
+        sym-avg: ALL rows 1.1e-14 (V2 1.1e-14 fx 3.1e-15 fy 3.1e-15 swap 4.4e-16)  min eig 1.2e-06  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+   L=7: V2 max|res| 1.6e-14  PSD min eig blocks -2.2e-15 full -2.4e-15  |obj-I| 1.9e-15  |p_Gamma-p| 3.6e-15  herm 6.7e-16
+        sym-avg: ALL rows 1.2e-14 (V2 1.2e-14 fx 3.1e-15 fy 3.1e-15 swap 4.4e-16)  min eig 1.9e-07  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+   L=8: V2 max|res| 1.8e-14  PSD min eig blocks -3.1e-15 full -5.5e-15  |obj-I| 1.9e-15  |p_Gamma-p| 3.6e-15  herm 6.7e-16
+        sym-avg: ALL rows 1.4e-14 (V2 1.4e-14 fx 3.5e-15 fy 3.5e-15 swap 6.7e-16)  min eig 1.4e-07  |obj-I| 2.0e-15  orbit I spread 3.3e-16
+seesaw3#1 dims [3, 3, 3, 3] kappa (9, 9) dH (54,54) GYNI 0.604633 | W valid: a 8.3e-17 b 4.2e-17 c 8.3e-17 tr 3.6e-15 mineig 2.0e-17 | Lemma1: iso/unitary 1.3e-15, M=T.L.J 1.0e-15, Phi(M~)=M 7.8e-16
+   L=2: V2 max|res| 3.3e-15  PSD min eig blocks 7.5e-06 full 7.5e-06  |obj-I| 5.6e-16  |p_Gamma-p| 8.9e-16  herm 3.3e-16
+        sym-avg: ALL rows 1.1e-15 (V2 1.1e-15 fx 4.4e-16 fy 4.6e-16 swap 3.3e-16)  min eig 1.6e-02  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=3: V2 max|res| 4.2e-15  PSD min eig blocks 1.4e-17 full -2.6e-16  |obj-I| 5.6e-16  |p_Gamma-p| 8.9e-16  herm 3.4e-16
+        sym-avg: ALL rows 1.1e-15 (V2 1.1e-15 fx 7.0e-16 fy 7.3e-16 swap 3.3e-16)  min eig 5.7e-04  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=4: V2 max|res| 4.2e-15  PSD min eig blocks -5.9e-16 full -4.9e-16  |obj-I| 5.6e-16  |p_Gamma-p| 8.9e-16  herm 4.5e-16
+        sym-avg: ALL rows 1.6e-15 (V2 1.6e-15 fx 1.3e-15 fy 1.3e-15 swap 3.3e-16)  min eig 1.1e-04  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=5: V2 max|res| 4.2e-15  PSD min eig blocks -1.0e-15 full -1.7e-15  |obj-I| 4.4e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 1.9e-15 (V2 1.6e-15 fx 1.9e-15 fy 1.9e-15 swap 3.3e-16)  min eig 2.3e-05  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=6: V2 max|res| 5.6e-15  PSD min eig blocks -1.4e-15 full -3.2e-15  |obj-I| 5.6e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 2.0e-15 (V2 1.7e-15 fx 1.9e-15 fy 2.0e-15 swap 4.4e-16)  min eig 1.2e-06  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=7: V2 max|res| 6.4e-15  PSD min eig blocks -2.3e-15 full -3.1e-15  |obj-I| 4.4e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 2.1e-15 (V2 2.1e-15 fx 2.0e-15 fy 2.0e-15 swap 4.4e-16)  min eig 1.7e-07  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+   L=8: V2 max|res| 6.4e-15  PSD min eig blocks -2.3e-15 full -4.9e-15  |obj-I| 5.6e-16  |p_Gamma-p| 8.9e-16  herm 5.6e-16
+        sym-avg: ALL rows 2.1e-15 (V2 2.1e-15 fx 2.0e-15 fy 2.0e-15 swap 4.4e-16)  min eig 1.3e-07  |obj-I| 3.3e-16  orbit I spread 5.6e-16
+
+SUMMARY over 4 strategies x levels [2, 3, 4, 5, 6, 7, 8]
+  max v2           = 1.84e-14
+  max sym_all      = 1.44e-14
+  max obj_err      = 2.00e-15
+  max sym_obj_err  = 2.00e-15
+  max p_err        = 3.55e-15
+  min mineig_blocks = -4.87e-14
+  min mineig_full  = -8.72e-14
+  min sym_mineig   = -1.53e-14
+  max Lemma-1 identity errors: 2.7755575615628914e-15

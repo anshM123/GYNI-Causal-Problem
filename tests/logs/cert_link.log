@@ -1,0 +1,8 @@
+﻿certificate cert3_L8.pkl: beta = lam.b = 0.622212366531 (claimed 0.622212366531); float min eig of the four Y_k: ['2.500e-08', '2.500e-08', '2.500e-08', '2.500e-08']
+  J=3 record strategy          I = 0.622146712690  o.z = 0.622146712690  sum<Y,G> = 6.565e-05  beta - o.z = 6.565e-05  lam.(Az-b) = 4.1e-17  identity err 0.0e+00
+  J=4 record strategy          I = 0.622165901354  o.z = 0.622165901354  sum<Y,G> = 4.647e-05  beta - o.z = 4.647e-05  lam.(Az-b) = 7.1e-18  identity err 0.0e+00
+  seesaw3#0 (group avg)        I = 0.604632790950  o.z = 0.604632790950  sum<Y,G> = 1.758e-02  beta - o.z = 1.758e-02  lam.(Az-b) = 1.8e-15  identity err 1.1e-16
+  seesaw2#0 (group avg)        I = 0.569400720146  o.z = 0.569400720146  sum<Y,G> = 5.281e-02  beta - o.z = 5.281e-02  lam.(Az-b) = 9.7e-17  identity err 0.0e+00
+  ocb#1 (group avg)            I = 0.254556095474  o.z = 0.254556095474  sum<Y,G> = 3.677e-01  beta - o.z = 3.677e-01  lam.(Az-b) = -4.0e-16  identity err 0.0e+00
+  rand2#1 (group avg)          I = 0.251634275264  o.z = 0.251634275264  sum<Y,G> = 3.706e-01  beta - o.z = 3.706e-01  lam.(Az-b) = 2.2e-16  identity err 5.6e-17
+most negative relative eigenvalue lambda_min/lambda_max of full Gamma (L=8): -8.52e-15  case (4, 4, 'trivial', 2, np.float64(-1.878423871235075e-12), np.float64(220.59664803053258))  (n = 1156; n * eps = 2.5e-13)

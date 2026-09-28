@@ -59,15 +59,18 @@ RESULT: all checks passed = True;  I_GYNI >= 0.622165901354
 ```
 SHA-256 checksums of all certificate files are in `CHECKSUMS.sha256`. The `.pkl` certificates are Python pickles of integer arrays. As with any pickle, load them only after checking the checksums.
 
-To regenerate the certificates (a numerical solver is needed for this step only): `hier_ipm.py` and `hier3.py` solve the hierarchy, `certify3.py` produces the exact certificate, and `jexact.py` + `export_strategy_cert.py` build the J-strategies. Validity of each row type of the hierarchy was also tested on random genuine strategies in d = 2..4 (`test_mc_validity.py`, errors ≤ 1e-15).
+To regenerate the certificates (a numerical solver is needed for this step only): `hier_ipm.py` and `hier3.py` solve the hierarchy, `certify3.py` produces the exact certificate, and `jexact.py` + `export_strategy_cert.py` build the J-strategies. The certified level-L rows, up to the full level-8 list of 789,678 rows, are tested on more than 100 random general strategies with independent code in `tests/`. Every residual is at rounding level (≤ 2.1e-14); see `tests/README.md`.
 
 ## Status and what a referee should check
 - **Lower bound: rigorous and self-contained.** It is an explicit strategy verified in exact arithmetic, and it does not depend on the hierarchy.
+- **Internal adversarial audit: verdict SOUND.** See `AUDIT_REPORT.md`. It found no mathematical error affecting the bound. Its documentation fixes (E1–E4) are applied: PROOF.md §§0–2 are now a complete theorem–proof treatment of the certified relaxation, and `tests/` ships the missing level-8 containment test.
 - **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the set of finite-dimensional process-matrix strategies**: Lemma 1 (Lüders normal form), Lemma 2 (V2), and the symmetry reduction in PROOF.md. This proof has been checked internally but has **not yet been refereed externally**, and it is the key item for review. An independent adversarial audit, including a numerical containment test on random general strategies, is in progress; its report will be added here.
 - The remaining gap of 4.65 × 10⁻⁵ is open. The hierarchy values decrease monotonically, and our best strategies (J = 1..4) increase monotonically; see `research-log/` for the full record, including negative results and bugs caught.
 
 ## Repository layout
-- `README.md`: this file. `PROOF.md`: the relaxation, its validity proof, the certification method and the strategy.
+- `README.md`: this file. `PROOF.md`: the certified relaxation stated exactly; Lemma 1 (Lüders normal form), Lemma 2 (scalar-trace factorisation) and Lemmas 3–5 with the soundness theorem; the certification method; and the strategy.
 - `src/`: all code and certificates (verifiers, hierarchy builders, solvers, strategy generators).
 - `logs/`: independent verification runs of both certificates.
+- `tests/`: independent containment tests of the certified relaxation, up to the full level-8 row list (see `tests/README.md`).
+- `AUDIT_REPORT.md`: the internal adversarial referee report. Verdict: sound; the documentation fixes it asked for are applied.
 - `research-log/`: the complete working log (Steps 1–34) and the literature scout report used for the novelty check.

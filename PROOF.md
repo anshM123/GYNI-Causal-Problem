@@ -1,87 +1,233 @@
-# Proofs: a moment hierarchy for bipartite process-matrix correlations, and the GYNI bounds
+# Proofs: the GYNI upper bound (soundness of the certified relaxation) and the lower-bound strategy
 
-*Scope: all statements are for strategies with finite-dimensional local Hilbert spaces (arbitrary finite dimension).*
+*Scope: strategies with finite-dimensional local Hilbert spaces of arbitrary dimension. Local ancillas and shared entanglement are included; infinite-dimensional processes are not covered.*
 
-This document states the relaxation used for the upper bound, proves that it is valid, describes how the exact certificates are produced and checked, and describes the lower-bound strategy. The complete working record, with all intermediate checks, is in `research-log/GYNI_research_log.md` (Steps 1–34).
+Sections 0–2 below replace an earlier sketch. They state the relaxation **exactly as certified** by `src/cert3_L8.pkl` and `src/verify3.py`: the rows of `mc3.build(L, sym=True)`, i.e. V1 + V2 + GYNI symmetry, with no canonical-process constraints. They prove directly in the dihedral word basis that this relaxation contains every quantum strategy. The text was produced and checked in an internal adversarial audit (see `AUDIT_REPORT.md`); independent external review is still welcome.
 
 ## 0. Conventions
-- Correlations: p(a,b|x,y) = Tr[W (M_{a|x} ⊗ N_{b|y})], with Choi operators M = Σ_{ij} |i⟩⟨j| ⊗ M(|i⟩⟨j|) on A_I ⊗ A_O.
-- A bipartite process matrix W is valid iff W ≥ 0, Tr W = d_{A_O} d_{B_O}, and W contains only Hilbert–Schmidt terms whose support S ⊆ {A_I, A_O, B_I, B_O} obeys:
-  - A_O ∈ S ⇒ (B_I ∈ S and B_O ∉ S);
-  - B_O ∈ S ⇒ (A_I ∈ S and A_O ∉ S).
 
-  This is equivalent to normalisation on all pairs of local CPTP maps. For product Hilbert–Schmidt terms: a factor with support "A_I only" vanishes on every channel, while factors containing A_O are unconstrained.
-- GYNI: I_GYNI = ¼ Σ_{x,y∈{0,1}} p(a = y, b = x | x, y).
+**Choi operators.** All Hilbert spaces are finite-dimensional, with fixed orthonormal bases; `T` (transpose) and
+the bar (complex conjugate) refer to these bases. For a linear map F : L(H_in) -> L(H_out),
 
-## 1. Lüders normal form (all dimensions)
-**Lemma 1.** For every strategy (W; M_{a|x}; N_{b|y}) there exist the following, reproducing p(a,b|x,y) exactly:
-- finite-dimensional H_A, H_B;
-- projective measurements {P_{a|x}} and {Q_{b|y}};
-- a valid process W̃ on H_A ⊗ (H_A ⊗ X) ⊗ H_B ⊗ (H_B ⊗ Y), where X = C^{n_A} and Y = C^{n_B} are setting registers.
+    C_F := sum_{ij} |i><j| (x) F(|i><j|)  in L(H_in (x) H_out),      |Phi> := sum_i |i>|i>  (unnormalised).
 
-The instruments are M̃_{a|x}(ρ) = P_{a|x} ρ P_{a|x} ⊗ |x⟩⟨x|_X, and similarly for Bob.
+We use four elementary facts (all one-line computations):
 
-*Proof.* Write M_{a|x}(ρ) = Σ_k K_{akx} ρ K_{akx}^†. Let H_A := A_O ⊗ C^m ⊗ C^κ ⊗ C^{d'}, with d' chosen so that dim A_I ≤ dim H_A, and fix an isometry J: A_I → H_A. The map V_x := Σ_{a,k} K_{akx} ⊗ |a⟩|k⟩|0⟩ is an isometry A_I → H_A. Extend V_x J^† to a unitary U_x with U_x J = V_x, and set:
-- P_{a|x} := U_x^† (1 ⊗ |a⟩⟨a| ⊗ 1) U_x;
-- T_x(s) := Tr_{C^m C^κ C^{d'}}[U_x s U_x^†].
+- (F1) F is completely positive iff C_F >= 0.
+- (F2) F(rho) = Tr_in[(rho^T (x) 1) C_F]; hence Tr F(rho) = Tr[rho^T Tr_out C_F]. We say F has *scalar trace* lambda
+  (lambda in C) if Tr F(rho) = lambda Tr rho for all rho; equivalently Tr_out C_F = lambda 1_in.
+  Trace-preserving (TP): lambda = 1. Trace-annihilating (TA): lambda = 0.
+- (F3) If A : H' -> H_in is linear, A(rho) := A rho A^dagger, and T(omega) = sum_k T_k omega T_k^dagger, then
+  C_{T o F o A} = sum_k (A^T (x) T_k) C_F (A^T (x) T_k)^dagger.
+- (F4) For operators w, w' on H and register states |r>, |r'> of X, put |w,r> := (1 (x) w)|Phi> (x) |r> in H (x) H (x) X.
+  Then |w',r'><w,r| is the Choi operator of rho -> w' rho w^dagger (x) |r'><r|, and
+  Tr_{H (x) X} |w',r'><w,r| = delta_{rr'} (w^dagger w')^T.
 
-Then M_{a|x} = T_x ∘ L_{a|x} ∘ J(·)J^†, where L_{a|x}(s) = P s P.
+**Processes and strategies.** A (bipartite) *process* is an operator W on A_I (x) A_O (x) B_I (x) B_O with W >= 0 and
+Tr[W (C_A (x) C_B)] = 1 for all Choi operators C_A, C_B of CPTP maps A_I -> A_O, B_I -> B_O.
+[This is the definition of Oreshkov-Costa-Brukner, Nat. Commun. 3, 1092 (2012); it is equivalent to their
+definition that allows local ancillas in an arbitrary joint state, because W (x) rho_{A'B'} is again a process in
+the above sense (the added factors live on input spaces), and it is equivalent to the linear characterisation of
+Araujo et al., NJP 17, 102001 (2015): W >= 0, Tr W = d_AO d_BO and W in the valid subspace.]
+A *strategy* S = (W; M_{a|x}; N_{b|y}), x,y,a,b in {0,1}, consists of a process and instruments: CP maps
+M_{a|x} : L(A_I) -> L(A_O) with sum_a M_{a|x} TP (same for Bob). Its correlations are
+p(a,b|x,y) = Tr[W (C_{M_{a|x}} (x) C_{N_{b|y}})], and
 
-Let T(w) := Σ_x T_x(⟨x|w|x⟩_X), which is a channel, and Φ_A(F) := T ∘ F ∘ J(·)J^†. At Choi level, Φ_A(C) = Σ_k (J^T ⊗ T_k) C (J^T ⊗ T_k)^†, which is completely positive, and Φ_A maps channels to channels. Put W̃ := (Φ_A^† ⊗ Φ_B^†)(W). It is positive semidefinite and gives 1 on all product channels, so it is a valid process. Since Φ_A(M̃_{a|x}) = M_{a|x}, the correlations are unchanged. ∎
+    I_GYNI(S) := 1/4 sum_{x,y} p(a = y, b = x | x, y),        I_GYNI^max := sup_S I_GYNI(S)
 
-**Symmetrisations (used only through convexity).**
-- *Register twirl* by clock unitaries on X and Y. These are local unitaries on the outputs, and all M̃ are X-diagonal, so the moment matrix below becomes block-diagonal in the register values (r_A, r_B).
-- *Complex conjugation* (W̃*, P*, Q*) is again a strategy with the same p, so the moment matrix may be taken real.
-- *The GYNI symmetry group*, generated by the party swap, (x → 1−x, b → 1−b) and (y → 1−y, a → 1−a). It acts as automorphisms of the free idempotent algebra, so constraint (V2) below is invariant. Averaging over the group preserves feasibility and the objective.
+(supremum over all finite dimensions; shared entanglement / local ancillas are included by the remark above).
 
-## 2. The moment matrix and the constraints
-Word vectors: |w, r⟩ = (1 ⊗ w)|Φ⟩ ⊗ |r⟩, where w runs over words of length ≤ L in the projectors of the party and r over register values. Define
-Γ[(k,l),(k',l')] = ⟨k,l| W̃ |k',l'⟩, where k is an Alice word-register pair and l is a Bob pair.
+## 1. The relaxation P_L that is certified
 
-The operator |k'⟩⟨k| is the Choi operator of ρ ↦ w'ρw^† ⊗ |r'⟩⟨r|. Its partial trace over the output is Tr_{A_O}|k'⟩⟨k| = δ_{rr'} (w^† w')^T.
+**Words.** G := Z_2 * Z_2 = <g_0, g_1 | g_0^2 = g_1^2 = e>. W_L := the reduced words w = (x_1,...,x_n), 0 <= n <= L,
+x_i in {0,1}, x_i != x_{i+1} (|W_L| = 2L+1). For w, w' in W_L, w^{-1} w' denotes the reduced word of the product in G
+(`mc3.wmul(mc3.inv(w), w')`). Letter exchange sigma: 0 <-> 1 (an automorphism of G). |w| = length.
 
-- **(V1)** Γ ⪰ 0, being a Gram matrix of W̃ ≥ 0.
-- **(V2) Word-level validity.** Suppose Σ c δ w^†w' = 0 holds in the *free* algebra of idempotents, so that it holds as an operator identity in every realisation and the corresponding map L_A is trace-annihilating. Suppose also Σ d δ v^†v' = λ·1, so that L_B is trace-proportional. Then Σ c d Γ = 0, and a pair of trace-preserving maps gives 1.
-  *Proof.* For a channel C_B, Tr_B[W̃(1 ⊗ C_B)] is a one-party process of the form ρ ⊗ 1_{A_O}. Trace-proportional maps are linear combinations of channels: split into Hermitian and anti-Hermitian parts; the Hermitian trace-preserving maps form the affine hull of the channels, because the depolarising channel lies in the relative interior. Hence Tr_B[W̃(1 ⊗ Choi L_B)] = τ ⊗ 1 with Tr τ = λ. Pairing with Choi L_A gives Tr[τ^T Tr_{A_O} Choi L_A] = 0 if L_A is trace-annihilating, and λ if it is trace-preserving. The same holds with A ↔ B. ∎
-- **(V3) Canonical single-trigger processes.** For each trigger pair (ξ, η), build a comb for Alice as follows (Bob is analogous):
-  - The encoder is E_ξ(ρ) = VρV^†, with V = Σ_a |a⟩_R ⊗ P_{a|ξ} an isometry H_A → R ⊗ H_M.
-  - The decoder D_ξ reads register O2 = r classically. If r = ξ, it discards O1, outputs H_M and writes |ξ⟩. If r = x ≠ ξ, it applies R_ξ(s) = Σ_c K_c s K_c^† with K_c = Σ_a ⟨a+c|_{O1} ⊗ P_{a|ξ}, where Σ_c K_c^†K_c = 1, K_0V = 1 and K_1V = 0. It then applies the Lüders channel C_x and writes |x⟩.
+**Index sets.** Each party has the index set K := W_L x {0,1} (word, register). A pair (k, k') = ((w,r),(w',r')) with
+r = r' is called *admissible*; its *class* is t(k,k') := w^{-1} w' in G.
 
-  The map T ↦ D_ξ ∘ (T ⊗ id_M) ∘ E_ξ preserves complete positivity (it is a link product with PSD Choi operators) and preserves channels. So the linked process W'_{ξη} is a valid process on (C², C² ⊗ C^{n_A}, C², C² ⊗ C^{n_B}). It reproduces p(a,b|ξ,η) and the non-trigger marginals of Liu–Chiribella exactly; it is their canonical process.
+**Variables.** Four real symmetric matrices Gamma_{rs} (r, s in {0,1}), each indexed by W_L x W_L (Alice word,
+Bob word). We write Gamma[(k,l),(k',l')] := Gamma_{rs}[(w,v),(w',v')] if k = (w,r), k' = (w',r), l = (v,s),
+l' = (v',s); entries with r_k != r_k' or s_l != s_l' are not variables (they are 0). For coefficient vectors c on
+Alice pairs and d on Bob pairs put <c (x) d, Gamma> := sum c_{kk'} d_{ll'} Gamma[(k,l),(k',l')].
 
-  The effective Choi operator of a canonical unit |c⟩⟨c'|, with c = (i, o, r), is:
-  - for r = ξ: δ_{oo'} |P_{i|ξ}, ξ⟩⟨P_{i'|ξ}, ξ|;
-  - for r = x ≠ ξ: δ_{o+i, o'+i'} Σ_{a'} |P_{a'|x}P_{i|ξ}, x⟩⟨P_{a'|x}P_{i'|ξ}, x|.
+**Constraints** (exactly the rows of `mc3.build(L, sym=True)`):
 
-  Therefore W'_{ξη} is a *linear image of Γ*. We impose that this image is PSD in its register blocks, that its forbidden Hilbert–Schmidt components vanish, and that Tr = d_{A_O} d_{B_O}.
-- **Objective.** p(a,b|x,y) = ⟨P_{a|x}, x; Q_{b|y}, y| W̃ |…⟩ is linear in Γ.
+- (V1) Gamma_{rs} >= 0 for all four (r,s).
+- (V2) Let pi_0 := (((),0),((),0)) (same for Bob, rho_0). Let D_A be the set of vectors e_{p} - e_{p'} with p, p'
+  admissible Alice pairs of the same class (similarly D_B). Then
+  (V2a) <c (x) d, Gamma> = 0 for c in D_A and d in D_B u {e_{rho_0}};
+  (V2b) <e_{pi_0} (x) d, Gamma> = 0 for d in D_B;
+  (V2c) Gamma[(((),0),((),0)),(((),0),((),0))] = 1.
+  (`v2_rows` generates these rows for the spanning subset of D_A, D_B consisting of the differences e_{p_1} - e_p with
+  p_1 the first pair of each class, and removes proportional duplicates; this has the same linear span, hence the
+  same feasible set.)
+- (S) Gamma = f * Gamma for f in {fx, fy, sw}, where, with k = (w,r), l = (v,s) etc.,
+  (fx * Gamma)[(k,l),(k',l')] := (-1)^{|v|+|v'|} Gamma[((sigma w, 1-r),(v,s)), ((sigma w', 1-r'),(v',s'))],
+  (fy * Gamma)[(k,l),(k',l')] := (-1)^{|w|+|w'|} Gamma[((w,r),(sigma v, 1-s)), ((w',r'),(sigma v', 1-s'))],
+  (sw * Gamma)[(k,l),(k',l')] := Gamma[(l,k),(l',k')]
+  (`map_rows(fx)`, `map_rows(fy)`, `swap_rows`; an entry mapped to itself with sign -1 is set to 0).
+- **Objective.** u_{a|x} := (1/2) e_{((),x)} + (1/2)(-1)^a e_{((x),x)} in R^K, and
+  o(Gamma) := 1/4 sum_{x,y} <(u_{y|x} (x) u_{x|y}), Gamma (u_{y|x} (x) u_{x|y})>   (`objective(M, gyni_coef())`).
 
-**Theorem (validity of the certified relaxation).** For every level L, let R_L be the set of real symmetric Γ with the register-block structure satisfying (V1), (V2) and the GYNI symmetry equalities. These are exactly the constraints built by `src/mc3.py` and certified by `verify3.py`. Then max_{Γ ∈ R_L} ⟨obj, Γ⟩ ≥ I_GYNI of every strategy with finite-dimensional local spaces. Infinite-dimensional strategies are not covered.
+beta_L := sup{ o(Gamma) : Gamma satisfies (V1), (V2), (S) }.
 
-*Proof.* By Lemma 1, any strategy can be brought to Lüders normal form without changing its correlations. The symmetrisations of §1 (register twirl, complex conjugation, averaging over the GYNI group) preserve feasibility and the objective. The Gram matrix Γ of the resulting W̃ on the word vectors then satisfies (V1) and (V2), and the objective is the linear functional ⟨obj, Γ⟩. (V3) is not used. ∎
+**Theorem 1 (soundness).** For every L >= 1 and every strategy S (any finite dimension) there is a Gamma satisfying
+(V1), (V2), (S) with o(Gamma) = I_GYNI(S). Hence I_GYNI^max <= beta_L.
 
-**Remark 3 ((V3) is implied and not imposed).** The canonical-process constraints (V3) above are not part of the certified relaxation.
-- The PSD condition on each canonical image is a sum of congruences of Γ, so it follows from (V1).
-- The validity equalities of each image are instances of (V2), because every identity used in the comb calculus holds in the free idempotent algebra.
-- Numerically, at level 2, Γ ⪰ 0 + V2 without canonical images gives 0.64348431, the same value as with them (research log, Step 6).
+**Corollary.** `verify3.py cert3_L8.pkl` exhibits rational multipliers lambda for all rows with
+Y_k := (stationarity expression) positive definite for the four blocks; for every feasible Gamma,
+o(Gamma) = lambda.b - sum_k <Y_k, Gamma_k> <= lambda.b = 700548845513581/2^50. With Theorem 1:
+I_GYNI^max <= 0.622212366531.
 
-(V3) is only relevant for comparing with Liu–Chiribella, and a written proof of this implication will be added.
+The proof occupies Lemmas 1-5.
 
-*Sanity checks performed.*
-- The hierarchy reproduces the exact OCB value (2+√2)/4 and the exact LGYNI value 0.8194.
-- Every row type was evaluated on random genuine strategies in d = 2, 3, 4 (errors ≤ 1e-15).
-- 15 general non-Lüders strategies, and the seesaw strategies, are contained.
-- A sign bug in an early implementation was caught by exactly these checks before any claim was made (research log, Step 2).
+## 2. Proofs
 
-## 3. Basis change and symmetry (implementation, same relaxation)
-The implementation switches to the observables O_x = 2P_{0|x} − 1, with O_x² = 1. Words become elements of the infinite dihedral group Z₂ ∗ Z₂. This is a triangular change of basis within the same span at each level, so the relaxation value is identical. Consequences:
-- the trace functional of a pair is a single group element w^{-1}w';
-- the GYNI symmetries become signed permutations;
-- only one PSD block remains, which splits into swap-symmetric and swap-antisymmetric parts.
+### Lemma 1 (Lueders normal form with setting registers)
+Let S = (W; M_{a|x}; N_{b|y}) be a strategy. There exist finite-dimensional H_A, H_B, orthogonal projectors
+P_{a|x} on H_A and Q_{b|y} on H_B (sum_a P_{a|x} = 1, sum_b Q_{b|y} = 1), and a process W~ on
+H_A (x) (H_A (x) X) (x) H_B (x) (H_B (x) Y), X = Y = C^2, such that with the instruments
 
-`mc3.py` builds the rows for level L. It was validated on genuine strategies (d = 2, 3, 4; errors ≤ 2e-15).
+    M~_{a|x}(rho) := P_{a|x} rho P_{a|x} (x) |x><x|_X,        N~_{b|y}(sigma) := Q_{b|y} sigma Q_{b|y} (x) |y><y|_Y
 
-## 4. Exact certificates (upper bound)
+one has p(a,b|x,y) = Tr[W~ (C_{M~_{a|x}} (x) C_{N~_{b|y}})] for all a,b,x,y. Moreover W~ is block diagonal in the
+registers: W~ = sum_{r,s} Pi_{rs} W~ Pi_{rs}, Pi_{rs} := 1 (x) (1 (x) |r><r|_X) (x) 1 (x) (1 (x) |s><s|_Y).
+
+*Proof.* (Alice; Bob is identical.) Choose kappa and Kraus operators K_{akx} : A_I -> A_O, k = 1..kappa (pad with
+zeros), with M_{a|x}(rho) = sum_k K_{akx} rho K_{akx}^dagger. Let E := C^2 (x) C^kappa with basis |a,k> and
+H_A := A_O (x) E. Put V_x := sum_{a,k} K_{akx} (x) |a,k> : A_I -> H_A. Since sum_a M_{a|x} is TP,
+V_x^dagger V_x = sum_{a,k} K_{akx}^dagger K_{akx} = 1, so V_x is an isometry; in particular dim A_I <= dim H_A.
+Fix any isometry J : A_I -> H_A. The partial isometry V_x J^dagger maps ran J onto ran V_x; since
+dim (ran J)^perp = dim (ran V_x)^perp, it extends to a unitary U_x on H_A with U_x J = V_x. Define
+
+    P_{a|x} := U_x^dagger (1_{A_O} (x) |a><a| (x) 1_kappa) U_x,        T_{x,e} := (1_{A_O} (x) <e|) U_x : H_A -> A_O  (e in [2] x [kappa]).
+
+The P_{a|x} are orthogonal projectors summing to 1, and sum_e T_{x,e}^dagger T_{x,e} = 1. For e = (a',k'):
+T_{x,e} P_{a|x} J = (1 (x) <e|)(1 (x) |a><a| (x) 1) V_x = delta_{a a'} K_{a k' x}. Hence
+
+    (1)  sum_e T_{x,e} P_{a|x} J rho J^dagger P_{a|x} T_{x,e}^dagger = M_{a|x}(rho).
+
+Let T : L(H_A (x) X) -> L(A_O), T(omega) := sum_{x,e} (T_{x,e} (x) <x|) omega (T_{x,e} (x) <x|)^dagger. It is CPTP
+because sum_{x,e} (T_{x,e} (x) <x|)^dagger (T_{x,e} (x) <x|) = sum_x 1 (x) |x><x| = 1. Let J(rho) := J rho J^dagger and,
+on Choi operators C in L(H_A (x) H_A (x) X),
+
+    Phi_A(C) := sum_{x,e} Khat_{x,e} C Khat_{x,e}^dagger,      Khat_{x,e} := J^T (x) T_{x,e} (x) <x|_X .
+
+By (F3), Phi_A(C_F) = C_{T o F o J} for every linear F : L(H_A) -> L(H_A (x) X). Consequently:
+(i) Phi_A maps Choi operators of CPTP maps to Choi operators of CPTP maps (composition of CPTP maps);
+(ii) Phi_A(C_{M~_{a|x}}) = C_{M_{a|x}}, because T o M~_{a|x} o J(rho) equals the left side of (1) (the register is
+|x><x|, so only the x-terms of T contribute).
+Define W~ := (Phi_A^dagger (x) Phi_B^dagger)(W) = sum (Khat_{x,e} (x) Khat'_{y,f})^dagger W (Khat_{x,e} (x) Khat'_{y,f}),
+the adjoint taken w.r.t. the Hilbert-Schmidt inner product. Then W~ >= 0 (Kraus form). For CPTP F_A, F_B,
+Tr[W~ (C_{F_A} (x) C_{F_B})] = Tr[W (Phi_A(C_{F_A}) (x) Phi_B(C_{F_B}))] = 1 by (i) and validity of W; so W~ is a
+process. By (ii), Tr[W~ (C_{M~_{a|x}} (x) C_{N~_{b|y}})] = Tr[W (C_{M_{a|x}} (x) C_{N_{b|y}})] = p(a,b|x,y). Finally each
+term Khat^dagger (.) Khat has the form Z (x) |x><x|_X (and |y><y|_Y on Bob's side), which gives the block diagonality. QED
+
+*Remarks.* The padding space C^{d'} of the earlier version is unnecessary (V_x is already an isometry into
+A_O (x) E). The register twirl of the earlier version is unnecessary (block diagonality is automatic). The
+transpose in J^T is essential for complex J (with J^dagger the statistics are not reproduced; audit negative
+control N4).
+
+### Lemma 2 (scalar-trace factorisation)
+Let W be a process, C_A in L(A_I (x) A_O) with Tr_{A_O} C_A = lambda_A 1 and C_B in L(B_I (x) B_O) with
+Tr_{B_O} C_B = lambda_B 1 (lambda_A, lambda_B in C; C_A, C_B need not be Hermitian). Then
+Tr[W (C_A (x) C_B)] = lambda_A lambda_B.
+
+*Proof.* Step 1 (spanning). Every C with Tr_out C = lambda 1 is a complex combination sum_i alpha_i C_i of Choi
+operators of CPTP maps with sum_i alpha_i = lambda. Indeed C = H_1 + i H_2 with Hermitian H_1 = (C + C^dagger)/2,
+H_2 = (C - C^dagger)/(2i), and Tr_out(C^dagger) = (Tr_out C)^dagger gives Tr_out H_j = mu_j 1 with mu_1 = Re lambda,
+mu_2 = Im lambda. For Hermitian H with Tr_out H = mu 1 let D := 1 (x) 1/d_out (completely depolarising channel) and
+K := H - mu D, so Tr_out K = 0. For t > d_out ||K|| the operator D + K/t is positive with Tr_out = 1, i.e. a CPTP
+Choi operator, and H = mu D + t (D + K/t) - t D.
+Step 2 (one-party reduction). Let C_B be CPTP and X := Tr_B[W (1 (x) C_B)]. Then Tr[X C_A'] = 1 for every CPTP
+C_A', hence, by Step 1 with lambda = 0, Tr[X Z] = 0 for all Z with Tr_{A_O} Z = 0. The annihilator of the kernel of
+the linear map Tr_{A_O} under the non-degenerate pairing (X, Z) -> Tr[X Z] is the range of its adjoint,
+{tau (x) 1_{A_O}}. So X = tau (x) 1 with Tr tau = Tr[X D] = 1.
+Step 3. By Step 1 for Bob and linearity, Tr_B[W (1 (x) C_B)] = sum_i alpha_i tau_i (x) 1 = tau (x) 1 with Tr tau = lambda_B.
+Then Tr[W (C_A (x) C_B)] = Tr[(tau (x) 1) C_A] = Tr[tau Tr_{A_O} C_A] = lambda_A Tr tau = lambda_A lambda_B. QED
+
+### Lemma 3 (moment matrix of a Lueders-form strategy; V1, V2, objective)
+Let (W~, P, Q) be as in Lemma 1, O_x := P_{0|x} - P_{1|x}, R_y := Q_{0|y} - Q_{1|y} (unitary involutions). By the
+universal property of the free product there are unique group homomorphisms pi_A : G -> U(H_A), g_x -> O_x, and
+pi_B : G -> U(H_B), g_y -> R_y; extend them linearly to the group algebra R[G]. For k = (w,r) in K put
+|k> := (1 (x) pi_A(w))|Phi> (x) |r> (Bob: |l> with pi_B), and
+
+    Gamma^0[(k,l),(k',l')] := <k,l| W~ |k',l'>        (k,k' in K_A; l,l' in K_B).
+
+Then: (a) Gamma^0 is Hermitian positive semidefinite; (b) Gamma^0[(k,l),(k',l')] = 0 unless r_k = r_k' and
+s_l = s_l'; (c) Gamma^0 satisfies (V2a)-(V2c); (d) o(Gamma^0) = I_GYNI(S).
+
+*Proof.* (a) Gamma^0 = V^dagger W~ V with V the matrix of columns |k> (x) |l>. (b) Lemma 1 (block diagonality).
+(c) For a coefficient vector c on admissible Alice pairs let C_A(c) := sum c_{kk'} |k'><k|, the Choi operator of
+rho -> sum c_{kk'} pi_A(w') rho pi_A(w)^dagger (x) |r><r| (F4). By (F4) and pi_A(w)^dagger = pi_A(w^{-1}),
+Tr_out C_A(c) = [pi_A(sum_{kk'} c_{kk'} t(k,k'))]^T. For c = e_p - e_{p'} (same class) the argument is 0 in R[G], so
+Tr_out C_A(c) = 0 (TA); for c = e_{pi_0}, t = e and Tr_out C_A(c) = 1 (TP). The same holds for Bob. Since
+<c (x) d, Gamma^0> = Tr[W~ (C_A(c) (x) C_B(d))], Lemma 2 gives 0 for (V2a), (V2b) and 1 for (V2c). The identities
+used are identities in G (g_x^2 = e), hence valid in every realisation; no relation specific to particular
+projectors (P = 0, 1, P_{0|0} = P_{0|1}, commuting, ...) is ever used.
+(d) C_{M~_{a|x}} = |P_{a|x}, x><P_{a|x}, x| with |P_{a|x}, x> := (1 (x) P_{a|x})|Phi> (x) |x> = sum_k u_{a|x}(k) |k>, because
+P_{a|x} = (1/2) pi_A(e) + (1/2)(-1)^a pi_A(g_x). Hence p(a,b|x,y) = <u_{a|x} (x) u_{b|y}, Gamma^0 (u_{a|x} (x) u_{b|y})>. QED
+
+### Lemma 4 (realness and block form)
+Gamma^1 := Re Gamma^0, restricted to the register-diagonal blocks, is a feasible point of (V1), (V2) with
+o(Gamma^1) = I_GYNI(S).
+
+*Proof.* conj(Gamma^0) = (Gamma^0)^T is PSD, so Re Gamma^0 = (Gamma^0 + conj Gamma^0)/2 is real, symmetric and PSD, and so
+are its principal (register) blocks; by Lemma 3(b) nothing is lost by the restriction. (V2) and the objective are
+real-linear with real coefficients and real right-hand sides and are satisfied by Gamma^0; take real parts. The
+symmetric storage of `BlockMoment` (one variable for Gamma[(k,l),(k',l')] and Gamma[(k',l'),(k,l)]) is exact for the
+real symmetric Gamma^1. QED
+
+### Lemma 5 (GYNI symmetry)
+For a Lueders-form strategy S = (W~, P, Q) define
+- fx.S := (F_X W~ F_X, P', Q') with P'_{a|x} := P_{a|1-x}, Q'_{b|y} := Q_{1-b|y}, F_X the register flip |r> -> |1-r> on X;
+- fy.S := (F_Y W~ F_Y, P'', Q'') with P''_{a|x} := P_{1-a|x}, Q''_{b|y} := Q_{b|1-y};
+- sw.S := (Sw W~ Sw^dagger, Q, P), Sw exchanging Alice's and Bob's systems.
+Then: (i) each f.S is a Lueders-form strategy (W~' is a process, block diagonal in the registers);
+(ii) I_GYNI(f.S) = I_GYNI(S); (iii) Gamma^0(f.S) = f * Gamma^0(S) with the maps of (S); (iv) fx^2 = fy^2 = sw^2 = id,
+fx fy = fy fx, sw fx sw = fy, so fx, fy, sw generate a finite group GG (a quotient of the dihedral group of order 8)
+acting on Lueders-form strategies.
+
+*Proof* (fx; fy is symmetric, sw is immediate). (i) F_X W~ F_X = (Psi^dagger (x) id)(W~) with Psi(C) = (1 (x) F_X) C (1 (x) F_X),
+the Choi-level form of post-composition with the unitary channel F_X (.) F_X, which maps CPTP maps to CPTP maps and
+is CP; so the argument of Lemma 1 applies. The flip permutes the register blocks. (ii) (1 (x) F_X)|P_{a|1-x}, x> =
+|P_{a|1-x}, 1-x>, so p'(a,b|x,y) = p(a, 1-b | 1-x, y) and I' = 1/4 sum_{x,y} p(y, 1-x | 1-x, y) = I (substitute x -> 1-x).
+For sw, p'(a,b|x,y) = p(b,a|y,x) and I' = 1/4 sum p(x,y|y,x) = I. (iii) O'_x = O_{1-x}, so pi'_A = pi_A o sigma;
+R'_y = -R_y, so pi'_B(v) = (-1)^{|v|} pi_B(v). Hence the new word vectors are |(w,r)>' = F_X |(sigma w, 1-r)> (F_X on
+the register) and |(v,s)>' = (-1)^{|v|} |(v,s)>, and
+Gamma^0(fx.S)[(k,l),(k',l')] = (-1)^{|v|+|v'|} <(sigma w,1-r),(v,s)| W~ |(sigma w',1-r'),(v',s')> = (fx * Gamma^0(S))[(k,l),(k',l')].
+(iv) direct computation on (W~, P, Q). QED
+
+### Proof of Theorem 1
+Let S be any strategy; replace it by its Lueders normal form (Lemma 1), still called S, with the same I_GYNI.
+Define
+
+    Gamma-bar := (1/|GG|) sum_{g in GG} Re Gamma^0(g.S)   (register-diagonal blocks).
+
+Each summand is feasible for (V1), (V2) and has objective I_GYNI(S) (Lemmas 3, 4, 5(i),(ii)); these constraints are
+convex and the objective is linear, so Gamma-bar satisfies (V1), (V2) and o(Gamma-bar) = I_GYNI(S). The maps f * are
+signed permutations preserving the register-block structure, so they commute with Re and with the block
+restriction; by Lemma 5(iii), f * Gamma-bar = (1/|GG|) sum_g Re Gamma^0(f g . S) = Gamma-bar for f in {fx, fy, sw}
+(left multiplication by f permutes GG). Hence Gamma-bar satisfies (S). QED
+
+### Remarks
+1. **V3 is not part of the certified program.** The Liu-Chiribella canonical single-trigger processes are linear
+   images of Gamma, and their validity can be added as further constraints (earlier versions did so; numerically
+   they do not change the value). The certificate `cert3_L8.pkl` is a dual certificate for the program
+   (V1)+(V2)+(S) only; adding constraints could only lower the value, so no statement about V3 is needed for the
+   bound. The comparison with Liu-Chiribella belongs to a remark: level 1 of the certified program already gives
+   0.74626 < 0.7592.
+2. **Idempotent basis.** The same proof applies verbatim to words in the idempotents P_{0|x} (free algebra of two
+   idempotents, `mc2.py`); it is not needed for the certified result, which is proved directly in the dihedral basis.
+3. **Scope.** The bound holds for the supremum over all finite-dimensional strategies, including local ancillas and
+   shared entanglement (absorbed into W). Infinite-dimensional process matrices are not covered by Lemma 1 as stated.
+4. **Numerical cross-check.** P-AUDIT (iqoqi/programs/gyni_audit) tested Theorem 1 with code independent of mc2/mc3:
+   more than 100 strategies, the full level-8 row list, and the group average from explicitly transformed
+   strategies. No row is violated beyond 2.1e-14 and no eigenvalue is below -8.5e-15 relative to ||Gamma||. The
+   published J=3 and J=4 strategies are contained at every level 2..8 with the exact objective value.
+
+## 3. Exact certificates (upper bound)
 Dual: minimise λ·b subject to Y_k := (stationarity expression in λ) ⪰ 0, where λ are the multipliers of all equality rows.
 
 Procedure (`certify3.py`):
@@ -95,7 +241,7 @@ Procedure (`certify3.py`):
 
 `verify3.py` repeats steps 5–7 from the stored integers λ_int, with no solver involved. At level 8 there are four dual blocks of size 289 × 289, all positive definite, and β₈ = 700548845513581 / 2^50 = 0.622212366531.
 
-## 5. The lower-bound strategy (J = 4)
+## 4. The lower-bound strategy (J = 4)
 Alice and Bob use the same construction:
 - A_I = C² ⊗ C⁴ (a Jordan qubit and a label), and A_O = A_I ⊗ C² (a setting register).
 - In label block j, P_{0|x} = Σ_j |φ_j^x⟩⟨φ_j^x| ⊗ |j⟩⟨j|, with φ_j^x = (c_j, (−1)^{x+1} s_j) and c_j² + s_j² = 1 exactly (rational tan(t_j/4)).

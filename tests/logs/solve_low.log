@@ -1,0 +1,22 @@
+﻿L=1: optimal value 0.74626285  (0.0s)
+python.exe : Traceback (most recent call last):
+At line:1 char:580
++ ... | Out-Null; & "C:\Users\anshm\Downloads\BREAKTHROUGH LE OPUS\.venv\Sc ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (Traceback (most recent call last)::String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+  File "C:\Users\anshm\Downloads\BREAKTHROUGH LE OPUS\iqoqi\programs\gyni_audit\audit_solve_low.py", line 22, in 
+<module>
+    prob.solve(solver=cp.CLARABEL)
+  File "C:\Users\anshm\Downloads\BREAKTHROUGH LE OPUS\.venv\Lib\site-packages\cvxpy\problems\problem.py", line 687, in 
+solve
+    return solve_func(self, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshm\Downloads\BREAKTHROUGH LE OPUS\.venv\Lib\site-packages\cvxpy\problems\problem.py", line 1148, 
+in _solve
+    self.unpack_results(solution, solving_chain, inverse_data)
+  File "C:\Users\anshm\Downloads\BREAKTHROUGH LE OPUS\.venv\Lib\site-packages\cvxpy\problems\problem.py", line 1453, 
+in unpack_results
+    raise error.SolverError(
+cvxpy.error.SolverError: Solver 'CLARABEL' failed. Try another solver, or solve with verbose=True for more information.

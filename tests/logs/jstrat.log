@@ -1,0 +1,16 @@
+﻿J=3: claimed exact value 0.622146712690; projector check 1.1e-16
+  L=2: raw: ALL rows 4.4e-16 (V2 4.4e-16 fx 2.8e-16 fy 2.8e-16 swap 1.7e-16) min eig blocks 1.74e-05 full 1.74e-05 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 4.4e-16 min eig 1.74e-05 |avg-raw| 2.2e-16  [0s]
+  L=3: raw: ALL rows 4.4e-16 (V2 4.4e-16 fx 3.1e-16 fy 3.1e-16 swap 1.7e-16) min eig blocks 2.61e-06 full 2.61e-06 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 4.4e-16 min eig 2.61e-06 |avg-raw| 3.3e-16  [0s]
+  L=4: raw: ALL rows 4.4e-16 (V2 4.4e-16 fx 3.1e-16 fy 3.2e-16 swap 1.7e-16) min eig blocks 4.74e-07 full 4.74e-07 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 5.6e-16 min eig 4.74e-07 |avg-raw| 4.4e-16  [0s]
+  L=5: raw: ALL rows 6.7e-16 (V2 6.7e-16 fx 3.3e-16 fy 3.3e-16 swap 1.7e-16) min eig blocks 8.81e-10 full 8.81e-10 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 1.1e-15 min eig 8.81e-10 |avg-raw| 4.4e-16  [0s]
+  L=6: raw: ALL rows 6.7e-16 (V2 6.7e-16 fx 3.4e-16 fy 3.4e-16 swap 1.7e-16) min eig blocks -1.11e-15 full -9.59e-16 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 1.1e-15 min eig -9.67e-16 |avg-raw| 4.4e-16  [1s]
+  L=7: raw: ALL rows 6.7e-16 (V2 6.7e-16 fx 3.4e-16 fy 3.4e-16 swap 2.2e-16) min eig blocks -1.76e-15 full -1.64e-15 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 1.1e-15 min eig -1.52e-15 |avg-raw| 6.7e-16  [1s]
+  L=8: raw: ALL rows 6.7e-16 (V2 6.7e-16 fx 3.5e-16 fy 3.5e-16 swap 2.2e-16) min eig blocks -2.18e-15 full -2.59e-15 obj 0.622146712690 (|obj-claim| 1.1e-16) | group avg: ALL rows 1.1e-15 min eig -2.15e-15 |avg-raw| 6.7e-16  [1s]
+J=4: claimed exact value 0.622165901354; projector check 1.1e-16
+  L=2: raw: ALL rows 2.8e-16 (V2 2.8e-16 fx 2.2e-16 fy 2.2e-16 swap 1.7e-16) min eig blocks 1.38e-05 full 1.38e-05 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 2.8e-16 min eig 1.38e-05 |avg-raw| 2.2e-16  [0s]
+  L=3: raw: ALL rows 2.8e-16 (V2 2.8e-16 fx 2.2e-16 fy 2.2e-16 swap 1.7e-16) min eig blocks 1.89e-06 full 1.89e-06 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 2.8e-16 min eig 1.89e-06 |avg-raw| 2.2e-16  [1s]
+  L=4: raw: ALL rows 4.2e-16 (V2 4.2e-16 fx 2.2e-16 fy 2.2e-16 swap 2.2e-16) min eig blocks 4.35e-07 full 4.35e-07 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 4.2e-16 min eig 4.35e-07 |avg-raw| 2.2e-16  [1s]
+  L=5: raw: ALL rows 4.5e-16 (V2 4.5e-16 fx 2.2e-16 fy 2.2e-16 swap 2.2e-16) min eig blocks 8.61e-08 full 8.61e-08 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 4.4e-16 min eig 8.61e-08 |avg-raw| 2.2e-16  [1s]
+  L=6: raw: ALL rows 4.7e-16 (V2 4.7e-16 fx 2.2e-16 fy 2.8e-16 swap 2.2e-16) min eig blocks 1.46e-08 full 1.46e-08 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 4.6e-16 min eig 1.46e-08 |avg-raw| 3.3e-16  [2s]
+  L=7: raw: ALL rows 5.0e-16 (V2 5.0e-16 fx 2.2e-16 fy 2.8e-16 swap 2.2e-16) min eig blocks 8.50e-10 full 8.50e-10 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 4.9e-16 min eig 8.50e-10 |avg-raw| 3.3e-16  [2s]
+  L=8: raw: ALL rows 5.6e-16 (V2 5.6e-16 fx 3.1e-16 fy 3.1e-16 swap 2.2e-16) min eig blocks -9.07e-16 full -8.65e-16 obj 0.622165901354 (|obj-claim| 0.0e+00) | group avg: ALL rows 5.8e-16 min eig -1.20e-15 |avg-raw| 3.3e-16  [3s]
