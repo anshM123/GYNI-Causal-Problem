@@ -1,0 +1,4 @@
+numpy>=1.24
+scipy>=1.10
+# optional, only to regenerate certificates (not needed to verify):
+# clarabel>=0.7

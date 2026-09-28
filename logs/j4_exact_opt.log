@@ -1,0 +1,6 @@
+﻿[JModel J=4] party elements 896, invariant pair elements 1895, sectors/party 13  (0.3s)
+rational angles [0.1675254  0.60082557 0.89334139 1.46848625] (rad) = [ 9.5985  34.42477 51.18469 84.13806] deg
+float SDP value 0.6221659018 (gap 7.9e-08, pinf 1.8e-07, it 26) (303.5s)
+float min eig of rounded W: -6.509e-12 -> mixing 2^-30
+EXACT PD check (91 integer sector blocks): True  (820.5s)
+EXACT GYNI value of the verified J=4 strategy: 0.622165901354   total 820.9s, peak 1.07 GB
