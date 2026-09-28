@@ -62,7 +62,7 @@ python verify_strategy.py GYNI_J4_strategy_cert.npz   # lower bound: overflow gu
 python verify3.py cert3_L8.pkl                        # upper bound: level-8 dual certificate, ~15 min
 python verify3.py cert3_L7.pkl                        # (optional) lower levels: cert3_L4..L7, cert2_L2..L4_sym via verify2.py
 ```
-Expected output (our runs, kept in `logs/`):
+Expected output (our runs, kept in `logs/`; the lower-bound line is from `logs/verify_strategy_J4_directed_rounding.log`, 1489 s, re-run after the erratum with the directed-rounding verifier):
 ```
 cert3_L8.pkl: dihedral L=8: all dual blocks PD = True; VERIFIED BOUND = 0.622212366531 (= 700548845513581/1125899906842624)
 RESULT: all checks passed = True;  I_GYNI >= 0.622165901353 (rounded down)
