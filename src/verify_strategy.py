@@ -1,4 +1,4 @@
-﻿"""STAND-ALONE, SOLVER-FREE, EXACT verification (v2: explicit int64 overflow guard (0)) of an explicit GYNI strategy (lower bound on I_GYNI).
+"""STAND-ALONE, SOLVER-FREE, EXACT verification (v2: explicit int64 overflow guard (0)) of an explicit GYNI strategy (lower bound on I_GYNI).
 Depends only on numpy and Python's fractions; reads a self-contained .npz certificate (export_strategy_cert.py).
 
 Strategy format.  Each party: A_I = C^2 (Jordan qubit q) (x) C^J (label l)  [dim 2J],
@@ -240,9 +240,13 @@ def main(path, quick=False):
                     acc += (1 - s_) * Fr(int(y[t]), D) * int(ph[t]) * tt
             total += acc / 4
     claimed = Fr(int(str(Z['claimed_value_num'])), int(str(Z['claimed_value_den'])))
-    print(f"(6) exact GYNI value = {float(total):.12f}  (= stored claim: {total == claimed})")
+    # decimals with DIRECTED rounding (a lower bound must be rounded down)
+    digits = (total.numerator * 10 ** 30) // total.denominator          # floor(total * 1e30)
+    dec30 = f"0.{digits:030d}" if total < 1 else str(total)
+    lb12 = (total.numerator * 10 ** 12) // total.denominator             # floor(total * 1e12)
+    print(f"(6) exact GYNI value = {dec30}... (exact rational, = stored claim: {total == claimed})")
     ok_all &= (total == claimed)
-    print(f"RESULT: all checks passed = {ok_all};  I_GYNI >= {float(total):.12f}   [{time.time()-t0:.0f}s]")
+    print(f"RESULT: all checks passed = {ok_all};  I_GYNI >= 0.{lb12:012d} (rounded down)   [{time.time()-t0:.0f}s]")
     return ok_all, total
 
 

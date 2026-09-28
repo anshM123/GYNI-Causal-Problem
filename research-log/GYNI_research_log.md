@@ -1,3 +1,8 @@
+> **Note (2026-09-28):** this is the unedited working log. Some decimals below were rounded to nearest. Rigorous values:
+> - lower bounds rounded down: J=4 ≥ 0.622165901353 (exact 0.6221659013539…), J=3 ≥ 0.622146712690;
+> - upper bounds rounded up: L4 ≤ 0.6233558, L6 ≤ 0.6222569, L8 ≤ 0.622212366531.
+> See the README erratum.
+
 # P-GYNI running log
 
 Started 2026-09-27. Goal: rigorous dimension-free upper bound on I_GYNI below 0.7592 (Liu–Chiribella), or matching lower bounds.

@@ -17,5 +17,5 @@ if __name__ == "__main__":
     system, obj = build(C['maxlen'], C['sym'], C.get('game', 'gyni'))
     assert len(C['lam_int']) == len(system['eqs'])
     ok, beta, worst = verify_exact(system, obj, C['lam_int'], C['D'])
-    print(f"{a.path}: L={C['maxlen']} sym={C['sym']}: dual blocks PD = {ok}; VERIFIED BOUND = {float(beta):.12f} "
+    print(f"{a.path}: L={C['maxlen']} sym={C['sym']}: dual blocks PD = {ok}; VERIFIED BOUND <= 0.{-((-beta.numerator * 10**12) // beta.denominator):012d} (rounded up) "
           f"(= {beta.numerator} / {beta.denominator})  [{time.time()-t0:.1f}s]")

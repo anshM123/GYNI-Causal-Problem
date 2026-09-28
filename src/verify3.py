@@ -16,5 +16,5 @@ if __name__ == "__main__":
     M, rows, obj = mc3.build(C['L'], sym=True, verbose=False)
     assert len(C['lam_int']) == len(rows)
     ok, beta, worst = verify_exact(dict(M=M, eqs=rows), obj, C['lam_int'], C['D'])
-    print(f"{a.path}: dihedral L={C['L']}: all dual blocks PD = {ok}; VERIFIED BOUND = {float(beta):.12f} "
+    print(f"{a.path}: dihedral L={C['L']}: all dual blocks PD = {ok}; VERIFIED BOUND <= 0.{-((-beta.numerator * 10**12) // beta.denominator):012d} (rounded up) "
           f"(= {beta.numerator}/{beta.denominator})  [{time.time()-t0:.1f}s]")

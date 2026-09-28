@@ -254,6 +254,6 @@ Alice and Bob use the same construction:
 3. Block structure: 26 classes per party, 676 blocks.
 4. Exact positive-definiteness of all 676 integer blocks (Bareiss).
 5. Instrument validity.
-6. The exact value I_GYNI = 0.622165901354.
+6. The exact value I_GYNI = 0.6221659013539084… (a rational number; so I_GYNI ≥ 0.622165901353).
 
 The factor (1 − 2^{−k}) makes the positivity strict. The certified value is the value of this slightly shrunk strategy.

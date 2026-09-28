@@ -121,7 +121,7 @@ Checks: (a) every row of `mc3.build(L, sym=True)`, (b) PSD of every block, (c) o
 |---|---|---|---|---|---|
 | random general strategies via Lemma 1 (random J, random unitary completion; 3-4 Kraus/outcome; complex boundary W, OCB+LU, OCB mixtures, separable, real, degenerate; unequal dims) | 40 | 6.9e-15 | 5.6e-15 | -2.4e-14 / -7.3e-14 | 5.0e-16 |
 | seesaw strategies (I = 0.5694, 0.6046; Kraus rank <= 9, dim H = 54) | 4 | 1.8e-14 | 1.4e-14 | -4.9e-14 / -8.7e-14 | 2.0e-15 |
-| published record strategies J=3 (0.622146712690), J=4 (0.622165901354) | 2 | 6.7e-16 (all rows, raw Gamma) | 1.1e-15 | -2.2e-15 / -2.6e-15 | 1.1e-16 |
+| published record strategies J=3 (0.622146712690), J=4 (0.6221659013539…; see the README erratum) | 2 | 6.7e-16 (all rows, raw Gamma) | 1.1e-15 | -2.2e-15 / -2.6e-15 | 1.1e-16 |
 | generic Lueders-form W~ drawn directly (complex, not register-diagonal; P pairs generic/equal/commuting/0-1/orthogonal; dim H = 1..4) | 60 (+60 in an earlier run with other draws) | 1.25e-14 (earlier run 2.1e-14) | 6.0e-15 (1.1e-14) | -7.8e-13 / -2.0e-12 (relative -9.4e-15) | 1.1e-16 |
 | explicit W~ = (Phi_A^dagger (x) Phi_B^dagger)(W), 1024x1024 | 21 | 4.2e-15 (L=3) | - | W~ min eig -8.9e-16; valid-subspace conditions <= 8.4e-17; channel normalisation 1.6e-15 | p: 1.3e-15 |
 
