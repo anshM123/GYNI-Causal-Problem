@@ -1,5 +1,7 @@
 # Proofs: a moment hierarchy for bipartite process-matrix correlations, and the GYNI bounds
 
+*Scope: all statements are for strategies with finite-dimensional local Hilbert spaces (arbitrary finite dimension).*
+
 This document states the relaxation used for the upper bound, proves that it is valid, describes how the exact certificates are produced and checked, and describes the lower-bound strategy. The complete working record, with all intermediate checks, is in `research-log/GYNI_research_log.md` (Steps 1–34).
 
 ## 0. Conventions
@@ -54,7 +56,16 @@ The operator |k'⟩⟨k| is the Choi operator of ρ ↦ w'ρw^† ⊗ |r'⟩⟨r
   Therefore W'_{ξη} is a *linear image of Γ*. We impose that this image is PSD in its register blocks, that its forbidden Hilbert–Schmidt components vanish, and that Tr = d_{A_O} d_{B_O}.
 - **Objective.** p(a,b|x,y) = ⟨P_{a|x}, x; Q_{b|y}, y| W̃ |…⟩ is linear in Γ.
 
-**Theorem (validity).** For every level L, the value of the relaxation is at least I_GYNI of every strategy, in every dimension. Level 1 with (V3) contains the Liu–Chiribella joint problem, so the value is at most 0.7592.
+**Theorem (validity of the certified relaxation).** For every level L, let R_L be the set of real symmetric Γ with the register-block structure satisfying (V1), (V2) and the GYNI symmetry equalities. These are exactly the constraints built by `src/mc3.py` and certified by `verify3.py`. Then max_{Γ ∈ R_L} ⟨obj, Γ⟩ ≥ I_GYNI of every strategy with finite-dimensional local spaces. Infinite-dimensional strategies are not covered.
+
+*Proof.* By Lemma 1, any strategy can be brought to Lüders normal form without changing its correlations. The symmetrisations of §1 (register twirl, complex conjugation, averaging over the GYNI group) preserve feasibility and the objective. The Gram matrix Γ of the resulting W̃ on the word vectors then satisfies (V1) and (V2), and the objective is the linear functional ⟨obj, Γ⟩. (V3) is not used. ∎
+
+**Remark 3 ((V3) is implied and not imposed).** The canonical-process constraints (V3) above are not part of the certified relaxation.
+- The PSD condition on each canonical image is a sum of congruences of Γ, so it follows from (V1).
+- The validity equalities of each image are instances of (V2), because every identity used in the comb calculus holds in the free idempotent algebra.
+- Numerically, at level 2, Γ ⪰ 0 + V2 without canonical images gives 0.64348431, the same value as with them (research log, Step 6).
+
+(V3) is only relevant for comparing with Liu–Chiribella, and a written proof of this implication will be added.
 
 *Sanity checks performed.*
 - The hierarchy reproduces the exact OCB value (2+√2)/4 and the exact LGYNI value 0.8194.

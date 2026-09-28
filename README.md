@@ -1,6 +1,6 @@
 # The maximal quantum violation of the GYNI causal inequality
 
-**Result.** Two parties may share an arbitrary process matrix: indefinite causal order is allowed, the dimensions are unbounded, and any instruments may be used. The best success probability for the *Guess Your Neighbour's Input* (GYNI) causal inequality then satisfies
+**Result.** Two parties may share an arbitrary process matrix: indefinite causal order is allowed, the local Hilbert spaces may have any finite dimension, and any instruments may be used. (Infinite-dimensional strategies are not covered by the proof.) The best success probability for the *Guess Your Neighbour's Input* (GYNI) causal inequality then satisfies
 
 ```
             0.622165901354  <=  I_GYNI^max  <=  0.622212366531
@@ -20,14 +20,15 @@ Both ends of the interval come with exact certificates, checked in pure integer/
 - Process matrices (Oreshkov, Costa, Brukner, Nat. Commun. 3, 1092 (2012)): p(a,b|x,y) = Tr[W (M_{a|x} ⊗ N_{b|y})], where W ≥ 0 lies in the valid-process subspace with Tr W = d_{A_O} d_{B_O}.
 
 ## Method (details in [PROOF.md](PROOF.md))
-1. **Lüders normal form.** Without loss of generality every instrument is the Lüders instrument of a projective measurement, with the setting copied into an output register. This holds in every dimension; the proof is in PROOF.md, Lemma 1.
+1. **Lüders normal form.** Without loss of generality every instrument is the Lüders instrument of a projective measurement, with the setting copied into an output register. This holds in every finite dimension; the proof is in PROOF.md, Lemma 1.
 2. **Moment hierarchy.** Γ is the Gram matrix of W on word vectors (1 ⊗ w)|Φ⟩ ⊗ |r⟩, where w runs over words in the projectors of length ≤ L. The constraints are:
    - (V1) Γ ⪰ 0;
    - (V2) word-level process validity, with trace functionals evaluated in the free algebra of two idempotents;
-   - (V3) the Liu–Chiribella single-trigger canonical processes are linear images of Γ and must be valid processes;
    - the GYNI symmetry group.
 
-   Every quantum strategy in every dimension gives a feasible Γ, so each level is a rigorous dimension-free upper bound. Level 1 reproduces Liu–Chiribella's 0.7592 bound, and the hierarchy also reproduces the exact OCB value (2+√2)/4 and the exact LGYNI value 0.8194.
+   **These are exactly the constraints imposed at every certified level (2–8), in `src/mc3.py`.** An additional constraint, (V3), requires the Liu–Chiribella canonical processes to be valid linear images of Γ. It is *not imposed*, because it is implied (PROOF.md, Remark 3): an ablation gives identical values with and without it. The validity of the certified bounds therefore rests on V1, V2 and the symmetry reduction only.
+
+   Every quantum strategy, in any finite dimension, gives a feasible Γ, so each level is a rigorous dimension-independent upper bound. Level 1 already gives 0.7463, below Liu–Chiribella's 0.7592, which is recovered by the weaker relaxation 'V2 + canonical images' without Γ ⪰ 0. The hierarchy also reproduces the exact OCB value (2+√2)/4 and the exact LGYNI value 0.8194.
 3. **Exact dual certificates.** A numerical dual solution is computed with a margin, projected onto the exact affine constraints, and rounded to rationals with common denominator 2^50. The dual blocks are then *defined* by stationarity, and their positive-definiteness is checked exactly with fraction-free Bareiss elimination.
 4. **Explicit lower-bound strategy (J = 4).** Alice = Bob, with H = C² (Jordan qubit) ⊗ C⁴ (label). In label block j the two projective measurements have directions at angle t_j:
 
@@ -47,7 +48,7 @@ Both ends of the interval come with exact certificates, checked in pure integer/
 Requirements: Python ≥ 3.10 with `numpy` and `scipy` (see `requirements.txt`). Run the commands from `src/`:
 ```bash
 cd src
-python verify_strategy.py GYNI_J4_strategy_cert.npz   # lower bound: all six exact checks, ~40 min (single core)
+python verify_strategy.py GYNI_J4_strategy_cert.npz   # lower bound: overflow guard + all six exact checks, ~40 min (single core)
 python verify3.py cert3_L8.pkl                        # upper bound: level-8 dual certificate, ~15 min
 python verify3.py cert3_L7.pkl                        # (optional) lower levels: cert3_L4..L7, cert2_L2..L4_sym via verify2.py
 ```
@@ -62,7 +63,7 @@ To regenerate the certificates (a numerical solver is needed for this step only)
 
 ## Status and what a referee should check
 - **Lower bound: rigorous and self-contained.** It is an explicit strategy verified in exact arithmetic, and it does not depend on the hierarchy.
-- **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the process-matrix set** (Lemma 1 and constraints V1–V3 in PROOF.md). This proof has been checked internally but has **not yet been refereed externally**. It is the key item for review.
+- **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the set of finite-dimensional process-matrix strategies**: Lemma 1 (Lüders normal form), Lemma 2 (V2), and the symmetry reduction in PROOF.md. This proof has been checked internally but has **not yet been refereed externally**, and it is the key item for review. An independent adversarial audit, including a numerical containment test on random general strategies, is in progress; its report will be added here.
 - The remaining gap of 4.65 × 10⁻⁵ is open. The hierarchy values decrease monotonically, and our best strategies (J = 1..4) increase monotonically; see `research-log/` for the full record, including negative results and bugs caught.
 
 ## Repository layout

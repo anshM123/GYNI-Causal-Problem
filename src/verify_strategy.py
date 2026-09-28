@@ -1,4 +1,4 @@
-﻿"""STAND-ALONE, SOLVER-FREE, EXACT verification of an explicit GYNI strategy (lower bound on I_GYNI).
+﻿"""STAND-ALONE, SOLVER-FREE, EXACT verification (v2: explicit int64 overflow guard (0)) of an explicit GYNI strategy (lower bound on I_GYNI).
 Depends only on numpy and Python's fractions; reads a self-contained .npz certificate (export_strategy_cert.py).
 
 Strategy format.  Each party: A_I = C^2 (Jordan qubit q) (x) C^J (label l)  [dim 2J],
@@ -64,6 +64,13 @@ def main(path, quick=False):
     Z = np.load(path)
     J = int(Z['J']); R = Z['R'].astype(np.int64); mim = Z['mim']; pairs = Z['pairs']; y = Z['y']
     D = int(Z['D']); k = int(Z['k']); K = 2 ** k
+    # (0) overflow guard: all int64 intermediates below are bounded rigorously (Python-int arithmetic) before use.
+    maxR = max(abs(int(v)) for v in R.flat)
+    sumy = sum(abs(int(v)) for v in y)
+    bound_S = sumy * 2 * maxR * maxR                     # |S_ij| <= sum_t |y_t| * (|kron| + |kron|)
+    bound_tr = (2 * J) * (4 * J) * maxR * 3 + (2 * J) * (4 * J) * maxR   # partial traces / 'rest' matrix entries
+    assert bound_S < 2 ** 62 and bound_tr < 2 ** 62, ('int64 overflow possible', bound_S, bound_tr)
+    print(f"(0) int64 overflow guard: max|R|={maxR}, sum|y| < 2^{sumy.bit_length()}, |S| <= 2^{bound_S.bit_length()} < 2^62: OK")
     cs = [(Fr(int(a), int(b)), Fr(int(c), int(d))) for a, b, c, d in zip(Z['c_num'], Z['c_den'], Z['s_num'], Z['s_den'])]
     dI, dO = 2 * J, 4 * J
     n = dI * dO
