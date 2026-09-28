@@ -125,8 +125,9 @@ Checks: (a) every row of `mc3.build(L, sym=True)`, (b) PSD of every block, (c) o
 | generic Lueders-form W~ drawn directly (complex, not register-diagonal; P pairs generic/equal/commuting/0-1/orthogonal; dim H = 1..4) | 60 (+60 in an earlier run with other draws) | 1.25e-14 (earlier run 2.1e-14) | 6.0e-15 (1.1e-14) | -7.8e-13 / -2.0e-12 (relative -9.4e-15) | 1.1e-16 |
 | explicit W~ = (Phi_A^dagger (x) Phi_B^dagger)(W), 1024x1024 | 21 | 4.2e-15 (L=3) | - | W~ min eig -8.9e-16; valid-subspace conditions <= 8.4e-17; channel normalisation 1.6e-15 | p: 1.3e-15 |
 
-The most negative eigenvalue relative to ||Gamma|| is -8.5e-15, below n*eps = 2.5e-13, so it is rounding (Gamma is a
-Gram matrix).
+The most negative eigenvalue relative to ||Gamma|| is -9.4e-15 (generic Lueders-form draws; -8.5e-15 in the level-8
+certificate-link test, `tests/logs/cert_link.log`), below n*eps = 2.5e-13, so it is rounding (Gamma is a Gram matrix).
+[Coordinator note, 2026-09-28: the two figures were reconciled; previously only -8.5e-15 was quoted here.]
 
 **Negative controls (the test detects errors):**
 

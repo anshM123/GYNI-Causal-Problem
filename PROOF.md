@@ -224,22 +224,26 @@ restriction; by Lemma 5(iii), f * Gamma-bar = (1/|GG|) sum_g Re Gamma^0(f g . S)
    shared entanglement (absorbed into W). Infinite-dimensional process matrices are not covered by Lemma 1 as stated.
 4. **Numerical cross-check.** P-AUDIT (iqoqi/programs/gyni_audit) tested Theorem 1 with code independent of mc2/mc3:
    more than 100 strategies, the full level-8 row list, and the group average from explicitly transformed
-   strategies. No row is violated beyond 2.1e-14 and no eigenvalue is below -8.5e-15 relative to ||Gamma||. The
+   strategies. No row is violated beyond 2.1e-14 and no eigenvalue is below -9.4e-15 relative to ||Gamma|| (all at rounding level; see tests/README.md). The
    published J=3 and J=4 strategies are contained at every level 2..8 with the exact objective value.
 
 ## 3. Exact certificates (upper bound)
 Dual: minimise λ·b subject to Y_k := (stationarity expression in λ) ⪰ 0, where λ are the multipliers of all equality rows.
 
-Procedure (`certify3.py`):
-1. Solve with a margin ε·Tr Γ (ε = 1e-7).
-2. Take the solver's dual, add ε·I, and spread it over all register blocks.
-3. Solve for the multipliers of all rows by least squares.
+Procedure (`certify3.py`). Steps 1–4 only produce a good rational candidate λ; the verification (steps 5–7) does not depend on how λ was found.
+1. Solve level L numerically.
+   - L = 4, 5: Clarabel, with a margin term ε·Tr Γ₀₀ added to the objective (ε = 1e-6 at L = 4, ε = 1e-7 at L = 5).
+   - L = 6, 7, 8: the custom interior-point method `hier_ipm.py`, without a margin term.
+2. Take the solver's dual, add ε·I (ε = 1e-7 for L = 5–8, 1e-6 for L = 4), and spread it over all register blocks. The shifted dual is still an exact-stationarity dual: in the dihedral basis every diagonal entry of Γ₀₀ is fixed to 1 by V2, so Tr Γ₀₀ = N is constant on the feasible set. The shift costs ε·N in the bound.
+3. Solve for the multipliers of all rows by least squares (LSQR). If the residual is too large, a projection step onto the exact affine constraints is added first.
 4. Round them to the common denominator D = 2^50.
 5. Define each Y_k exactly from the rational λ.
 6. Check that each Y_k is positive definite with Sylvester's criterion: all leading principal minors are positive, computed by fraction-free Bareiss elimination on integers.
 7. The bound is β = λ·b, computed exactly.
 
-`verify3.py` repeats steps 5–7 from the stored integers λ_int, with no solver involved. At level 8 there are four dual blocks of size 289 × 289, all positive definite, and β₈ = 700548845513581 / 2^50 = 0.622212366531.
+`verify3.py` repeats steps 5–7 from the stored integers λ_int, with no solver involved.
+
+The shipped `cert3_L5.pkl` is the margin-solve certificate (β₅ = 350392017401955/2^49 = 0.622421256583…). A later re-certification from a plain solve (β = 350392017421605/2^49) is not shipped; both round up to 0.6224213. The level 2–3 certificates `cert2_L2_sym.pkl` and `cert2_L3_sym.pkl` come from the idempotent-word program (`certify2.py`, `mc2.py`; see Remark 2) and are checked by `verify2.py`. At level 8 there are four dual blocks of size 289 × 289, all positive definite, and β₈ = 700548845513581 / 2^50 = 0.622212366531.
 
 ## 4. The lower-bound strategy (J = 4)
 Alice and Bob use the same construction:

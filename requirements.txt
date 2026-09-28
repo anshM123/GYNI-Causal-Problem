@@ -2,3 +2,5 @@ numpy>=1.24
 scipy>=1.10
 # optional, only to regenerate certificates (not needed to verify):
 # clarabel>=0.7
+# optional, only for tests/audit_solve_low.py (independent low-level re-solve in the audit):
+# cvxpy>=1.4

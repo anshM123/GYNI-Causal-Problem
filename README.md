@@ -23,7 +23,7 @@ The certificates and all exact checks are unchanged: every verifier compares **e
 - The J = 2 entry now refers to the shipped certificate.
 - The headline upper bound 0.622212366531 was, and is, correct: the exact value is 0.62221236653099…
 - The width of the interval is unchanged: 4.65 × 10⁻⁵.
-- The verifiers in `src/` now print directed-rounded decimals. Logs in `logs/` produced before this fix show round-to-nearest values.
+- The verifiers in `src/` now print directed-rounded decimals. Logs in `logs/` and `tests/logs/` produced before this fix show round-to-nearest values (e.g. "0.622165901354"); the post-fix run is `logs/verify_strategy_J4_directed_rounding.log`.
 
 ## Setting
 - GYNI (Branciard, Araújo, Feix, Costa, Brukner, New J. Phys. 18, 013008 (2016)): inputs x, y ∈ {0,1} uniform. Each party must output the other's input: I_GYNI = ¼ Σ_{x,y} p(a = y, b = x | x, y). Causally ordered strategies reach at most ½.
@@ -36,9 +36,9 @@ The certificates and all exact checks are unchanged: every verifier compares **e
    - (V2) word-level process validity, with trace functionals evaluated in the free algebra of two idempotents;
    - the GYNI symmetry group.
 
-   **These are exactly the constraints imposed at every certified level (2–8), in `src/mc3.py`.** An additional constraint, (V3), requires the Liu–Chiribella canonical processes to be valid linear images of Γ. It is *not imposed*, because it is implied (PROOF.md, Remark 3): an ablation gives identical values with and without it. The validity of the certified bounds therefore rests on V1, V2 and the symmetry reduction only.
+   **These are exactly the constraints imposed at the certified levels 4–8 (`src/mc3.py`, dihedral word basis).** Levels 2–3 (marked † below) were certified with the earlier idempotent-word formulation (`src/mc2.py` + `symmetry.py`, certificates `cert2_*`), which PROOF.md Remark 2 covers but the audit's containment tests did not; they are not needed for the headline. An additional constraint, (V3), would require the Liu–Chiribella canonical processes to be valid linear images of Γ. It is *not imposed* and no claim about it is needed: adding constraints can only lower the value (PROOF.md, Remark 1). Numerically, a level-2 ablation gave the same value with and without V3; we do not claim a proof that V3 is implied. The validity of the certified bounds therefore rests on V1, V2 and the symmetry reduction only.
 
-   Every quantum strategy, in any finite dimension, gives a feasible Γ, so each level is a rigorous dimension-independent upper bound. Level 1 already gives 0.7463, below Liu–Chiribella's 0.7592, which is recovered by the weaker relaxation 'V2 + canonical images' without Γ ⪰ 0. The hierarchy also reproduces the exact OCB value (2+√2)/4 and the exact LGYNI value 0.8194.
+   Every quantum strategy, in any finite dimension, gives a feasible Γ, so each level is a rigorous dimension-independent upper bound. Level 1 already gives 0.7463 (numerical), below Liu–Chiribella's 0.7592, which is recovered by the weaker relaxation 'V2 + canonical images' without Γ ⪰ 0. As numerical sanity checks only (no certificates), the same hierarchy with the corresponding objectives reaches the LGYNI value 0.819401 at level 2 and comes within 4 × 10⁻⁷ of the OCB value (2+√2)/4 ≈ 0.8535534 (0.8535530–0.8535532, `src/ocb_check2.py`).
 3. **Exact dual certificates.** A numerical dual solution is computed with a margin, projected onto the exact affine constraints, and rounded to rationals with common denominator 2^50. The dual blocks are then *defined* by stationarity, and their positive-definiteness is checked exactly with fraction-free Bareiss elimination.
 4. **Explicit lower-bound strategy (J = 4).** Alice = Bob, with H = C² (Jordan qubit) ⊗ C⁴ (label). In label block j the two projective measurements have directions at angle t_j:
 
@@ -46,9 +46,11 @@ The certificates and all exact checks are unchanged: every verifier compares **e
 
    The instruments are Lüders instruments that write the setting to an output register. W is a real 16384-dimensional process matrix with rational entries. The label coherence is essential: a single Jordan angle gives only 0.6067.
 
-| hierarchy level L | 2 | 3 | 4 | 5 | 6 | 7 | 8 |
+| hierarchy level L | 2† | 3† | 4 | 5 | 6 | 7 | 8 |
 |---|---|---|---|---|---|---|---|
 | certified upper bound (rounded up) | 0.6434871 | 0.6267932 | 0.6233558 | 0.6224213 | 0.6222569 | 0.6222199 | **0.6222124** |
+
+† `cert2_L2_sym.pkl`, `cert2_L3_sym.pkl`: earlier idempotent-word formulation (see above). Levels 4–8: `cert3_L4..L8.pkl` (dihedral formulation, the one proved in PROOF.md and audited).
 
 | strategy family | J=1 | J=2 | J=3 | J=4 |
 |---|---|---|---|---|
@@ -69,12 +71,12 @@ RESULT: all checks passed = True;  I_GYNI >= 0.622165901353 (rounded down)
 ```
 SHA-256 checksums of all certificate files are in `CHECKSUMS.sha256`. The `.pkl` certificates are Python pickles of integer arrays. As with any pickle, load them only after checking the checksums.
 
-To regenerate the certificates (a numerical solver is needed for this step only): `hier_ipm.py` and `hier3.py` solve the hierarchy, `certify3.py` produces the exact certificate, and `jexact.py` + `export_strategy_cert.py` build the J-strategies. The certified level-L rows, up to the full level-8 list of 789,678 rows, are tested on more than 100 random general strategies with independent code in `tests/`. Every residual is at rounding level (≤ 2.1e-14); see `tests/README.md`.
+To regenerate the certificates (a numerical solver is needed for this step only): `hier_ipm.py` (with `ipm.py`, `ipm_sparse.py`) and `hier3.py` solve the hierarchy, `certify3.py` produces the exact certificate, and `jexact.py` + `export_strategy_cert.py` build the J-strategies (`lueders_J2.py`, `j2_exact_strategy.py`, `j2_exact2.py` for the J = 2 family). The certified level-L rows, up to the full level-8 list of 789,678 rows, are tested on more than 100 random general strategies with independent code in `tests/`. Every residual is at rounding level (≤ 2.1e-14); see `tests/README.md`.
 
 ## Status and what a referee should check
 - **Lower bound: rigorous and self-contained.** It is an explicit strategy verified in exact arithmetic, and it does not depend on the hierarchy.
 - **Internal adversarial audit: verdict SOUND.** See `AUDIT_REPORT.md`. It found no mathematical error affecting the bound. Its documentation fixes (E1–E4) are applied: PROOF.md §§0–2 are now a complete theorem–proof treatment of the certified relaxation, and `tests/` ships the missing level-8 containment test.
-- **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the set of finite-dimensional process-matrix strategies**: Lemma 1 (Lüders normal form), Lemma 2 (V2), and the symmetry reduction in PROOF.md. This proof has been checked internally but has **not yet been refereed externally**, and it is the key item for review. An independent adversarial audit, including a numerical containment test on random general strategies, is in progress; its report will be added here.
+- **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the set of finite-dimensional process-matrix strategies**: Lemma 1 (Lüders normal form), Lemma 2 (V2), and the symmetry reduction in PROOF.md. This proof has been checked internally and by an internal adversarial audit (`AUDIT_REPORT.md`, including numerical containment tests on random general strategies), and an informal external review's comments have been addressed. It has **not yet been refereed by a journal**, and it is the key item for review.
 - The remaining gap of 4.65 × 10⁻⁵ is open. The hierarchy values decrease monotonically, and our best strategies (J = 1..4) increase monotonically; see `research-log/` for the full record, including negative results and bugs caught.
 
 ## Repository layout
