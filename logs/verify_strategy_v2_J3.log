@@ -1,0 +1,9 @@
+(0) int64 overflow guard: max|R|=4, sum|y| < 2^38, |S| <= 2^43 < 2^62: OK
+[certificate] J=3: party dims A_I=6, A_O=12; 282 party operators, 746 terms, D=2^40, k=49
+(1) Hermiticity/realness: True
+(2) validity (pattern-pure terms, allowed patterns): True; Tr W = c0*dim = 144 = d_AO d_BO: True
+(3) block structure: True  (14 classes per party, 196 blocks of W)
+(4) positivity: 196 integer blocks checked exactly -> all PD: True  (177s)
+(5) instruments (projectors, Lueders, trace condition exact): True
+(6) exact GYNI value = 0.622146712690  (= stored claim: True)
+RESULT: all checks passed = True;  I_GYNI >= 0.622146712690   [177s]
