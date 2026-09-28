@@ -1,0 +1,5 @@
+[mc3 build L=8] words 17, blocks [289, 289, 289, 289], vars 167620, V2 rows 287396, total rows 789678  (2.2s)
+  loaded plain-solve dual from ipm_L8.pkl (value 0.6221834652)
+  Yhat min eig 1.001e-09
+  LSQR residual 2.10e-12 iters 1671; lam.b = 0.622183755531  mem 0.82 GB
+EXACT L=8: all four Gamma-block duals PD: True; smallest pivot ~2.645e-10; CERTIFIED beta = 0.622183755531 (= 175129158097837/281474976710656); exact check 441.5s; total 511.9s; peak 1.00 GB

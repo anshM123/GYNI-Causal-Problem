@@ -75,10 +75,11 @@ beta_L := sup{ o(Gamma) : Gamma satisfies (V1), (V2), (S) }.
 **Theorem 1 (soundness).** For every L >= 1 and every strategy S (any finite dimension) there is a Gamma satisfying
 (V1), (V2), (S) with o(Gamma) = I_GYNI(S). Hence I_GYNI^max <= beta_L.
 
-**Corollary.** `verify3.py cert3_L8.pkl` exhibits rational multipliers lambda for all rows with
+**Corollary.** `verify3.py cert3_L8_e9.pkl` exhibits rational multipliers lambda for all rows with
 Y_k := (stationarity expression) positive definite for the four blocks; for every feasible Gamma,
-o(Gamma) = lambda.b - sum_k <Y_k, Gamma_k> <= lambda.b = 700548845513581/2^50. With Theorem 1:
-I_GYNI^max <= 0.622212366531.
+o(Gamma) = lambda.b - sum_k <Y_k, Gamma_k> <= lambda.b = 175129158097837/2^48 = 0.6221837555310... With Theorem 1:
+I_GYNI^max <= 0.622183755532 (rounded up). (The earlier certificate cert3_L8.pkl gives the weaker 700548845513581/2^50
+= 0.62221236653099....)
 
 The proof occupies Lemmas 1-5.
 
@@ -243,7 +244,15 @@ Procedure (`certify3.py`). Steps 1–4 only produce a good rational candidate λ
 
 `verify3.py` repeats steps 5–7 from the stored integers λ_int, with no solver involved.
 
-The shipped `cert3_L5.pkl` is the margin-solve certificate (β₅ = 350392017401955/2^49 = 0.622421256583…). A later re-certification from a plain solve (β = 350392017421605/2^49) is not shipped; both round up to 0.6224213. The level 2–3 certificates `cert2_L2_sym.pkl` and `cert2_L3_sym.pkl` come from the idempotent-word program (`certify2.py`, `mc2.py`; see Remark 2) and are checked by `verify2.py`. At level 8 there are four dual blocks of size 289 × 289, all positive definite, and β₈ = 700548845513581 / 2^50 = 0.622212366531.
+The shipped `cert3_L5.pkl` is the margin-solve certificate (β₅ = 350392017401955/2^49 = 0.622421256583…). A later re-certification from a plain solve (β = 350392017421605/2^49) is not shipped; both round up to 0.6224213. The level 2–3 certificates `cert2_L2_sym.pkl` and `cert2_L3_sym.pkl` come from the idempotent-word program (`certify2.py`, `mc2.py`; see Remark 2) and are checked by `verify2.py`.
+
+At level 8 there are four dual blocks of size 289 × 289, all positive definite.
+- `cert3_L8_e9.pkl` (headline): ε = 10⁻⁹, β₈ = 175129158097837 / 2^48 = 0.6221837555310…, so I_GYNI ≤ 0.622183755532.
+- `cert3_L8.pkl` (earlier): ε = 10⁻⁷, β₈ = 700548845513581 / 2^50 = 0.62221236653099….
+
+Both come from the same saved plain IPM solve `ipm_L8.pkl` (level-8 dual value 0.6221834652, duality gap 7.7e-10), with the commands
+`python certify3.py --L 8 --eps 1e-9 --from_file ipm_L8.pkl --noproj` and `--eps 1e-7` respectively.
+The two bounds differ by about (10⁻⁷ − 10⁻⁹)·289 ≈ 2.86 × 10⁻⁵.
 
 ## 4. The lower-bound strategy (J = 4)
 Alice and Bob use the same construction:
