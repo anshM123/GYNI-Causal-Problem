@@ -1,0 +1,208 @@
+== GYNIUpper/UBCheck.lean  (start 02:30:35)
+   RESULT GYNIUpper/UBCheck.lean: exit=0 wall=3.4s peakWS=289MB peakPrivate=521MB (attempt 1)
+== GYNIUpper/UBBasic.lean  (start 02:30:40)
+   RESULT GYNIUpper/UBBasic.lean: exit=0 wall=32.0s peakWS=3,462MB peakPrivate=7,992MB (attempt 1)
+== GYNIUpper/UBScalarTrace.lean  (start 02:31:14)
+GYNIUpper/UBScalarTrace.lean:135:0: warning: automatically included section variable(s) unused in theorem `GYNIUpperBound.ptraceOut_depol`:
+  [Fintype I]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype I] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+   RESULT GYNIUpper/UBScalarTrace.lean: exit=0 wall=34.7s peakWS=3,497MB peakPrivate=8,057MB (attempt 1)
+== GYNIUpper/UBMoment.lean  (start 02:31:50)
+   RESULT GYNIUpper/UBMoment.lean: exit=0 wall=28.8s peakWS=3,476MB peakPrivate=8,005MB (attempt 1)
+== GYNIUpper/UBDuality.lean  (start 02:32:21)
+   RESULT GYNIUpper/UBDuality.lean: exit=0 wall=33.9s peakWS=3,466MB peakPrivate=7,992MB (attempt 1)
+== GYNIUpper/UBPacked.lean  (start 02:32:56)
+   RESULT GYNIUpper/UBPacked.lean: exit=0 wall=34.1s peakWS=3,493MB peakPrivate=8,047MB (attempt 1)
+== GYNIUpper/UBPSD.lean  (start 02:33:32)
+GYNIUpper/UBPSD.lean:125:5: warning: Variable name `hh` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hh
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIUpper/UBPSD.lean:126:18: warning: Variable name `heps` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _heps
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+   RESULT GYNIUpper/UBPSD.lean: exit=0 wall=33.9s peakWS=3,491MB peakPrivate=8,051MB (attempt 1)
+== GYNIUpper/UBClass.lean  (start 02:34:08)
+   RESULT GYNIUpper/UBClass.lean: exit=0 wall=31.1s peakWS=3,463MB peakPrivate=8,027MB (attempt 1)
+== GYNIUpper/UBLevel.lean  (start 02:34:41)
+   RESULT GYNIUpper/UBLevel.lean: exit=0 wall=25.1s peakWS=3,447MB peakPrivate=7,993MB (attempt 1)
+== GYNIUpper/UBLevelMain.lean  (start 02:35:07)
+GYNIUpper/UBLevelMain.lean:128:15: warning: This simp argument is unused:
+  Φ
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+GYNIUpper/UBLevelMain.lean:145:15: warning: This simp argument is unused:
+  Φ
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+   RESULT GYNIUpper/UBLevelMain.lean: exit=0 wall=26.8s peakWS=3,481MB peakPrivate=8,038MB (attempt 1)
+== GYNIUpper/UBBridge.lean  (start 02:35:36)
+GYNIUpper/UBBridge.lean:18:0: warning: automatically included section variable(s) unused in theorem `GYNIUpperBound.luedersInstr_eq_lChoi`:
+  [Fintype H]
+  [DecidableEq H]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype H] [DecidableEq H] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+   RESULT GYNIUpper/UBBridge.lean: exit=0 wall=26.6s peakWS=3,426MB peakPrivate=7,963MB (attempt 1)
+== GYNIUpper/L2/Params.lean  (start 02:36:04)
+   RESULT GYNIUpper/L2/Params.lean: exit=0 wall=2.8s peakWS=56MB peakPrivate=345MB (attempt 1)
+== GYNIUpper/L2/Phi00.lean  (start 02:36:09)
+   RESULT GYNIUpper/L2/Phi00.lean: exit=0 wall=2.8s peakWS=57MB peakPrivate=361MB (attempt 1)
+== GYNIUpper/L2/Phi01.lean  (start 02:36:13)
+   RESULT GYNIUpper/L2/Phi01.lean: exit=0 wall=2.9s peakWS=56MB peakPrivate=345MB (attempt 1)
+== GYNIUpper/L2/Phi10.lean  (start 02:36:18)
+   RESULT GYNIUpper/L2/Phi10.lean: exit=0 wall=2.8s peakWS=60MB peakPrivate=386MB (attempt 1)
+== GYNIUpper/L2/Phi11.lean  (start 02:36:22)
+   RESULT GYNIUpper/L2/Phi11.lean: exit=0 wall=2.8s peakWS=59MB peakPrivate=378MB (attempt 1)
+== GYNIUpper/L2/Fac00.lean  (start 02:36:26)
+   RESULT GYNIUpper/L2/Fac00.lean: exit=0 wall=2.8s peakWS=58MB peakPrivate=369MB (attempt 1)
+== GYNIUpper/L2/Fac01.lean  (start 02:36:31)
+   RESULT GYNIUpper/L2/Fac01.lean: exit=0 wall=2.9s peakWS=61MB peakPrivate=392MB (attempt 1)
+== GYNIUpper/L2/Fac10.lean  (start 02:36:35)
+   RESULT GYNIUpper/L2/Fac10.lean: exit=0 wall=3.4s peakWS=251MB peakPrivate=496MB (attempt 1)
+== GYNIUpper/L2/Fac11.lean  (start 02:36:41)
+   RESULT GYNIUpper/L2/Fac11.lean: exit=0 wall=3.4s peakWS=270MB peakPrivate=258MB (attempt 1)
+== GYNIUpper/L2/Col00.lean  (start 02:36:46)
+   RESULT GYNIUpper/L2/Col00.lean: exit=0 wall=3.4s peakWS=56MB peakPrivate=340MB (attempt 1)
+== GYNIUpper/L2/Col01.lean  (start 02:36:51)
+   RESULT GYNIUpper/L2/Col01.lean: exit=0 wall=3.4s peakWS=56MB peakPrivate=339MB (attempt 1)
+== GYNIUpper/L2/Col10.lean  (start 02:36:56)
+   RESULT GYNIUpper/L2/Col10.lean: exit=0 wall=2.8s peakWS=60MB peakPrivate=386MB (attempt 1)
+== GYNIUpper/L2/Col11.lean  (start 02:37:01)
+   RESULT GYNIUpper/L2/Col11.lean: exit=0 wall=2.8s peakWS=60MB peakPrivate=386MB (attempt 1)
+== GYNIUpper/L2/Blocks.lean  (start 02:37:05)
+   RESULT GYNIUpper/L2/Blocks.lean: exit=0 wall=2.8s peakWS=59MB peakPrivate=380MB (attempt 1)
+== GYNIUpper/L2/ChkCA_0.lean  (start 02:37:10)
+   RESULT GYNIUpper/L2/ChkCA_0.lean: exit=0 wall=3.4s peakWS=298MB peakPrivate=571MB (attempt 1)
+== GYNIUpper/L2/ChkCA_1.lean  (start 02:37:15)
+   RESULT GYNIUpper/L2/ChkCA_1.lean: exit=0 wall=3.4s peakWS=60MB peakPrivate=382MB (attempt 1)
+== GYNIUpper/L2/ChkCB_0.lean  (start 02:37:20)
+   RESULT GYNIUpper/L2/ChkCB_0.lean: exit=0 wall=3.4s peakWS=60MB peakPrivate=386MB (attempt 1)
+== GYNIUpper/L2/ChkCB_1.lean  (start 02:37:25)
+   RESULT GYNIUpper/L2/ChkCB_1.lean: exit=0 wall=2.8s peakWS=61MB peakPrivate=400MB (attempt 1)
+== GYNIUpper/L2/ChkCol00.lean  (start 02:37:30)
+   RESULT GYNIUpper/L2/ChkCol00.lean: exit=0 wall=2.8s peakWS=59MB peakPrivate=379MB (attempt 1)
+== GYNIUpper/L2/ChkCol01.lean  (start 02:37:34)
+   RESULT GYNIUpper/L2/ChkCol01.lean: exit=0 wall=3.4s peakWS=58MB peakPrivate=377MB (attempt 1)
+== GYNIUpper/L2/ChkCol10.lean  (start 02:37:39)
+   RESULT GYNIUpper/L2/ChkCol10.lean: exit=0 wall=3.3s peakWS=58MB peakPrivate=372MB (attempt 1)
+== GYNIUpper/L2/ChkCol11.lean  (start 02:37:44)
+   RESULT GYNIUpper/L2/ChkCol11.lean: exit=0 wall=3.4s peakWS=59MB peakPrivate=378MB (attempt 1)
+== GYNIUpper/L2/ChkRows00_0.lean  (start 02:37:49)
+   RESULT GYNIUpper/L2/ChkRows00_0.lean: exit=0 wall=3.9s peakWS=352MB peakPrivate=595MB (attempt 1)
+== GYNIUpper/L2/ChkRows01_0.lean  (start 02:37:55)
+   RESULT GYNIUpper/L2/ChkRows01_0.lean: exit=0 wall=4.5s peakWS=332MB peakPrivate=592MB (attempt 1)
+== GYNIUpper/L2/ChkRows10_0.lean  (start 02:38:01)
+   RESULT GYNIUpper/L2/ChkRows10_0.lean: exit=0 wall=4.5s peakWS=357MB peakPrivate=627MB (attempt 1)
+== GYNIUpper/L2/ChkRows11_0.lean  (start 02:38:07)
+   RESULT GYNIUpper/L2/ChkRows11_0.lean: exit=0 wall=4.5s peakWS=331MB peakPrivate=595MB (attempt 1)
+== GYNIUpper/L2/ChkSym00.lean  (start 02:38:14)
+   RESULT GYNIUpper/L2/ChkSym00.lean: exit=0 wall=2.8s peakWS=62MB peakPrivate=411MB (attempt 1)
+== GYNIUpper/L2/ChkSym01.lean  (start 02:38:18)
+   RESULT GYNIUpper/L2/ChkSym01.lean: exit=0 wall=2.8s peakWS=62MB peakPrivate=411MB (attempt 1)
+== GYNIUpper/L2/ChkSym10.lean  (start 02:38:23)
+   RESULT GYNIUpper/L2/ChkSym10.lean: exit=0 wall=3.4s peakWS=252MB peakPrivate=496MB (attempt 1)
+== GYNIUpper/L2/ChkSym11.lean  (start 02:38:28)
+   RESULT GYNIUpper/L2/ChkSym11.lean: exit=0 wall=3.4s peakWS=231MB peakPrivate=451MB (attempt 1)
+== GYNIUpper/L2/ChkTab.lean  (start 02:38:33)
+   RESULT GYNIUpper/L2/ChkTab.lean: exit=0 wall=3.4s peakWS=235MB peakPrivate=454MB (attempt 1)
+== GYNIUpper/L2/Main.lean  (start 02:38:38)
+   RESULT GYNIUpper/L2/Main.lean: exit=0 wall=33.9s peakWS=3,443MB peakPrivate=8,013MB (attempt 1)
+== GYNIUpper/L8/Params.lean  (start 02:39:14)
+   RESULT GYNIUpper/L8/Params.lean: exit=0 wall=3.3s peakWS=63MB peakPrivate=428MB (attempt 1)
+== GYNIUpper/L8/Phi00.lean  (start 02:39:19)
+   RESULT GYNIUpper/L8/Phi00.lean: exit=0 wall=5.6s peakWS=269MB peakPrivate=501MB (attempt 1)
+== GYNIUpper/L8/Phi01.lean  (start 02:39:27)
+   RESULT GYNIUpper/L8/Phi01.lean: exit=0 wall=6.1s peakWS=269MB peakPrivate=501MB (attempt 1)
+== GYNIUpper/L8/Phi10.lean  (start 02:39:34)
+   RESULT GYNIUpper/L8/Phi10.lean: exit=0 wall=6.6s peakWS=269MB peakPrivate=501MB (attempt 1)
+== GYNIUpper/L8/Phi11.lean  (start 02:39:43)
+   RESULT GYNIUpper/L8/Phi11.lean: exit=0 wall=6.7s peakWS=269MB peakPrivate=501MB (attempt 1)
+== GYNIUpper/L8/Fac00.lean  (start 02:39:51)
+   RESULT GYNIUpper/L8/Fac00.lean: exit=0 wall=4.5s peakWS=264MB peakPrivate=500MB (attempt 1)
+== GYNIUpper/L8/Fac01.lean  (start 02:39:58)
+   RESULT GYNIUpper/L8/Fac01.lean: exit=0 wall=4.0s peakWS=264MB peakPrivate=500MB (attempt 1)
+== GYNIUpper/L8/Fac10.lean  (start 02:40:03)
+   RESULT GYNIUpper/L8/Fac10.lean: exit=0 wall=4.5s peakWS=265MB peakPrivate=499MB (attempt 1)
+== GYNIUpper/L8/Fac11.lean  (start 02:40:10)
+   RESULT GYNIUpper/L8/Fac11.lean: exit=0 wall=4.0s peakWS=264MB peakPrivate=473MB (attempt 1)
+== GYNIUpper/L8/Col00.lean  (start 02:40:15)
+   RESULT GYNIUpper/L8/Col00.lean: exit=0 wall=16.6s peakWS=279MB peakPrivate=488MB (attempt 1)
+== GYNIUpper/L8/Col01.lean  (start 02:40:34)
+   RESULT GYNIUpper/L8/Col01.lean: exit=0 wall=16.1s peakWS=279MB peakPrivate=488MB (attempt 1)
+== GYNIUpper/L8/Col10.lean  (start 02:40:52)
+   RESULT GYNIUpper/L8/Col10.lean: exit=0 wall=17.3s peakWS=281MB peakPrivate=490MB (attempt 1)
+== GYNIUpper/L8/Col11.lean  (start 02:41:11)
+   RESULT GYNIUpper/L8/Col11.lean: exit=0 wall=17.2s peakWS=279MB peakPrivate=488MB (attempt 1)
+== GYNIUpper/L8/Blocks.lean  (start 02:41:30)
+   RESULT GYNIUpper/L8/Blocks.lean: exit=0 wall=2.9s peakWS=57MB peakPrivate=356MB (attempt 1)
+== GYNIUpper/L8/ChkCA_0.lean  (start 02:41:35)
+   RESULT GYNIUpper/L8/ChkCA_0.lean: exit=0 wall=35.3s peakWS=1,147MB peakPrivate=1,402MB (attempt 1)
+== GYNIUpper/L8/ChkCA_1.lean  (start 02:42:12)
+   RESULT GYNIUpper/L8/ChkCA_1.lean: exit=0 wall=34.3s peakWS=1,391MB peakPrivate=1,645MB (attempt 1)
+== GYNIUpper/L8/ChkCB_0.lean  (start 02:42:48)
+   RESULT GYNIUpper/L8/ChkCB_0.lean: exit=0 wall=34.3s peakWS=1,217MB peakPrivate=1,465MB (attempt 1)
+== GYNIUpper/L8/ChkCB_1.lean  (start 02:43:24)
+   RESULT GYNIUpper/L8/ChkCB_1.lean: exit=0 wall=35.0s peakWS=1,421MB peakPrivate=1,669MB (attempt 1)
+== GYNIUpper/L8/ChkCol00.lean  (start 02:44:01)
+   RESULT GYNIUpper/L8/ChkCol00.lean: exit=0 wall=35.9s peakWS=1,392MB peakPrivate=1,677MB (attempt 1)
+== GYNIUpper/L8/ChkCol01.lean  (start 02:44:38)
+   RESULT GYNIUpper/L8/ChkCol01.lean: exit=0 wall=42.2s peakWS=1,432MB peakPrivate=1,720MB (attempt 1)
+== GYNIUpper/L8/ChkCol10.lean  (start 02:45:22)
+   RESULT GYNIUpper/L8/ChkCol10.lean: exit=0 wall=39.8s peakWS=1,347MB peakPrivate=1,592MB (attempt 1)
+== GYNIUpper/L8/ChkCol11.lean  (start 02:46:04)
+   RESULT GYNIUpper/L8/ChkCol11.lean: exit=0 wall=37.7s peakWS=1,372MB peakPrivate=1,629MB (attempt 1)
+== GYNIUpper/L8/ChkRows00_0.lean  (start 02:46:43)
+   RESULT GYNIUpper/L8/ChkRows00_0.lean: exit=0 wall=208.6s peakWS=2,341MB peakPrivate=2,627MB (attempt 1)
+== GYNIUpper/L8/ChkRows01_0.lean  (start 02:50:14)
+   RESULT GYNIUpper/L8/ChkRows01_0.lean: exit=0 wall=195.3s peakWS=2,372MB peakPrivate=2,660MB (attempt 1)
+== GYNIUpper/L8/ChkRows10_0.lean  (start 02:53:31)
+   RESULT GYNIUpper/L8/ChkRows10_0.lean: exit=0 wall=197.4s peakWS=2,341MB peakPrivate=2,600MB (attempt 1)
+== GYNIUpper/L8/ChkRows11_0.lean  (start 02:56:50)
+   RESULT GYNIUpper/L8/ChkRows11_0.lean: exit=0 wall=203.6s peakWS=2,287MB peakPrivate=2,574MB (attempt 1)
+== GYNIUpper/L8/ChkSym00.lean  (start 03:00:15)
+   RESULT GYNIUpper/L8/ChkSym00.lean: exit=0 wall=11.6s peakWS=1,384MB peakPrivate=1,609MB (attempt 1)
+== GYNIUpper/L8/ChkSym01.lean  (start 03:00:29)
+   RESULT GYNIUpper/L8/ChkSym01.lean: exit=0 wall=11.7s peakWS=1,385MB peakPrivate=1,643MB (attempt 1)
+== GYNIUpper/L8/ChkSym10.lean  (start 03:00:42)
+   RESULT GYNIUpper/L8/ChkSym10.lean: exit=0 wall=12.8s peakWS=1,385MB peakPrivate=1,642MB (attempt 1)
+== GYNIUpper/L8/ChkSym11.lean  (start 03:00:57)
+   RESULT GYNIUpper/L8/ChkSym11.lean: exit=0 wall=12.2s peakWS=1,385MB peakPrivate=1,642MB (attempt 1)
+== GYNIUpper/L8/ChkTab.lean  (start 03:01:11)
+   RESULT GYNIUpper/L8/ChkTab.lean: exit=0 wall=7.3s peakWS=679MB peakPrivate=905MB (attempt 1)
+== GYNIUpper/L8/Main.lean  (start 03:01:20)
+   RESULT GYNIUpper/L8/Main.lean: exit=0 wall=33.7s peakWS=3,462MB peakPrivate=8,053MB (attempt 1)
+== GYNIUpper/UpperBound.lean  (start 03:01:56)
+   RESULT GYNIUpper/UpperBound.lean: exit=0 wall=31.0s peakWS=3,423MB peakPrivate=7,996MB (attempt 1)
+== GYNIUpper/AxiomsUpper.lean  (start 03:02:29)
+'GYNIUpperBound.gyni_upper_bound' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.gyni_upper_bound_decimal' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.gyni_upper_bound_level2' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.L8.gyni_le_lueders' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.L2.gyni_le_lueders' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.gyni_le_level' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.gyni_le_of_dual' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.v2_identity' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.trace_kron_of_scalar' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.psd_of_rowsChk' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpperBound.exists_lueders_form' depends on axioms: [propext, Classical.choice, Quot.sound]
+   RESULT GYNIUpper/AxiomsUpper.lean: exit=0 wall=31.2s peakWS=3,201MB peakPrivate=7,988MB (attempt 1)
+== forbidden keywords (sorry/admit/axiom/native_decide) in GYNIUpper/**/*.lean:
+none
+== check_upper.sh done: 1947 s
+exit 0

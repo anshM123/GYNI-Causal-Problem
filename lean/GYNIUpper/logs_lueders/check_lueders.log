@@ -1,0 +1,17 @@
+== GYNIUpper/LuedersChoi.lean  (start 00:57:37)
+   RESULT GYNIUpper/LuedersChoi.lean: exit=0 wall=34.8s peakWS=3,476MB peakPrivate=8,009MB (attempt 1)
+== GYNIUpper/LuedersDilation.lean  (start 00:58:14)
+   RESULT GYNIUpper/LuedersDilation.lean: exit=0 wall=35.9s peakWS=3,504MB peakPrivate=8,028MB (attempt 1)
+== GYNIUpper/LuedersNormalForm.lean  (start 00:58:51)
+   RESULT GYNIUpper/LuedersNormalForm.lean: exit=0 wall=33.4s peakWS=3,471MB peakPrivate=8,011MB (attempt 1)
+== GYNIUpper/AxiomsLueders.lean  (start 00:59:27)
+'GYNIUpper.lueders_normal_form' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpper.lueders_normal_form_choi' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpper.luedersProcess_spec' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpper.isInstrument_luedersInstr' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIUpper.luedersInstr_eq_choiMatrix' depends on axioms: [propext, Classical.choice, Quot.sound]
+CStarMatrix constants: []
+   RESULT GYNIUpper/AxiomsLueders.lean: exit=0 wall=29.3s peakWS=3,212MB peakPrivate=7,949MB (attempt 1)
+== forbidden keywords (sorry/admit/axiom/native_decide) in the Lueders files:
+none
+== check_lueders.sh done: 141 s

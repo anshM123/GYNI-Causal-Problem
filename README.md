@@ -12,7 +12,11 @@
 
 The window has width **1.79 × 10⁻⁵** (4.65 × 10⁻⁵ before the tightened level-8 certificate of 2026-09-28, see below). Before this work the best known interval was **[0.6219, 0.7592]**, with lower bound 0.6219 from Boghiu & Simonov (arXiv:2606.20519) and upper bound 0.7592 from Liu & Chiribella (arXiv:2403.02749, Nat. Commun. 2025). The exact value of I_GYNI was stated as an open problem in both works and in the 2026 review arXiv:2606.19438.
 
-Both ends of the interval come with exact certificates, checked in pure integer/rational arithmetic without any numerical solver:
+**Both ends of the interval are machine-checked in Lean 4 + Mathlib** (`lean/`), for every finite-dimensional strategy, using only Lean's standard axioms:
+- `GYNIProof.gyni_lower_bound`: I_GYNI ≥ 0.6221659013539 (the exact value of an explicit strategy);
+- `GYNIUpperBound.gyni_upper_bound`: I_GYNI ≤ 175129158097837 / 2^48 (decimal form ≤ 0.622183755532).
+
+Both ends also come with exact certificates checked in pure integer/rational arithmetic without any numerical solver:
 
 | bound | value | certificate | verifier | what is checked |
 |---|---|---|---|---|
@@ -88,13 +92,19 @@ To regenerate the certificates (a numerical solver is needed for this step only)
 - **Lower bound: rigorous and self-contained.** It is an explicit strategy verified in exact arithmetic, and it does not depend on the hierarchy.
 - **Lower bound, machine-checked in Lean 4 + Mathlib** (`lean/`). The theorems are `gyni_lower_bound_exact` (valid process + valid instruments with the exact rational GYNI value), `gyni_lower_bound` (≥ 0.6221659013539) and `gyni_lower_bound_beats_previous` (> 0.6219). They cover validity of the process on all CPTP maps, the instruments, the exact value, and positive semidefiniteness via kernel-checked integer certificates. They use only the axioms `propext`, `Classical.choice`, `Quot.sound`, and there is no `sorry` or `native_decide`. Our runs: `logs/lean_check_conditional.log` (2717 s) and `logs/lean_check_big.log` (4010 s), both exit 0. An independent re-run from a clean build directory also passed (`logs/lean_recheck_conditional.log`: 40 files, exit 0; `logs/lean_recheck_big.log`: 158 files, exit 0 in 2685 s; same axiom output, keyword scan `none`).
 - **Internal adversarial audit: verdict SOUND.** See `AUDIT_REPORT.md`. It found no mathematical error affecting the bound. Its documentation fixes (E1–E4) are applied: PROOF.md §§0–2 are now a complete theorem–proof treatment of the certified relaxation, and `tests/` ships the missing level-8 containment test.
-- **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the set of finite-dimensional process-matrix strategies**: Lemma 1 (Lüders normal form), Lemma 2 (V2), and the symmetry reduction in PROOF.md. This proof has been checked internally and by an internal adversarial audit (`AUDIT_REPORT.md`, including numerical containment tests on random general strategies), and an informal external review's comments have been addressed. It has **not yet been refereed by a journal**, and it is the key item for review.
+- **Upper bound: machine-checked in Lean 4** (`lean/GYNIUpper/`, theorem `GYNIUpperBound.gyni_upper_bound`). The formal proof covers the whole chain:
+  1. Lemma 1, the Lüders normal form for arbitrary finite-dimensional instruments (`lueders_normal_form`: Stinespring dilation and an explicit unitary completion);
+  2. the moment-matrix constraints for Lüders-form strategies (Lemma 2, scalar-trace factorisation);
+  3. weak duality;
+  4. kernel-checked exact certificates for the level-8 relaxation.
+
+  The dual certificate is first averaged over the GYNI symmetry group, so the symmetry lemma is not needed in the formal proof; the bound is unchanged, exactly. Our runs: `logs/lean_check_upper_bound.log` (independent clean rebuild, all files exit 0, standard axioms only). The paper proof in PROOF.md is the human-readable version of the same argument. This proof has been checked internally and by an internal adversarial audit (`AUDIT_REPORT.md`, including numerical containment tests on random general strategies), and an informal external review's comments have been addressed. It has **not yet been refereed by a journal**, and it is the key item for review.
 - The remaining gap of 1.79 × 10⁻⁵ is open. The numerical level-8 optimum is 0.6221835, so a tighter certificate at level 8 cannot go below that. Higher levels and larger J are the routes to a narrower interval. The hierarchy values decrease monotonically, and our best strategies (J = 1..4) increase monotonically; see `research-log/` for the full record, including negative results and bugs caught.
 
 ## Repository layout
 - `README.md`: this file. `PROOF.md`: the certified relaxation stated exactly; Lemma 1 (Lüders normal form), Lemma 2 (scalar-trace factorisation) and Lemmas 3–5 with the soundness theorem; the certification method; and the strategy.
 - `paper/`: the letter and the supplemental material (PDF and LaTeX sources).
-- `lean/`: the Lean 4 formalisation of the lower bound (`GYNIProof/`). Run `lake exe cache get`, then `bash GYNIProof/check.sh` and `bash GYNIProof/check_big.sh`. The check scripts use `GYNIProof/tools/lean_step.ps1` (Windows PowerShell) to run one Lean process at a time with a RAM check. On other systems, run `lake env lean` on the files in the order listed in the two scripts. The data files are generated from the certificate by `GYNIProof/gen_gyni_lean.py` (set `GYNI_NPZ=../src/GYNI_J4_strategy_cert.npz`).
+- `lean/`: the Lean 4 formalisations. Upper bound: `GYNIUpper/`. Check it with `bash GYNIUpper/check_lueders.sh` and then `bash GYNIUpper/check_upper.sh` (about 35 minutes; it needs the GYNIProof core files built first), and regenerate the certificate data from `src/` with `GYNIUpper/tools/`. Lower bound: `GYNIProof/`. Run `lake exe cache get`, then `bash GYNIProof/check.sh` and `bash GYNIProof/check_big.sh`. The check scripts use `GYNIProof/tools/lean_step.ps1` (Windows PowerShell) to run one Lean process at a time with a RAM check. On other systems, run `lake env lean` on the files in the order listed in the two scripts. The data files are generated from the certificate by `GYNIProof/gen_gyni_lean.py` (set `GYNI_NPZ=../src/GYNI_J4_strategy_cert.npz`).
 - `src/`: all code and certificates (verifiers, hierarchy builders, solvers, strategy generators).
 - `logs/`: independent verification runs of both certificates.
 - `tests/`: independent containment tests of the certified relaxation, up to the full level-8 row list (see `tests/README.md`).

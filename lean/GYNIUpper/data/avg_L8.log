@@ -1,0 +1,6 @@
+  dual blocks from multipliers: 7.4s, lam.b = 175129158097837/281474976710656 = 0.622183755531001
+  group of order 8
+  classes: 33; (CA) violations 0; (CB) violations 0
+  L=8: symmetric True; classes ok True; trace/den = 175129158097837/281474976710656 (0.622183755531001); equals lam.b: True; PD None
+saved ../data/avg_L8.pkl
+total 8.65468978881836 peak GB 1.322369024

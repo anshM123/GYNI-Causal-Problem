@@ -1,0 +1,8 @@
+[L8] L=8 n=17 N=289 den=2^57, max|Phi| 2^52, BA=53
+  block (0, 0): eig [3.592e+07, 4.055e+15] (x den), dominance ok True (min slack ratio 1.000), max|L| 2^48, eps 2^73 (0.2s)
+  block (0, 1): eig [3.592e+07, 4.055e+15] (x den), dominance ok True (min slack ratio 1.000), max|L| 2^49, eps 2^73 (0.2s)
+  block (1, 0): eig [3.592e+07, 4.055e+15] (x den), dominance ok True (min slack ratio 1.000), max|L| 2^48, eps 2^73 (0.2s)
+  block (1, 1): eig [3.592e+07, 4.055e+15] (x den), dominance ok True (min slack ratio 1.000), max|L| 2^49, eps 2^73 (0.2s)
+  params: F=24 c=2^48 BL=50 B=109 eps=2^73
+  mirror checks passed (7.5s); beta = 89666128946092544/144115188075855872 = 175129158097837/281474976710656 = 0.622183755531001
+done in 8.8s, peak 1.03 GB

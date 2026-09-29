@@ -1,0 +1,62 @@
+== GYNIUpper/L8/ChkCA_0.lean (start 02:07:33)
+   RESULT GYNIUpper/L8/ChkCA_0.lean: exit=0 wall=30.7s peakWS=1,084MB peakPrivate=1,338MB (attempt 1)
+== GYNIUpper/L8/ChkCA_1.lean (start 02:08:05)
+   RESULT GYNIUpper/L8/ChkCA_1.lean: exit=0 wall=30.5s peakWS=1,389MB peakPrivate=1,643MB (attempt 1)
+== GYNIUpper/L8/ChkCB_0.lean (start 02:08:37)
+   RESULT GYNIUpper/L8/ChkCB_0.lean: exit=0 wall=31.4s peakWS=1,219MB peakPrivate=1,474MB (attempt 1)
+== GYNIUpper/L8/ChkCB_1.lean (start 02:09:11)
+   RESULT GYNIUpper/L8/ChkCB_1.lean: exit=0 wall=32.1s peakWS=1,404MB peakPrivate=1,660MB (attempt 1)
+== GYNIUpper/L8/ChkCol00.lean (start 02:09:44)
+   RESULT GYNIUpper/L8/ChkCol00.lean: exit=0 wall=38.4s peakWS=1,398MB peakPrivate=1,653MB (attempt 1)
+== GYNIUpper/L8/ChkCol01.lean (start 02:10:25)
+   RESULT GYNIUpper/L8/ChkCol01.lean: exit=0 wall=37.7s peakWS=1,241MB peakPrivate=1,500MB (attempt 1)
+== GYNIUpper/L8/ChkCol10.lean (start 02:11:04)
+   RESULT GYNIUpper/L8/ChkCol10.lean: exit=0 wall=33.6s peakWS=1,371MB peakPrivate=1,657MB (attempt 1)
+== GYNIUpper/L8/ChkCol11.lean (start 02:11:40)
+   RESULT GYNIUpper/L8/ChkCol11.lean: exit=0 wall=32.6s peakWS=1,392MB peakPrivate=1,650MB (attempt 1)
+== GYNIUpper/L8/ChkRows00_0.lean (start 02:12:14)
+   RESULT GYNIUpper/L8/ChkRows00_0.lean: exit=0 wall=161.8s peakWS=2,279MB peakPrivate=2,566MB (attempt 1)
+== GYNIUpper/L8/ChkRows01_0.lean (start 02:14:58)
+   RESULT GYNIUpper/L8/ChkRows01_0.lean: exit=0 wall=157.8s peakWS=2,325MB peakPrivate=2,613MB (attempt 1)
+== GYNIUpper/L8/ChkRows10_0.lean (start 02:17:37)
+   RESULT GYNIUpper/L8/ChkRows10_0.lean: exit=0 wall=161.6s peakWS=2,365MB peakPrivate=2,624MB (attempt 1)
+== GYNIUpper/L8/ChkRows11_0.lean (start 02:20:21)
+   RESULT GYNIUpper/L8/ChkRows11_0.lean: exit=0 wall=174.5s peakWS=2,288MB peakPrivate=2,575MB (attempt 1)
+== GYNIUpper/L8/ChkSym00.lean (start 02:23:17)
+   RESULT GYNIUpper/L8/ChkSym00.lean: exit=0 wall=11.2s peakWS=1,385MB peakPrivate=1,609MB (attempt 1)
+== GYNIUpper/L8/ChkSym01.lean (start 02:23:30)
+   RESULT GYNIUpper/L8/ChkSym01.lean: exit=0 wall=10.6s peakWS=1,385MB peakPrivate=1,575MB (attempt 1)
+== GYNIUpper/L8/ChkSym10.lean (start 02:23:42)
+   RESULT GYNIUpper/L8/ChkSym10.lean: exit=0 wall=11.2s peakWS=1,385MB peakPrivate=1,643MB (attempt 1)
+== GYNIUpper/L8/ChkSym11.lean (start 02:23:55)
+   RESULT GYNIUpper/L8/ChkSym11.lean: exit=0 wall=11.3s peakWS=1,385MB peakPrivate=1,610MB (attempt 1)
+== GYNIUpper/L8/ChkTab.lean (start 02:24:08)
+   RESULT GYNIUpper/L8/ChkTab.lean: exit=0 wall=6.2s peakWS=680MB peakPrivate=906MB (attempt 1)
+== GYNIUpper/L8/Main.lean (start 02:24:16)
+GYNIUpper/L8/Main.lean:63:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:67:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:70:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:74:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:77:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:81:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:84:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:88:0: error: maximum recursion depth has been reached
+use `set_option maxRecDepth <num>` to increase limit
+use `set_option diagnostics true` to get diagnostic information
+GYNIUpper/L8/Main.lean:92:8: error: (kernel) unknown constant 'GYNIUpperBound.L8.col_ok00'
+   RESULT GYNIUpper/L8/Main.lean: exit=1 wall=30.0s peakWS=3,253MB peakPrivate=8,030MB (attempt 1)
+== build_level L8 done: 1036 s

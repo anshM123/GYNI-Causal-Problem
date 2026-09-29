@@ -63,7 +63,7 @@ where $\Imax$ is the supremum of the GYNI success probability over process-matri
 \item \emph{Numerical, not rigorous}: solver optima of the relaxations, the $J=1$ value, extrapolations, flatness, the LGYNI and OCB consistency checks, and the containment tests of Sec.~\ref{sec:numerics}.
 \end{itemize}
 
-\emph{What the upper bound rests on.} (i) Theorem~\ref{thm:S-sound}; (ii) the correctness of the constraint generator \file{mc3.build} of our code~\cite{repo}, which implements the constraint families of Sec.~\ref{sec:relaxation} (Remark~\ref{rem:code} gives the correspondence, and Sec.~\ref{sec:numerics} reports independent numerical tests of the generated constraints); (iii) the short exact verification routine of Sec.~\ref{sec:cert-verify}.
+\emph{What the upper bound rests on.} (i) Theorem~\ref{thm:S-sound}; (ii) the correctness of the constraint generator \file{mc3.build} of our code~\cite{repo}, which implements the constraint families of Sec.~\ref{sec:relaxation} (Remark~\ref{rem:code} gives the correspondence, and Sec.~\ref{sec:numerics} reports independent numerical tests of the generated constraints); (iii) the short exact verification routine of Sec.~\ref{sec:cert-verify}. In addition, the whole argument is machine-checked in Lean (Sec.~\ref{sec:lean-formal}). There, the certificate data are checked by the Lean kernel against constraints derived inside Lean from the definitions, so neither (ii) nor (iii) needs to be trusted for the formal statement.
 
 \emph{What the lower bound rests on.} (i) Lemma~\ref{lem:S-valid}, a sufficient condition for validity of a process; (ii) the stand-alone verifier of Sec.~\ref{sec:strat-verify}. The lower bound does not depend on the hierarchy.
 
@@ -613,9 +613,20 @@ The level-8 solve took $220$\,s (peak memory $2.6$\,GB). Including the exact che
 
 The tests of Sec.~\ref{sec:numerics} are in the directory \file{tests/} (run from there): \file{audit\_contain.py} (random general strategies), \file{audit\_jstrat.py} (the $J=3$ and $J=4$ strategies at every level), \file{audit\_lemma1\_explicit.py} (explicit $\widetilde W$), \file{audit\_lueders\_direct.py} (generic L\"uders-form processes and negative controls) and \file{audit\_cert\_link.py} (the identity of Sec.~\ref{sec:numerics}); their outputs are in \file{tests/logs/}.
 
-\subsection{Formal verification}
+\subsection{Formal verification}\label{sec:lean-formal}
 
-The lower bound is machine-checked in Lean~4 with Mathlib~\cite{Lean4}; the Lean project is in the directory \file{lean/} of the repository. The main theorems are:
+Both bounds are machine-checked in Lean~4 with Mathlib~\cite{Lean4}. The Lean projects are in the directory \file{lean/} of the repository: \file{GYNIProof/} for the lower bound and \file{GYNIUpper/} for the upper bound.
+
+\emph{Upper bound.} For all finite types $A_I,A_O,B_I,B_O$, every process $W$ and all instruments $M,N$ (the standard definitions of Sec.~\ref{sec:conventions}), the theorem \texttt{gyni\_upper\_bound} states $\Igy\le175129158097837/2^{48}$, and \texttt{gyni\_upper\_bound\_decimal} states $\Igy\le0.622183755532$. The formal proof contains:
+\begin{itemize}
+\item Lemma~\ref{lem:S-lueders} (\texttt{lueders\_normal\_form}). The Kraus operators come from a factorisation of the Choi matrices. The projective measurements come from an explicit self-adjoint unitary completion of the Stinespring isometry, and the transformed process is $(\Phi_A^\dagger\otimes\Phi_B^\dagger)(W)$ with Kraus operators $J^{\tp}\otimes T_{x,e}\otimes\langle x|$.
+\item The scalar-trace factorisation (Lemma~\ref{lem:S-v2}) and the constraints (V1), (V2) on the moment matrix of a L\"uders-form strategy.
+\item Weak duality.
+\item The level-8 certificate: the kernel checks that the class sums of the certificate vanish on the (V2) space and that the four $289\times289$ dual blocks are positive semidefinite, using packed-row identities.
+\end{itemize}
+Before export, the dual certificate is averaged over the symmetry group of the game (order 8). This makes it a certificate for the relaxation without the constraints (S), with exactly the same bound $175129158097837/2^{48}$, so Lemma~\ref{lem:S-sym} is not needed in the formal proof. An independent rebuild from a clean state compiles all files with exit code 0 in about $35$ minutes.
+
+\emph{Lower bound.} The main theorems are:
 \begin{itemize}
 \item \texttt{gyni\_lower\_bound\_exact}: there are a valid process $W$ and valid instruments with $\Igy$ equal to the exact rational value of the $J=4$ strategy;
 \item \texttt{gyni\_lower\_bound}: the same with $\Igy\ge0.6221659013539$;
