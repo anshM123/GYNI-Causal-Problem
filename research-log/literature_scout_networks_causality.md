@@ -402,7 +402,7 @@ This is a no-go-flavoured sharp bound. It is useful as a bankable side result, n
 
 ## 4. Search log (novelty checks)
 
-- **WebSearch** (33 successful queries before the session-wide cap was hit). Topics:
+- **Web search** (33 successful queries before the session-wide cap was hit). Topics:
   - binary triangle, Boreiri minimal example, EJM inflation 2025, noise-robust triangle 2026
   - Evans/Lauand, HLP remaining structures
   - Liu–Chiribella hierarchy, causal-inequality maximal violation 2025, GYNI 0.7592, hierarchy second level, block-moment relaxations
@@ -412,7 +412,7 @@ This is a no-go-flavoured sharp bound. It is useful as a bankable side result, n
   - GHZ triangle fidelity (×4), fully quantum inflation
   - van der Lugt–Barrett–Chiribella (VBC) / DI switch (×2), quantum-switch channel discrimination 2026
   - QRF open problems, generic "open problem networks 2026"
-- **WebFetch of arXiv abstract/HTML pages:**
+- **arXiv abstract/HTML pages read:**
   - 2605.00981, 2510.15143, 2311.02182, 2512.04058, 2404.12790, 2403.02749 (HTML)
   - 2606.20519 (abstract and HTML), 2605.30238, 2606.19438, 2503.09724, 2512.07160, 2603.19208, 2405.03013, 2604.19482
   - 2401.15428, 2501.08079, 2406.15587, 2503.16654, 2105.13369, 2210.12796, 2605.04981, 2410.18735
