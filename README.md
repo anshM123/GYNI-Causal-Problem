@@ -1,5 +1,9 @@
 # The maximal quantum violation of the GYNI causal inequality
 
+**Authors:** Ansh Mishra, Aryan Senthilkumar
+
+**Paper:** [`paper/GYNI_letter.pdf`](paper/GYNI_letter.pdf) with [`paper/GYNI_supplement.pdf`](paper/GYNI_supplement.pdf) (LaTeX sources in `paper/`).
+
 **Result.** Two parties may share an arbitrary process matrix: indefinite causal order is allowed, the local Hilbert spaces may have any finite dimension, and any instruments may be used. (Infinite-dimensional strategies are not covered by the proof.) The best success probability for the *Guess Your Neighbour's Input* (GYNI) causal inequality then satisfies
 
 ```
@@ -82,14 +86,23 @@ To regenerate the certificates (a numerical solver is needed for this step only)
 
 ## Status and what a referee should check
 - **Lower bound: rigorous and self-contained.** It is an explicit strategy verified in exact arithmetic, and it does not depend on the hierarchy.
+- **Lower bound, machine-checked in Lean 4 + Mathlib** (`lean/`). The theorems are `gyni_lower_bound_exact` (valid process + valid instruments with the exact rational GYNI value), `gyni_lower_bound` (≥ 0.6221659013539) and `gyni_lower_bound_beats_previous` (> 0.6219). They cover validity of the process on all CPTP maps, the instruments, the exact value, and positive semidefiniteness via kernel-checked integer certificates. They use only the axioms `propext`, `Classical.choice`, `Quot.sound`, and there is no `sorry` or `native_decide`. Our runs: `logs/lean_check_conditional.log` (2717 s) and `logs/lean_check_big.log` (4010 s), both exit 0.
 - **Internal adversarial audit: verdict SOUND.** See `AUDIT_REPORT.md`. It found no mathematical error affecting the bound. Its documentation fixes (E1–E4) are applied: PROOF.md §§0–2 are now a complete theorem–proof treatment of the certified relaxation, and `tests/` ships the missing level-8 containment test.
 - **Upper bound:** the arithmetic is rigorous (exact certificate). The claim relies on the **validity of the hierarchy as a relaxation of the set of finite-dimensional process-matrix strategies**: Lemma 1 (Lüders normal form), Lemma 2 (V2), and the symmetry reduction in PROOF.md. This proof has been checked internally and by an internal adversarial audit (`AUDIT_REPORT.md`, including numerical containment tests on random general strategies), and an informal external review's comments have been addressed. It has **not yet been refereed by a journal**, and it is the key item for review.
 - The remaining gap of 1.79 × 10⁻⁵ is open. The numerical level-8 optimum is 0.6221835, so a tighter certificate at level 8 cannot go below that. Higher levels and larger J are the routes to a narrower interval. The hierarchy values decrease monotonically, and our best strategies (J = 1..4) increase monotonically; see `research-log/` for the full record, including negative results and bugs caught.
 
 ## Repository layout
 - `README.md`: this file. `PROOF.md`: the certified relaxation stated exactly; Lemma 1 (Lüders normal form), Lemma 2 (scalar-trace factorisation) and Lemmas 3–5 with the soundness theorem; the certification method; and the strategy.
+- `paper/`: the letter and the supplemental material (PDF and LaTeX sources).
+- `lean/`: the Lean 4 formalisation of the lower bound (`GYNIProof/`). Run `lake exe cache get`, then `bash GYNIProof/check.sh` and `bash GYNIProof/check_big.sh`. The check scripts use `GYNIProof/tools/lean_step.ps1` (Windows PowerShell) to run one Lean process at a time with a RAM check. On other systems, run `lake env lean` on the files in the order listed in the two scripts. The data files are generated from the certificate by `GYNIProof/gen_gyni_lean.py` (set `GYNI_NPZ=../src/GYNI_J4_strategy_cert.npz`).
 - `src/`: all code and certificates (verifiers, hierarchy builders, solvers, strategy generators).
 - `logs/`: independent verification runs of both certificates.
 - `tests/`: independent containment tests of the certified relaxation, up to the full level-8 row list (see `tests/README.md`).
 - `AUDIT_REPORT.md`: the internal adversarial referee report. Verdict: sound; the documentation fixes it asked for are applied.
 - `research-log/`: the complete working log (Steps 1–34) and the literature scout report used for the novelty check.
+
+## License
+MIT (see `LICENSE`). Copyright (c) 2026 Ansh Mishra and Aryan Senthilkumar.
+
+## How to cite
+See `CITATION.cff`. The archived release (Zenodo) has its own DOI.

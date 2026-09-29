@@ -1,0 +1,27 @@
+{
+  "title": "Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality",
+  "upload_type": "publication",
+  "publication_type": "preprint",
+  "description": "Certified bounds 0.622165901353 <= I_GYNI^max <= 0.622183755532 for the maximal violation of the GYNI causal inequality by process matrices of arbitrary finite dimension (previously [0.6219, 0.7592]). The upper bound comes from a new moment hierarchy for process-matrix correlations, certified at level 8 by an exact rational dual certificate; the lower bound is an explicit strategy verified in exact arithmetic and machine-checked in Lean 4 with Mathlib. The repository contains the paper and supplemental material (LaTeX source and PDF), solver-free verifiers, all certificates, the Lean project, tests and verification logs.",
+  "creators": [
+    {
+      "name": "Mishra, Ansh"
+    },
+    {
+      "name": "Senthilkumar, Aryan"
+    }
+  ],
+  "license": "mit",
+  "access_right": "open",
+  "keywords": [
+    "causal inequalities",
+    "process matrices",
+    "indefinite causal order",
+    "GYNI",
+    "semidefinite programming",
+    "exact certificates",
+    "Lean 4"
+  ],
+  "version": "1.0",
+  "language": "eng"
+}

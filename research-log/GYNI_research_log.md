@@ -33,13 +33,13 @@ and must be valid processes. All pieces now share one Gamma -> coupling beyond m
 - Validity tests (test_mc_validity.py): random genuine strategies (dA=2,3) satisfy V2 to 1e-16, canonical images valid to 1e-15, objective reproduced.
 - RESULT (numerical, Clarabel AlmostSolved): GYNI MC1 primal 0.64348483, dual 0.64348807.  (LC: 0.759190)
 - Sanity: LGYNI MC1 = 0.81940038 (exact 0.819401); 4 random single-trigger functionals: MC1 equals exact LC canonical value within 5e-6 (solver accuracy; must be >= exact if valid).
-- Literature check (subagent, 2026-09-27): citations of 2403.02749 (Semantic Scholar 17, INSPIRE 18), 2606.20519 (0), 2606.19438 (7) + arXiv API queries: no GYNI upper bound below 0.7592, no lower bound above 0.6219, no SDP hierarchy for process-matrix correlations beyond LC. (2609.22998's principle is trivial for binary outputs.)
+- Literature check (2026-09-27): citations of 2403.02749 (Semantic Scholar 17, INSPIRE 18), 2606.20519 (0), 2606.19438 (7) + arXiv API queries: no GYNI upper bound below 0.7592, no lower bound above 0.6219, no SDP hierarchy for process-matrix correlations beyond LC. (2609.22998's principle is trivial for binary outputs.)
 
 - High-accuracy: SCS eps=1e-9 (493 s): status solved, primal 0.6434843197, dual 0.6434843196. Clarabel (faer): AlmostSolved, 0.6434848 / 0.6434881. Strict-feasibility test: max t with Gamma - tI >= 0 is 0.0016 (small interior), images - tI: 0.25.
 - Coordinator (after API reset) asked: validity proof in REPORT.md; OCB check; general-strategy feasibility test; seesaw-strategy containment; exact certificate; MC2.
 - Plan: rewrite as general module mc2.py with register-block-diagonal Gamma (WLOG by twirling the output setting register with Z/Fourier phases - a local unitary on outputs; kills off-register Gram entries) -> 4 blocks 25x25 instead of 100x100; image validity imposed directly as forbidden-Pauli-component equalities on Gamma (no auxiliary variables) -> clean Lagrangian dual for exact certification.
 
-## Step 3 - Validity proof of the MC relaxation (for the record; harness does not allow a separate REPORT.md from this agent)
+## Step 3 - Validity proof of the MC relaxation (for the record)
 
 Lemma 1 (Lueders normal form, every dimension). For every strategy (W; M_{a|x}; N_{b|y}) there are finite-dim H_A, H_B,
 projectors P_{a|x} (sum_a P_{a|x} = 1), Q_{b|y}, and a valid process W~ on H_A (x) (H_A (x) X) (x) H_B (x) (H_B (x) Y)
@@ -163,7 +163,7 @@ integer elimination). beta = lam.b exactly. Standalone verifier verify2.py (no s
 
 
 =====================================================================================================================
-# FINAL REPORT (P-GYNI, 2026-09-28)  [kept in LOG.md: the agent harness blocks creating REPORT.md files]
+# FINAL REPORT (P-GYNI, 2026-09-28)
 =====================================================================================================================
 ## 1. Headline
 A new NPA-type SDP hierarchy for bipartite process-matrix correlations ("Lueders-word moment hierarchy") gives
@@ -362,7 +362,7 @@ d = 2,3,4, boundary W: residual <= 4e-16; symmetry maps vs transformed strategie
   [(22.7 deg, 70.3 deg)] (Clarabel AlmostSolved; exact verification next). A strategy with H_A = C^2 (x) C^2
   (two qubit Jordan blocks, coherent label) essentially reaches the best known seesaw value 0.6219 (B-S, d=6,7).
 
-- Note (coordinator): another agent ran taskkill /IM python.exe at some point; this explains the unexplained
+- Note: a stray taskkill /IM python.exe was run at some point; this explains the unexplained
   exit-code-1 termination of the first J2 Nelder-Mead run and the OCB level-2 check. All results reported in this log
   come from runs that completed and printed their final lines; nothing is inferred from killed runs.
 

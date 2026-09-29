@@ -1,0 +1,647 @@
+% supplement.tex -- Supplemental Material for main.tex (GYNI causal inequality)
+% Sources: publish/GYNI-Causal-Problem/{PROOF.md, AUDIT_REPORT.md, README.md, src/, logs/, tests/}.
+% All decimals are directed-rounded from the stored exact rationals (lower bounds DOWN, upper bounds UP).
+\documentclass[aps,pra,onecolumn,notitlepage,superscriptaddress,longbibliography,nofootinbib,11pt]{revtex4-2}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{corollary}{Corollary}
+\newtheorem{definition}{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+\renewcommand{\thesection}{S\arabic{section}}
+\renewcommand{\thesubsection}{\thesection.\Alph{subsection}}
+\renewcommand{\theequation}{S\arabic{equation}}
+\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thedefinition}{S\arabic{definition}}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\one}{\mathbb{I}}
+\newcommand{\tp}{\mathsf{T}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\Igy}{I_{\mathrm{GYNI}}}
+\newcommand{\Imax}{I_{\mathrm{GYNI}}^{\max}}
+\newcommand{\cW}{\mathcal{W}}
+\newcommand{\cK}{\mathcal{K}}
+\newcommand{\GG}{\mathfrak{G}}
+\newcommand{\file}[1]{\texttt{#1}}
+
+\begin{document}
+
+\title{Supplemental Material for ``Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality''}
+
+\author{Ansh Mishra}
+\author{Aryan Senthilkumar}
+\noaffiliation
+
+\date{\today}
+
+\maketitle
+
+%======================================================================
+\section{Overview and status of the claims}\label{sec:overview}
+%======================================================================
+
+The main result is
+\begin{equation}
+0.622165901353\;\le\;\Imax\;\le\;0.622183755532 ,
+\label{eq:S-main}
+\end{equation}
+where $\Imax$ is the supremum of the GYNI success probability over process-matrix strategies with finite-dimensional local systems (Definition~\ref{def:strategy}). This Supplemental Material contains complete proofs, the certificate formats and verification algorithms, the construction of the explicit strategies, numerical validation and reproducibility information. We distinguish three kinds of statements.
+\begin{itemize}
+\item \emph{Proved}: Theorem~\ref{thm:S-sound} (soundness of the relaxation) and Lemmas~\ref{lem:S-lueders}--\ref{lem:S-valid}.
+\item \emph{Certified by exact computation}: the rational upper bounds of Table~\ref{tab:S-certs} and the exact values of the strategies of Table~\ref{tab:S-values}. Each is checked by a stand-alone program in exact integer or rational arithmetic; no numerical solver is involved in the check.
+\item \emph{Numerical, not rigorous}: solver optima of the relaxations, the $J=1$ value, extrapolations, flatness, the LGYNI and OCB consistency checks, and the containment tests of Sec.~\ref{sec:numerics}.
+\end{itemize}
+
+\emph{What the upper bound rests on.} (i) Theorem~\ref{thm:S-sound}; (ii) the correctness of the constraint generator \file{mc3.build} of our code~\cite{repo}, which implements the constraint families of Sec.~\ref{sec:relaxation} (Remark~\ref{rem:code} gives the correspondence, and Sec.~\ref{sec:numerics} reports independent numerical tests of the generated constraints); (iii) the short exact verification routine of Sec.~\ref{sec:cert-verify}.
+
+\emph{What the lower bound rests on.} (i) Lemma~\ref{lem:S-valid}, a sufficient condition for validity of a process; (ii) the stand-alone verifier of Sec.~\ref{sec:strat-verify}. The lower bound does not depend on the hierarchy.
+
+\emph{Scope.} All statements concern strategies whose local Hilbert spaces have finite, but arbitrary, dimension. Local ancillas and shared entanglement are included, since they are absorbed into the process. Infinite-dimensional processes are not covered by Lemma~\ref{lem:S-lueders} as stated.
+
+\emph{Checks.} An internal, independent re-derivation of the proof of Theorem~\ref{thm:S-sound}, together with numerical containment tests written with separate code, is part of the repository (files \file{AUDIT\_REPORT.md} and \file{tests/})~\cite{repo}; its results are summarised in Sec.~\ref{sec:numerics}.
+
+%======================================================================
+\section{Conventions and definitions}\label{sec:conventions}
+%======================================================================
+
+\subsection{Choi operators}
+
+All Hilbert spaces are finite-dimensional with fixed orthonormal bases; transposition $(\cdot)^\tp$ and complex conjugation $\overline{(\cdot)}$ refer to these bases. For a linear map $F:L(H_{\rm in})\to L(H_{\rm out})$ we set
+\begin{equation}
+C_F:=\sum_{ij}\ket{i}\bra{j}\otimes F(\ket{i}\bra{j})\in L(H_{\rm in}\otimes H_{\rm out}),\qquad
+\ket{\Phi}:=\sum_i\ket{i}\ket{i}\ \ \text{(unnormalised)}.
+\end{equation}
+We use four elementary facts.
+\begin{itemize}
+\item[(F1)] $F$ is completely positive if and only if $C_F\succeq0$~\cite{Choi1975}.
+\item[(F2)] $F(\rho)=\Tr_{\rm in}[(\rho^\tp\otimes\one)C_F]$; hence $\Tr F(\rho)=\Tr[\rho^\tp\Tr_{\rm out}C_F]$. We say that $F$, or $C_F$, has \emph{scalar trace} $\lambda\in\CC$ if $\Tr F(\rho)=\lambda\Tr\rho$ for all $\rho$, equivalently $\Tr_{\rm out}C_F=\lambda\one_{\rm in}$. Trace preserving (TP) means $\lambda=1$, trace annihilating (TA) means $\lambda=0$.
+\item[(F3)] If $A:H'\to H_{\rm in}$ is linear, $\mathcal A(\rho):=A\rho A^\dagger$, and $T(\omega)=\sum_kT_k\omega T_k^\dagger$, then
+\begin{equation}
+C_{T\circ F\circ\mathcal A}=\sum_k(A^\tp\otimes T_k)\,C_F\,(A^\tp\otimes T_k)^\dagger .
+\label{eq:F3}
+\end{equation}
+\item[(F4)] For operators $w,w'$ on $H$ and register states $\ket{r},\ket{r'}$ of $X$, put $\ket{w,r}:=(\one\otimes w)\ket{\Phi}\otimes\ket{r}\in H\otimes H\otimes X$. Then $\ket{w',r'}\bra{w,r}$ is the Choi operator of $\rho\mapsto w'\rho w^\dagger\otimes\ket{r'}\bra{r}$, and
+\begin{equation}
+\Tr_{H\otimes X}\ket{w',r'}\bra{w,r}=\delta_{rr'}\,(w^\dagger w')^\tp .
+\label{eq:F4}
+\end{equation}
+\end{itemize}
+(F1) is Choi's theorem. (F2) and (F4) follow by expanding both sides. For (F3), the identity $\sum_i\ket{i}\otimes A\ket{i}=(A^\tp\otimes\one)\ket{\Phi}$ (``transpose trick'') gives $C_{F\circ\mathcal A}=(A^\tp\otimes\one)C_F(A^\tp\otimes\one)^\dagger$, and post-composition with $T$ acts on Choi operators as $C\mapsto\sum_k(\one\otimes T_k)C(\one\otimes T_k)^\dagger$.
+
+\subsection{Processes and strategies}
+
+\begin{definition}[Process]\label{def:process}
+A (bipartite) process is an operator $W$ on $A_I\otimes A_O\otimes B_I\otimes B_O$ with $W\succeq0$ and $\Tr[W(C_A\otimes C_B)]=1$ for all Choi operators $C_A$, $C_B$ of CPTP maps $A_I\to A_O$ and $B_I\to B_O$.
+\end{definition}
+
+This is the definition of Ref.~\cite{Oreshkov2012}, up to the Choi convention: Ref.~\cite{Oreshkov2012} pairs $W$ with the transposed Choi operators $C_F^\tp$, so its processes are the transposes $W^\tp$ of ours; $W\mapsto W^\tp$ preserves positivity and normalisation, and all probabilities and $\Imax$ are unchanged. The definition is equivalent to the one that allows local ancillas in an arbitrary joint state, because $W\otimes\rho_{A'B'}$ is again a process in the above sense (the added factors live on input spaces). It is also equivalent to the linear characterisation of Ref.~\cite{Araujo2015}: $W\succeq0$, $\Tr W=d_{A_O}d_{B_O}$, and $W$ lies in the valid subspace.
+
+\begin{definition}[Strategy, GYNI value]\label{def:strategy}
+A strategy $S=(W;M_{a|x};N_{b|y})$, $x,y,a,b\in\{0,1\}$, consists of a process and instruments: CP maps $M_{a|x}:L(A_I)\to L(A_O)$ with $\sum_aM_{a|x}$ TP, and likewise $N_{b|y}$ for Bob. Its correlations are $p(a,b|x,y)=\Tr[W(C_{M_{a|x}}\otimes C_{N_{b|y}})]$, and
+\begin{equation}
+\Igy(S):=\frac14\sum_{x,y}p(a=y,b=x\,|\,x,y),\qquad \Imax:=\sup_S\Igy(S),
+\end{equation}
+where the supremum runs over all finite dimensions of $A_I,A_O,B_I,B_O$.
+\end{definition}
+
+%======================================================================
+\section{The certified relaxation and its soundness}\label{sec:relaxation}
+%======================================================================
+
+This section states the relaxation exactly as certified (the constraints generated by \file{mc3.build(L, sym=True)} and checked by \file{verify3.py}) and proves that it contains every strategy. The treatment follows \file{PROOF.md} of the repository~\cite{repo}.
+
+\subsection{Words and index sets}
+
+Let $G:=\ZZ_2*\ZZ_2=\langle g_0,g_1\,|\,g_0^2=g_1^2=e\rangle$ be the infinite dihedral group. Its elements are the reduced words $w=(x_1,\dots,x_n)$ with $x_i\in\{0,1\}$ and $x_i\neq x_{i+1}$; $|w|=n$ is the length, and $()$ denotes the empty word $e$. Let $\cW_L$ be the set of reduced words of length at most $L$; $|\cW_L|=2L+1$. For $w,w'\in\cW_L$, $w^{-1}w'$ denotes the reduced word of the product in $G$ (the inverse of a word is its reversal). Let $\sigma$ be the letter exchange $0\leftrightarrow1$, an automorphism of $G$.
+
+Each party has the index set $\cK:=\cW_L\times\{0,1\}$ (word, register value). A pair $(k,k')=((w,r),(w',r'))$ with $r=r'$ is called \emph{admissible}; its \emph{class} is $t(k,k'):=w^{-1}w'\in G$.
+
+\subsection{Variables}
+
+The variables are four real symmetric matrices $\Gamma_{rs}$ ($r,s\in\{0,1\}$), each indexed by $\cW_L\times\cW_L$ (Alice's word, Bob's word). We write $\Gamma[(k,l),(k',l')]:=\Gamma_{rs}[(w,v),(w',v')]$ if $k=(w,r)$, $k'=(w',r)$, $l=(v,s)$, $l'=(v',s)$; entries with $r_k\neq r_{k'}$ or $s_l\neq s_{l'}$ are not variables (they are zero). For coefficient vectors $c$ on Alice's pairs and $d$ on Bob's pairs we put
+\begin{equation}
+\langle c\otimes d,\Gamma\rangle:=\sum c_{kk'}\,d_{ll'}\,\Gamma[(k,l),(k',l')] .
+\end{equation}
+
+\subsection{Constraints and objective}
+
+Let $\pi_0:=(((),0),((),0))$ be Alice's pair of empty words in register $0$, and $\rho_0$ the same pair for Bob. Let $D_A$ be the set of vectors $e_p-e_{p'}$ with $p,p'$ admissible Alice pairs of the same class, and define $D_B$ likewise. The relaxation at level $L$ imposes:
+\begin{itemize}
+\item[(V1)] $\Gamma_{rs}\succeq0$ for all four $(r,s)$.
+\item[(V2a)] $\langle c\otimes d,\Gamma\rangle=0$ for $c\in D_A$ and $d\in D_B\cup\{e_{\rho_0}\}$;
+\item[(V2b)] $\langle e_{\pi_0}\otimes d,\Gamma\rangle=0$ for $d\in D_B$;
+\item[(V2c)] $\Gamma[(((),0),((),0)),(((),0),((),0))]=1$.
+\item[(S)] $\Gamma=f*\Gamma$ for $f\in\{f_x,f_y,{\rm sw}\}$, where, with $k=(w,r)$, $l=(v,s)$, $k'=(w',r')$, $l'=(v',s')$,
+\begin{align}
+(f_x*\Gamma)[(k,l),(k',l')]&:=(-1)^{|v|+|v'|}\,\Gamma[((\sigma w,1-r),(v,s)),((\sigma w',1-r'),(v',s'))],\\
+(f_y*\Gamma)[(k,l),(k',l')]&:=(-1)^{|w|+|w'|}\,\Gamma[((w,r),(\sigma v,1-s)),((w',r'),(\sigma v',1-s'))],\\
+({\rm sw}*\Gamma)[(k,l),(k',l')]&:=\Gamma[(l,k),(l',k')].
+\end{align}
+(An entry mapped to itself with sign $-1$ is thereby forced to vanish.)
+\end{itemize}
+\emph{Objective.} With $u_{a|x}:=\frac12e_{((),x)}+\frac12(-1)^ae_{((x),x)}\in\RR^{\cK}$,
+\begin{equation}
+o(\Gamma):=\frac14\sum_{x,y}\big\langle u_{y|x}\otimes u_{x|y},\,\Gamma\,(u_{y|x}\otimes u_{x|y})\big\rangle .
+\label{eq:S-objective}
+\end{equation}
+The level-$L$ value is $\beta_L:=\sup\{o(\Gamma):\Gamma\text{ satisfies (V1), (V2), (S)}\}$.
+
+An equivalent description of (V2): call a coefficient vector $c$ on admissible pairs a vector with scalar trace $\lambda$ if $\sum_{kk'}c_{kk'}\,t(k,k')=\lambda e$ in the group algebra $\RR[G]$. Such $c$ are exactly the vectors $\lambda e_{\pi_0}+c_0$ with $c_0$ in the span of $D_A$ (the coefficients of each class must sum to zero, except for the class $e$, whose coefficients sum to $\lambda$). Hence (V2a)--(V2c) are equivalent to $\langle c\otimes d,\Gamma\rangle=\lambda_A\lambda_B$ for all $c,d$ with scalar traces $\lambda_A,\lambda_B$. In particular, every diagonal entry $\Gamma[(k,l),(k,l)]$ equals $1$, since the pairs $(k,k)$ and $(l,l)$ belong to the class $e$.
+
+\subsection{Main theorem}
+
+\begin{theorem}[Soundness]\label{thm:S-sound}
+For every $L\ge1$ and every strategy $S$ (Definition~\ref{def:strategy}, any finite dimension) there is a $\Gamma$ satisfying (V1), (V2) and (S) with $o(\Gamma)=\Igy(S)$. Hence $\Imax\le\beta_L$.
+\end{theorem}
+
+\begin{corollary}\label{cor:S-L8}
+The certificate \file{cert3\_L8\_e9.pkl} provides rational multipliers $\lambda$ for all $789{,}678$ linear constraints of level $8$ such that the matrices $Y_k(\lambda)$ of Lemma~\ref{lem:S-weakdual} are positive definite. Hence $\Imax\le\beta_8\le\lambda\cdot b=175129158097837/2^{48}=0.6221837555310\ldots\le0.622183755532$. (The earlier certificate \file{cert3\_L8.pkl} for the same program gives the weaker bound $700548845513581/2^{50}=0.62221236653099\ldots$.)
+\end{corollary}
+
+The proof of Theorem~\ref{thm:S-sound} occupies Lemmas~\ref{lem:S-lueders}--\ref{lem:S-sym}; Lemma~\ref{lem:S-weakdual} (Sec.~\ref{sec:certificates}) gives the corollary.
+
+\subsection{Proofs}
+
+\begin{lemma}[L\"uders normal form with setting registers]\label{lem:S-lueders}
+Let $S=(W;M_{a|x};N_{b|y})$ be a strategy. There exist finite-dimensional Hilbert spaces $H_A$, $H_B$, orthogonal projectors $P_{a|x}$ on $H_A$ and $Q_{b|y}$ on $H_B$ with $\sum_aP_{a|x}=\one$ and $\sum_bQ_{b|y}=\one$, and a process $\widetilde W$ on $H_A\otimes(H_A\otimes X)\otimes H_B\otimes(H_B\otimes Y)$, $X=Y=\CC^2$, such that with the instruments
+\begin{equation}
+\widetilde M_{a|x}(\rho):=P_{a|x}\rho P_{a|x}\otimes\ket{x}\bra{x}_X,\qquad
+\widetilde N_{b|y}(\sigma):=Q_{b|y}\sigma Q_{b|y}\otimes\ket{y}\bra{y}_Y
+\end{equation}
+one has $p(a,b|x,y)=\Tr[\widetilde W(C_{\widetilde M_{a|x}}\otimes C_{\widetilde N_{b|y}})]$ for all $a,b,x,y$. Moreover, $\widetilde W$ is block diagonal in the registers: $\widetilde W=\sum_{r,s}\Pi_{rs}\widetilde W\Pi_{rs}$, where $\Pi_{rs}$ projects Alice's output register onto $\ket{r}$ and Bob's onto $\ket{s}$.
+\end{lemma}
+
+\begin{proof}
+We treat Alice; Bob is identical. Choose $\kappa$ and Kraus operators $K_{akx}:A_I\to A_O$, $k=1,\dots,\kappa$ (padding with zeros), with $M_{a|x}(\rho)=\sum_kK_{akx}\rho K_{akx}^\dagger$. Let $E:=\CC^2\otimes\CC^\kappa$ with basis $\ket{a,k}$, let $H_A:=A_O\otimes E$, and put $V_x:=\sum_{a,k}K_{akx}\otimes\ket{a,k}:A_I\to H_A$. Since $\sum_aM_{a|x}$ is TP, $V_x^\dagger V_x=\sum_{a,k}K_{akx}^\dagger K_{akx}=\one$, so $V_x$ is an isometry; in particular $\dim A_I\le\dim H_A$. Fix any isometry $J:A_I\to H_A$. The partial isometry $V_xJ^\dagger$ maps the range of $J$ onto the range of $V_x$; since the orthogonal complements of these ranges have equal dimension, it extends to a unitary $U_x$ on $H_A$ with $U_xJ=V_x$. Define
+\begin{equation}
+P_{a|x}:=U_x^\dagger(\one_{A_O}\otimes\ket{a}\bra{a}\otimes\one_\kappa)U_x,\qquad
+T_{x,e}:=(\one_{A_O}\otimes\bra{e})U_x:H_A\to A_O,\quad e\in\{0,1\}\times\{1,\dots,\kappa\}.
+\end{equation}
+The $P_{a|x}$ are orthogonal projectors summing to $\one$, and $\sum_eT_{x,e}^\dagger T_{x,e}=\one$. For $e=(a',k')$ we have $T_{x,e}P_{a|x}J=(\one\otimes\bra{e})(\one\otimes\ket{a}\bra{a}\otimes\one)V_x=\delta_{aa'}K_{ak'x}$. Hence
+\begin{equation}
+\sum_eT_{x,e}P_{a|x}J\rho J^\dagger P_{a|x}T_{x,e}^\dagger=M_{a|x}(\rho).
+\label{eq:S-dilation}
+\end{equation}
+Let $T:L(H_A\otimes X)\to L(A_O)$, $T(\omega):=\sum_{x,e}(T_{x,e}\otimes\bra{x})\,\omega\,(T_{x,e}\otimes\bra{x})^\dagger$. It is CPTP, because $\sum_{x,e}(T_{x,e}\otimes\bra{x})^\dagger(T_{x,e}\otimes\bra{x})=\sum_x\one\otimes\ket{x}\bra{x}=\one$. Let $\mathcal J(\rho):=J\rho J^\dagger$ and define, on operators $C$ on $H_A\otimes H_A\otimes X$,
+\begin{equation}
+\Phi_A(C):=\sum_{x,e}\hat K_{x,e}\,C\,\hat K_{x,e}^\dagger,\qquad \hat K_{x,e}:=J^\tp\otimes T_{x,e}\otimes\bra{x}_X .
+\end{equation}
+By (F3), $\Phi_A(C_F)=C_{T\circ F\circ\mathcal J}$ for every linear $F:L(H_A)\to L(H_A\otimes X)$. Consequently, (i) $\Phi_A$ maps Choi operators of CPTP maps to Choi operators of CPTP maps (compositions of CPTP maps), and (ii) $\Phi_A(C_{\widetilde M_{a|x}})=C_{M_{a|x}}$, because $T\circ\widetilde M_{a|x}\circ\mathcal J(\rho)$ equals the left-hand side of Eq.~\eqref{eq:S-dilation} (the register is $\ket{x}\bra{x}$, so only the $x$-terms of $T$ contribute).
+
+Define $\widetilde W:=(\Phi_A^\dagger\otimes\Phi_B^\dagger)(W)=\sum(\hat K_{x,e}\otimes\hat K'_{y,f})^\dagger W(\hat K_{x,e}\otimes\hat K'_{y,f})$, with the adjoint taken with respect to the Hilbert--Schmidt inner product. Then $\widetilde W\succeq0$ (Kraus form). For CPTP $F_A,F_B$, $\Tr[\widetilde W(C_{F_A}\otimes C_{F_B})]=\Tr[W(\Phi_A(C_{F_A})\otimes\Phi_B(C_{F_B}))]=1$ by (i) and the validity of $W$; so $\widetilde W$ is a process. By (ii), $\Tr[\widetilde W(C_{\widetilde M_{a|x}}\otimes C_{\widetilde N_{b|y}})]=\Tr[W(C_{M_{a|x}}\otimes C_{N_{b|y}})]=p(a,b|x,y)$. Finally, each term $\hat K^\dagger(\cdot)\hat K$ has the form $Z\otimes\ket{x}\bra{x}_X$ (and $\ket{y}\bra{y}_Y$ on Bob's side), which gives the block diagonality.
+\end{proof}
+
+\begin{remark}[Why $J^\tp$ and not $J^\dagger$]\label{rem:transpose}
+The transpose in $\hat K_{x,e}$ is essential. By the transpose trick, $(J^\tp\otimes\one)\ket{\Phi}=\sum_i\ket{i}\otimes J\ket{i}$, which is why pre-composition with $\mathcal J$ acts on Choi operators through $J^\tp$ [Eq.~\eqref{eq:F3}]. Replacing $J^\tp$ by $J^\dagger$ gives instead $(J^\dagger\otimes\one)\ket{\Phi}=\sum_i\ket{i}\otimes\bar J\ket{i}$, i.e., pre-composition with the complex-conjugate isometry $\bar J$. For example, for $J=\mathrm{diag}(1,i)$ on $\CC^2$ one has $(J^\tp\otimes\one)\ket{\Phi}=\ket{00}+i\ket{11}$ but $(J^\dagger\otimes\one)\ket{\Phi}=\ket{00}-i\ket{11}$. Since the unitary completion $U_xJ=V_x$ involves $J$ and not $\bar J$, only $J^\tp$ reproduces the statistics for complex $J$; for real $J$ the two coincide. In the numerical tests of Sec.~\ref{sec:numerics}, using $J^\dagger$ changed the objective by $1.0\times10^{-2}$.
+\end{remark}
+
+\begin{remark}
+Two simplifications compared with an earlier version of the argument: no padding space is needed ($V_x$ is already an isometry into $A_O\otimes E$), and no twirl of the registers is needed (block diagonality is automatic).
+\end{remark}
+
+\begin{lemma}[Scalar-trace factorisation]\label{lem:S-v2}
+Let $W$ be a process, and let $C_A\in L(A_I\otimes A_O)$ and $C_B\in L(B_I\otimes B_O)$ satisfy $\Tr_{A_O}C_A=\lambda_A\one$ and $\Tr_{B_O}C_B=\lambda_B\one$ with $\lambda_A,\lambda_B\in\CC$ ($C_A$, $C_B$ need not be Hermitian). Then $\Tr[W(C_A\otimes C_B)]=\lambda_A\lambda_B$.
+\end{lemma}
+
+\begin{proof}
+\emph{Step 1 (spanning).} Every $C$ with $\Tr_{\rm out}C=\lambda\one$ is a complex linear combination $\sum_i\alpha_iC_i$ of Choi operators $C_i$ of CPTP maps with $\sum_i\alpha_i=\lambda$. Indeed, write $C=H_1+iH_2$ with Hermitian $H_1=(C+C^\dagger)/2$ and $H_2=(C-C^\dagger)/(2i)$. Since $\Tr_{\rm out}(C^\dagger)=(\Tr_{\rm out}C)^\dagger$, we have $\Tr_{\rm out}H_j=\mu_j\one$ with $\mu_1={\rm Re}\,\lambda$ and $\mu_2={\rm Im}\,\lambda$. For Hermitian $H$ with $\Tr_{\rm out}H=\mu\one$, let $D:=\one\otimes\one/d_{\rm out}$ (the Choi operator of the completely depolarising channel) and $K:=H-\mu D$, so that $\Tr_{\rm out}K=0$. For $t>d_{\rm out}\|K\|$ the operator $D+K/t$ is positive with $\Tr_{\rm out}(D+K/t)=\one$, i.e., the Choi operator of a CPTP map, and $H=\mu D+t(D+K/t)-tD$, a combination with coefficient sum $\mu$.
+
+\emph{Step 2 (bilinearity).} Write $C_A=\sum_i\alpha_iC_{A,i}$ and $C_B=\sum_j\beta_jC_{B,j}$ as in Step 1. Then $\Tr[W(C_A\otimes C_B)]=\sum_{i,j}\alpha_i\beta_j\Tr[W(C_{A,i}\otimes C_{B,j})]=\sum_{i,j}\alpha_i\beta_j=\lambda_A\lambda_B$ by Definition~\ref{def:process}.
+\end{proof}
+
+\begin{remark}
+\file{PROOF.md} gives an equivalent argument through the reduced one-party process: for CPTP $C_B$, $X:=\Tr_B[W(\one\otimes C_B)]$ satisfies $\Tr[XZ]=0$ for all $Z$ with $\Tr_{A_O}Z=0$ (Step 1 with $\lambda=0$), so $X$ lies in the annihilator of $\ker\Tr_{A_O}$, which is $\{\tau\otimes\one_{A_O}\}$; then $\Tr[W(C_A\otimes C_B)]=\Tr[\tau\,\Tr_{A_O}C_A]$. Both arguments use only Definition~\ref{def:process}, not the positivity of $W$.
+\end{remark}
+
+\begin{lemma}[Moment matrix of a L\"uders-form strategy]\label{lem:S-moment}
+Let $(\widetilde W,P,Q)$ be as in Lemma~\ref{lem:S-lueders}, and $O_x:=P_{0|x}-P_{1|x}$, $R_y:=Q_{0|y}-Q_{1|y}$ (unitary involutions). By the universal property of the free product there are unique group homomorphisms $\pi_A:G\to U(H_A)$, $g_x\mapsto O_x$, and $\pi_B:G\to U(H_B)$, $g_y\mapsto R_y$; extend them linearly to $\RR[G]$. For $k=(w,r)\in\cK$ put $\ket{k}:=(\one\otimes\pi_A(w))\ket{\Phi}\otimes\ket{r}$ (for Bob, $\ket{l}$ with $\pi_B$), and
+\begin{equation}
+\Gamma^0[(k,l),(k',l')]:=\bra{k,l}\widetilde W\ket{k',l'} .
+\end{equation}
+Then (a) $\Gamma^0$ is Hermitian and positive semidefinite; (b) $\Gamma^0[(k,l),(k',l')]=0$ unless $r_k=r_{k'}$ and $s_l=s_{l'}$; (c) $\Gamma^0$ satisfies (V2a)--(V2c); (d) $o(\Gamma^0)=\Igy(S)$.
+\end{lemma}
+
+\begin{proof}
+(a) $\Gamma^0=V^\dagger\widetilde WV$, where $V$ has the columns $\ket{k}\otimes\ket{l}$. (b) follows from the block diagonality in Lemma~\ref{lem:S-lueders}. (c) For a coefficient vector $c$ on admissible Alice pairs let $C_A(c):=\sum c_{kk'}\ket{k'}\bra{k}$; by (F4) it is the Choi operator of $\rho\mapsto\sum c_{kk'}\pi_A(w')\rho\,\pi_A(w)^\dagger\otimes\ket{r}\bra{r}$. By Eq.~\eqref{eq:F4} and $\pi_A(w)^\dagger=\pi_A(w^{-1})$,
+\begin{equation}
+\Tr_{\rm out}C_A(c)=\Big[\pi_A\Big(\sum_{kk'}c_{kk'}\,t(k,k')\Big)\Big]^\tp .
+\end{equation}
+For $c=e_p-e_{p'}$ with $p,p'$ in the same class the argument vanishes in $\RR[G]$, so $C_A(c)$ is TA; for $c=e_{\pi_0}$, $t=e$ and $C_A(c)$ is TP. The same holds for Bob. Since $\langle c\otimes d,\Gamma^0\rangle=\Tr[\widetilde W(C_A(c)\otimes C_B(d))]$, Lemma~\ref{lem:S-v2} gives $0$ for (V2a) and (V2b) and $1$ for (V2c). The identities used are identities in $G$ ($g_x^2=e$) and therefore hold in every realisation; no relation specific to particular projectors (such as $P=0$, $P=\one$, $P_{0|0}=P_{0|1}$, or commuting projectors) is used.
+(d) By (F4), $C_{\widetilde M_{a|x}}=\ket{P_{a|x},x}\bra{P_{a|x},x}$ with $\ket{P_{a|x},x}:=(\one\otimes P_{a|x})\ket{\Phi}\otimes\ket{x}=\sum_ku_{a|x}(k)\ket{k}$, because $P_{a|x}=\frac12\pi_A(e)+\frac12(-1)^a\pi_A(g_x)$. Hence $p(a,b|x,y)=\langle u_{a|x}\otimes u_{b|y},\Gamma^0(u_{a|x}\otimes u_{b|y})\rangle$, and summing gives Eq.~\eqref{eq:S-objective}.
+\end{proof}
+
+\begin{lemma}[Realness and block form]\label{lem:S-real}
+$\Gamma^1:={\rm Re}\,\Gamma^0$, restricted to the register-diagonal blocks, satisfies (V1) and (V2), and $o(\Gamma^1)=\Igy(S)$.
+\end{lemma}
+
+\begin{proof}
+$\overline{\Gamma^0}=(\Gamma^0)^\tp$ is positive semidefinite, so ${\rm Re}\,\Gamma^0=(\Gamma^0+\overline{\Gamma^0})/2$ is real, symmetric and positive semidefinite, and so are its principal (register) blocks; by Lemma~\ref{lem:S-moment}(b) nothing is lost by the restriction. (V2) and the objective are real-linear with real coefficients and real right-hand sides, and $\Gamma^0$ satisfies them; take real parts. Storing one variable for the two entries $\Gamma[(k,l),(k',l')]$ and $\Gamma[(k',l'),(k,l)]$ is exact for a real symmetric matrix.
+\end{proof}
+
+\begin{lemma}[GYNI symmetry]\label{lem:S-sym}
+For a L\"uders-form strategy $S=(\widetilde W,P,Q)$ define
+\begin{itemize}
+\item $f_x.S:=(F_X\widetilde WF_X,P',Q')$ with $P'_{a|x}:=P_{a|1-x}$ and $Q'_{b|y}:=Q_{1-b|y}$, where $F_X$ is the flip $\ket{r}\mapsto\ket{1-r}$ of Alice's output register (tensored with identities);
+\item $f_y.S:=(F_Y\widetilde WF_Y,P'',Q'')$ with $P''_{a|x}:=P_{1-a|x}$ and $Q''_{b|y}:=Q_{b|1-y}$;
+\item ${\rm sw}.S:=(\mathrm{Sw}\,\widetilde W\,\mathrm{Sw}^\dagger,Q,P)$, where $\mathrm{Sw}$ exchanges Alice's and Bob's systems.
+\end{itemize}
+Then: (i) each $f.S$ is a L\"uders-form strategy (its process is a process, block diagonal in the registers); (ii) $\Igy(f.S)=\Igy(S)$; (iii) $\Gamma^0(f.S)=f*\Gamma^0(S)$ with the maps of (S); (iv) $f_x^2=f_y^2={\rm sw}^2={\rm id}$, $f_xf_y=f_yf_x$ and ${\rm sw}\,f_x\,{\rm sw}=f_y$, so that $f_x$, $f_y$, ${\rm sw}$ generate a finite group $\GG$ (a quotient of the dihedral group of order $8$) acting on L\"uders-form strategies.
+\end{lemma}
+
+\begin{proof}
+We treat $f_x$; $f_y$ is symmetric, and ${\rm sw}$ is immediate. (i) $F_X\widetilde WF_X=(\Psi^\dagger\otimes{\rm id})(\widetilde W)$ with $\Psi(C)=(\one\otimes F_X)C(\one\otimes F_X)$, the Choi-level form of post-composition with the unitary channel $F_X(\cdot)F_X$; $\Psi$ is CP and maps Choi operators of CPTP maps to Choi operators of CPTP maps, so the argument of Lemma~\ref{lem:S-lueders} applies. The flip permutes the register blocks. (ii) $(\one\otimes F_X)\ket{P_{a|1-x},x}=\ket{P_{a|1-x},1-x}$, so $p'(a,b|x,y)=p(a,1-b|1-x,y)$ and $\Igy(f_x.S)=\frac14\sum_{x,y}p(y,1-x|1-x,y)=\Igy(S)$ (substitute $x\to1-x$). For ${\rm sw}$, $p'(a,b|x,y)=p(b,a|y,x)$, and again $\Igy$ is unchanged. (iii) $O'_x=O_{1-x}$, so $\pi'_A=\pi_A\circ\sigma$; $R'_y=-R_y$, so $\pi'_B(v)=(-1)^{|v|}\pi_B(v)$. Hence the new word vectors are $\ket{(w,r)}'=\ket{(\sigma w,r)}$ and $\ket{(v,s)}'=(-1)^{|v|}\ket{(v,s)}$, and
+\begin{equation}
+\Gamma^0(f_x.S)[(k,l),(k',l')]=(-1)^{|v|+|v'|}\bra{(\sigma w,1-r),(v,s)}\widetilde W\ket{(\sigma w',1-r'),(v',s')}=(f_x*\Gamma^0(S))[(k,l),(k',l')].
+\end{equation}
+(iv) follows by direct computation on $(\widetilde W,P,Q)$.
+\end{proof}
+
+\begin{proof}[Proof of Theorem~\ref{thm:S-sound}]
+Let $S$ be any strategy and replace it by its L\"uders normal form (Lemma~\ref{lem:S-lueders}), still called $S$; this does not change $\Igy$. Define
+\begin{equation}
+\bar\Gamma:=\frac{1}{|\GG|}\sum_{g\in\GG}{\rm Re}\,\Gamma^0(g.S)\qquad\text{(register-diagonal blocks)}.
+\end{equation}
+Each summand satisfies (V1) and (V2) and has objective $\Igy(S)$ (Lemmas~\ref{lem:S-moment}, \ref{lem:S-real} and \ref{lem:S-sym}(i),(ii)). These constraints are convex and the objective is linear, so $\bar\Gamma$ satisfies (V1) and (V2) and $o(\bar\Gamma)=\Igy(S)$. The maps $f*$ are signed permutations that preserve the register-block structure, so they commute with taking real parts and with the block restriction. By Lemma~\ref{lem:S-sym}(iii), $f*\bar\Gamma=\frac{1}{|\GG|}\sum_g{\rm Re}\,\Gamma^0(fg.S)=\bar\Gamma$ for $f\in\{f_x,f_y,{\rm sw}\}$, since left multiplication by $f$ permutes $\GG$. Hence $\bar\Gamma$ also satisfies (S).
+\end{proof}
+
+\subsection{Remarks}
+
+\begin{remark}[Canonical processes]\label{rem:canonical}
+The canonical single-trigger processes of Liu and Chiribella~\cite{LiuChiribella2025} are linear images of $\Gamma$, and their validity can be imposed as additional constraints; an earlier version of our relaxation did so. The certified program does not contain these constraints. Adding constraints can only lower the optimum, so no statement about them is needed for the bounds. Numerically, at level $2$ the optimum is the same with and without them ($0.64348431$), and without (V1) but with them one recovers the Liu--Chiribella value $0.759190$; level $1$ of the certified program gives $0.74626$ (numerical, reproduced with independent code).
+\end{remark}
+
+\begin{remark}[Idempotent word basis]\label{rem:idempotent}
+Words in the projectors $P_{0|x}$ (elements of the free algebra of two idempotents, which is isomorphic to $\RR[G]$ via $P_{0|x}=(e+g_x)/2$) of length at most $L$ span the same subspace as $\cW_L$. The same proof applies to the relaxation formulated in that basis, with trace functionals evaluated in the free algebra of two idempotents; the symmetry maps then act by general linear maps instead of signed permutations, because $P_{1|y}=\one-P_{0|y}$. The certificates of levels $2$ and $3$ in Table~I of the main text refer to that formulation (Sec.~\ref{sec:idempotent}). The level-8 bound does not use it, and the independent tests of Sec.~\ref{sec:numerics} were run on the dihedral formulation only.
+\end{remark}
+
+\begin{remark}[Scope]
+The bound $\Imax\le\beta_L$ holds for the supremum over all finite-dimensional strategies, including local ancillas and shared entanglement (absorbed into $W$). Lemma~\ref{lem:S-lueders} as stated does not cover infinite-dimensional processes.
+\end{remark}
+
+\begin{remark}[Correspondence with the code]\label{rem:code}
+The constraints are generated by \file{mc3.build(L, sym=True)}. The function \file{v2\_rows} generates (V2a)--(V2c) for the spanning subset of $D_A$, $D_B$ consisting of the differences $e_{p_1}-e_p$, with $p_1$ the first pair of each class, and removes proportional duplicates; this has the same linear span and hence the same feasible set. The functions \file{map\_rows(fx)}, \file{map\_rows(fy)} and \file{swap\_rows} generate (S), and \file{objective(M, gyni\_coef())} generates $o$. The variables are the upper triangles of the four blocks. At $L=8$ there are $167{,}620$ variables and $789{,}678$ constraints: $287{,}396$ from (V2) and $167{,}620$, $167{,}620$ and $167{,}042$ from $f_x$, $f_y$ and ${\rm sw}$.
+\end{remark}
+
+%======================================================================
+\section{Exact dual certificates}\label{sec:certificates}
+%======================================================================
+
+\subsection{Weak duality}
+
+Write the linear constraints (V2) and (S) as $a_i\cdot z=b_i$, $i=1,\dots,m$, where $z\in\RR^n$ collects the variables, let $\Gamma_k(z)$ ($k=1,\dots,4$) be the blocks (linear in $z$; every variable belongs to exactly one block), and write $o(\Gamma)=o\cdot z$.
+
+\begin{lemma}[Weak duality]\label{lem:S-weakdual}
+For $\lambda\in\RR^m$ let $Y_k(\lambda)$ be the symmetric matrices defined by $\sum_k\langle Y_k,\Gamma_k(z)\rangle=\sum_v\big(\sum_i\lambda_ia_{i,v}-o_v\big)z_v$ for all $z$; explicitly, $(Y_k)_{jj}=\sum_i\lambda_ia_{i,v}-o_v$ if $v$ is the diagonal variable at position $(j,j)$ of block $k$, and $(Y_k)_{jj'}=\frac12(\sum_i\lambda_ia_{i,v}-o_v)$ if $v$ is the off-diagonal variable at $(j,j')$. If $Y_k(\lambda)\succeq0$ for all $k$, then $o\cdot z\le\lambda\cdot b$ for every feasible $z$, and hence $\beta_L\le\lambda\cdot b$.
+\end{lemma}
+
+\begin{proof}
+For feasible $z$, $\lambda\cdot b=\sum_i\lambda_i\,a_i\cdot z=o\cdot z+\sum_k\langle Y_k,\Gamma_k(z)\rangle\ge o\cdot z$, since $\langle Y,\Gamma\rangle\ge0$ for positive semidefinite $Y$ and $\Gamma$.
+\end{proof}
+
+\subsection{Construction of the certificates}\label{sec:cert-construct}
+
+The certificates were produced by \file{certify3.py} (dihedral basis) as follows. Floating-point arithmetic is used only to produce a candidate $\lambda$; correctness rests on the exact check of Sec.~\ref{sec:cert-verify}.
+\begin{enumerate}
+\item \emph{Numerical solution.} By (S), the four blocks are signed permutations of $\Gamma_{00}$, and $\Gamma_{00}$ splits into parts symmetric and antisymmetric under party exchange. The linear constraints are eliminated with a sparse null-space basis (computed component-wise and checked), and the remaining positive semidefinite program is solved either with Clarabel including a margin $\varepsilon\Tr\Gamma_{00}$ in the objective ($L=4,5$), or with a custom primal--dual interior-point method (HKM direction with Mehrotra predictor--corrector) without margin ($L=6,7,8$).
+\item \emph{Strictly feasible dual.} On block $(0,0)$, $\hat Y:=\varepsilon\one+Y_{\rm num}$; it is spread to all four blocks by the signed permutations of (S), $Y_k=S_k^\tp\hat YS_k/4$. We used $\varepsilon=10^{-6}$ at $L=4$, $\varepsilon=10^{-7}$ at $L=5,6,7$ and for the earlier level-8 certificate \file{cert3\_L8.pkl}, and $\varepsilon=10^{-9}$ for the headline level-8 certificate \file{cert3\_L8\_e9.pkl}.
+\item \emph{Multipliers.} With $u_v:=\sum_k\langle Y_k,\partial\Gamma_k/\partial z_v\rangle$, the vector $o+u$ is projected, where necessary, onto the row space of the constraint matrix $A$ (removing its null-space component), and $A^\tp\lambda=o+u$ is solved by least squares (LSQR). At $L=8$ the residual is $2.1\times10^{-12}$ for both certificates, below the margin.
+\item \emph{Rounding.} $\lambda_{\rm int}:={\rm round}(2^{50}\lambda)$, i.e., $\lambda\in2^{-50}\ZZ^m$.
+\item \emph{Exact verification} (Sec.~\ref{sec:cert-verify}).
+\end{enumerate}
+Both level-8 certificates were derived from the same saved interior-point solution \file{ipm\_L8.pkl} (level-8 dual value $0.6221834652$, duality gap $7.7\times10^{-10}$); the headline certificate with the command \file{python certify3.py --L 8 --eps 1e-9 --from\_file ipm\_L8.pkl --noproj}, and \file{cert3\_L8.pkl} with \file{--eps 1e-7}.
+
+\subsection{Certificate format and verification algorithm}\label{sec:cert-verify}
+
+A certificate file (a Python pickle of integers and fractions) contains the level $L$, the basis label, $D=2^{50}$, the list $\lambda_{\rm int}$ of $m$ integers (one per constraint, in the order generated by \file{mc3.build}), the bound as an exact fraction, and metadata. The verifier \file{verify3.py} performs the following steps.
+\begin{enumerate}
+\item Rebuild the constraints with \file{mc3.build(L, sym=True)} and check that their number equals the length of $\lambda_{\rm int}$.
+\item Convert every constraint coefficient and right-hand side, and every objective coefficient, to an exact fraction with denominator at most $64$, asserting agreement with the stored floating-point value to $10^{-12}$. (Constraint coefficients are integers and objective coefficients are multiples of $1/64$; binary floating-point numbers represent them exactly.)
+\item Compute exactly $S_v:=8\sum_i\lambda_{{\rm int},i}\,a_{i,v}$ (asserting integrality), $\beta_{\rm num}:=8\sum_i\lambda_{{\rm int},i}b_i$, and $O_v:=8D\,o_v$.
+\item For each block form the integer symmetric matrix $Y^{\rm int}$ with $Y^{\rm int}_{jj}=2(S_v-O_v)$ for diagonal and $Y^{\rm int}_{jj'}=S_v-O_v$ for off-diagonal variables $v$. Then $Y^{\rm int}=16D\,Y_k=2^{54}Y_k$ exactly.
+\item Compute all leading principal minors of each $Y^{\rm int}$ by fraction-free Bareiss elimination~\cite{Bareiss1968} without pivoting: for $j,j'>i$, $a_{jj'}\leftarrow(a_{jj'}a_{ii}-a_{ji}a_{ij'})/p$, where $p$ is the previous pivot ($p=1$ initially); all divisions are exact by Sylvester's identity, and the successive pivots $a_{ii}$ are the leading principal minors. By Sylvester's criterion, $Y_k$ is positive definite if and only if all of them are positive.
+\item Output the positive-definiteness flag and $\beta=\beta_{\rm num}/(8D)=\lambda\cdot b$, as an exact fraction and as a decimal rounded up.
+\end{enumerate}
+The verifier for the idempotent-basis certificates, \file{verify2.py}, uses the same exact routine with the constraints of that formulation.
+
+\subsection{The certificates}
+
+Table~\ref{tab:S-certs} lists all shipped hierarchy certificates. Only the headline certificate \file{cert3\_L8\_e9.pkl} is needed for Eq.~\eqref{eq:S-main}; \file{cert3\_L8.pkl} is an earlier certificate for the same program with the larger margin $\varepsilon=10^{-7}$.
+
+\begin{table}[h]
+\caption{Hierarchy certificates. Files \file{cert3\_*} use the dihedral basis (\file{mc3}, verified by \file{verify3.py}); files \file{cert2\_*} use the idempotent basis (\file{mc2} with \file{symmetry.py}, verified by \file{verify2.py}). The block size is $n_L=(2L+1)^2$, and there are $4n_L(n_L+1)/2$ variables. $m$: number of constraints (and of multipliers). $\beta$: the certified bound $\lambda\cdot b$, as an exact fraction and rounded up. Times: verification on one core, where logged.}
+\label{tab:S-certs}
+\footnotesize
+\begin{ruledtabular}
+\begin{tabular}{lrrlll}
+file & $L$ & $m$ & $\beta$ (exact) & $\beta$ (rounded up) & time\\
+\hline
+\file{cert2\_L2\_sym.pkl} & 2 & 5\,486    & $724502058451657/2^{50}$ & 0.643487093346 & --\\
+\file{cert2\_L3\_sym.pkl} & 3 & 21\,708   & $352853192480783/2^{49}$ & 0.626793181768 & --\\
+\file{cert2\_L4\_sym.pkl} & 4 & 60\,510   & $701865376290605/2^{50}$ & 0.623381680757 & 9.8\,s\\
+\file{cert3\_L4.pkl}      & 4 & 59\,326   & $701836146356539/2^{50}$ & 0.623355719360 & --\\
+\file{cert3\_L5.pkl}      & 5 & 134\,604  & $350392017401955/2^{49}$ & 0.622421256584 & --\\
+\file{cert3\_L6.pkl}      & 6 & 265\,742  & $175149721699139/2^{48}$ & 0.622256812119 & --\\
+\file{cert3\_L7.pkl}      & 7 & 475\,300  & $700557281382181/2^{50}$ & 0.622219859088 & 250\,s\\
+\file{cert3\_L8.pkl} (earlier) & 8 & 789\,678  & $700548845513581/2^{50}$ & 0.622212366531 & 825--930\,s\\
+\file{cert3\_L8\_e9.pkl} (headline) & 8 & 789\,678  & $175129158097837/2^{48}$ & 0.622183755532 & 502\,s\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+For the headline certificate \file{cert3\_L8\_e9.pkl}, $602{,}882$ of the $789{,}678$ multipliers are nonzero, and the smallest Bareiss pivot, in units of $Y_k$, is about $2.6\times10^{-10}$, of the order of the margin $\varepsilon/4=2.5\times10^{-10}$ per block. Its exact value is $\beta_8=175129158097837/2^{48}=0.622183755531001025\ldots$, so the upper bound rounded up to twelve digits is $0.622183755532$; the value rounded to nearest, $0.622183755531$ (printed in the certification log), is below the certified value and is not a valid upper bound. The certification took $512$\,s (peak memory $1.0$\,GB). The earlier certificate \file{cert3\_L8.pkl} has smallest pivot about $2.5\times10^{-8}$ and exact value $700548845513581/2^{50}=0.622212366530999538\ldots$, rounded up $0.622212366531$.
+
+\subsection{Idempotent-basis certificates}\label{sec:idempotent}
+
+The certificates for $L=2,3$ (and an alternative one for $L=4$) were produced with \file{certify2.py}. Their constraints are generated by \file{mc2.build\_system} with the canonical-process constraints switched off, and by \file{symmetry.gyni\_symmetry\_rows}: (V2) with trace functionals in the free algebra of two idempotents, and invariance of $\Gamma$ under $\Gamma\mapsto(T_A\otimes T_B)\Gamma(T_A\otimes T_B)^\tp$ for the linear maps $T_A,T_B$ induced by the letter exchange, by $P_{0|y}\mapsto\one-P_{0|y}$ and by the register flips, together with party exchange. The margin entered as $\varepsilon\sum_k\Tr\Gamma_k$ in the objective and as a shift $\varepsilon\one$ of the numerical dual ($\varepsilon=10^{-7}$, $10^{-6}$ and $2\times10^{-6}$ for $L=2,3,4$). Soundness of this formulation follows by the argument of Sec.~\ref{sec:relaxation} (Remark~\ref{rem:idempotent}); numerically, both formulations have the same optimum (e.g., $0.6434843$ at $L=2$).
+
+\subsection{Size of the margin}
+
+In the dihedral basis every diagonal entry of $\Gamma$ equals $1$ on the feasible set (Sec.~\ref{sec:relaxation}), so $\Tr\Gamma_k=n_L$ for each block. Shifting each $Y_k$ by $(\varepsilon/4)\one$ therefore raises $\lambda\cdot b$ by exactly $\varepsilon n_L$. This explains the difference between the certified bounds and the numerical optima in Table~I of the main text; at $L=8$ it is $289\times10^{-9}=2.89\times10^{-7}$ for the headline certificate and $289\times10^{-7}=2.89\times10^{-5}$ for the earlier one. Consistently, the two level-8 bounds differ by $(10^{-7}-10^{-9})\times289=2.8611\times10^{-5}$. The numerical level-8 optimum is $0.6221834652$ (dual) and $0.6221834665$ (primal); these numbers are not rigorous. No certificate for level~8 can go below the level-8 value $\beta_8$, so a narrower interval requires higher levels or better strategies.
+
+%======================================================================
+\section{Explicit lower-bound strategies}\label{sec:strategies}
+%======================================================================
+
+\subsection{The $J$-block family}
+
+Both parties use the same construction. Let $H:=\CC^2\otimes\CC^J$ (a ``Jordan qubit'' $q$ and a label $l$), $A_I:=H$ and $A_O:=H\otimes\CC^2$ (the second factor is the setting register); we order the basis of $A_I\otimes A_O$ as $(q_{\rm in},l_{\rm in}\,|\,q_{\rm out},l_{\rm out},{\rm reg})$, so $d_{A_I}=2J$ and $d_{A_O}=4J$. For rational $c_j,s_j$ with $c_j^2+s_j^2=1$, $j=1,\dots,J$, let
+\begin{equation}
+P_{0|x}:=\sum_{j=1}^J\ket{\phi_j^x}\bra{\phi_j^x}\otimes\ket{j}\bra{j},\qquad
+\ket{\phi_j^x}:=c_j\ket{0}+(-1)^{x+1}s_j\ket{1},\qquad P_{1|x}:=\one-P_{0|x}.
+\end{equation}
+With $c_j=\cos(t_j/2)$ and $s_j=\sin(t_j/2)$, the two vectors $\ket{\phi_j^0}$ and $\ket{\phi_j^1}$ enclose the angle $t_j$, $\langle\phi_j^0|\phi_j^1\rangle=\cos t_j$; on the Bloch sphere of block $j$ the two measurement axes are separated by $2t_j$. Rational $c_j,s_j$ are obtained from rational $u_j=\tan(t_j/4)$ via $c_j=(1-u_j^2)/(1+u_j^2)$ and $s_j=2u_j/(1+u_j^2)$. The instruments are the L\"uders instruments with setting register, $M_{a|x}(\rho)=P_{a|x}\rho P_{a|x}\otimes\ket{x}\bra{x}$, with Choi operators $C_{M_{a|x}}=\ket{v_{a,x}}\bra{v_{a,x}}$,
+\begin{equation}
+\ket{v_{a,x}}=\sum_i\ket{i}\otimes P_{a|x}\ket{i}\otimes\ket{x},\qquad\text{i.e.}\quad v_{a,x}[(i),(o,r)]=(P_{a|x})_{oi}\,\delta_{rx}.
+\end{equation}
+All $C_{M_{a|x}}$ are real symmetric, and so is the process below; hence the transposition convention for Choi operators plays no role.
+
+\subsection{A sufficient condition for validity}
+
+Decompose $L(A_I\otimes A_O)$ into the four mutually Hilbert--Schmidt-orthogonal sectors $\mathcal S_\emptyset:={\rm span}\{\one\otimes\one\}$, $\mathcal S_I:=\{X\otimes\one:\Tr X=0\}$, $\mathcal S_O:=\{\one\otimes Y:\Tr Y=0\}$ and $\mathcal S_{IO}:=\{Z:\Tr_{A_I}Z=0,\ \Tr_{A_O}Z=0\}$, and likewise $L(B_I\otimes B_O)$ into $\mathcal S'_\emptyset,\mathcal S'_I,\mathcal S'_O,\mathcal S'_{IO}$. The Hilbert--Schmidt sectors allowed for valid bipartite processes~\cite{Oreshkov2012,Araujo2015}---of types $A_I$, $B_I$, $A_IB_I$, $A_OB_I$, $A_IA_OB_I$, $A_IB_O$ and $A_IB_IB_O$---are exactly the products $\mathcal S_\tau\otimes\mathcal S'_{\tau'}$ with $(\tau,\tau')\neq(\emptyset,\emptyset)$ and $\tau=I$ or $\tau'=I$.
+
+\begin{lemma}[Validity]\label{lem:S-valid}
+Let $W=c_0\one+\sum_tF_t\otimes G_t$ with $F_t\in\mathcal S_{\tau_t}$, $G_t\in\mathcal S'_{\tau'_t}$, where for every $t$ either $\tau_t=I$ or $\tau'_t=I$, and $c_0\,d_{A_I}d_{A_O}d_{B_I}d_{B_O}=d_{A_O}d_{B_O}$. If $W\succeq0$, then $W$ is a process.
+\end{lemma}
+
+\begin{proof}
+Let $C_A$, $C_B$ be Choi operators of CPTP maps, so $\Tr_{A_O}C_A=\one$ and $\Tr_{B_O}C_B=\one$. For $F=X\otimes\one\in\mathcal S_I$, $\Tr[FC_A]=\Tr[X\,\Tr_{A_O}C_A]=\Tr X=0$, and likewise $\Tr[GC_B]=0$ for $G\in\mathcal S'_I$. Hence every term $\Tr[(F_t\otimes G_t)(C_A\otimes C_B)]=\Tr[F_tC_A]\Tr[G_tC_B]$ vanishes, and $\Tr[W(C_A\otimes C_B)]=c_0\Tr C_A\Tr C_B=c_0d_{A_I}d_{B_I}=1$. With $W\succeq0$, Definition~\ref{def:process} is satisfied.
+\end{proof}
+
+\subsection{How the process was found}
+
+This subsection describes how $W$ was obtained; the verification (Sec.~\ref{sec:strat-verify}) does not use any of it. The strategies are invariant under three kinds of symmetries, which we use to reduce the SDP for $W$ at fixed angles: (i) the register twirl (so $W$ is block diagonal in the registers); (ii) the twirl of the label phases, $U\otimes\bar U$ on $(l_{\rm in},l_{\rm out})$ for diagonal unitaries $U$, which leaves the L\"uders Choi operators invariant because $U$ commutes with the $P_{a|x}$ (so $W$ is block diagonal in label sectors: the ``charge-zero'' sector spanned by $\ket{j}_{l_{\rm in}}\ket{j}_{l_{\rm out}}$ and the sectors $\ket{j}\ket{j'}$, $j\neq j'$); and (iii) the GYNI group, which in the chosen basis acts by angle-independent signs (conjugation by $Z$ on Alice's Jordan qubits together with her register flip, and conjugation by a $90^\circ$ rotation on Bob's Jordan qubits, for $f_x$; mirror images for $f_y$; and party exchange). Accordingly, we write
+\begin{equation}
+W=c_0\one+\sum_t\eta_tE_t,\qquad E_t=\pm\,(R_a\otimes R_b+R_b\otimes R_a)\quad(\text{a single term if }a=b),
+\end{equation}
+where $c_0=1/(4J^2)$ and each ``party operator'' $R_e$ is, up to a power of $i$, a tensor product of real Pauli-type matrices on $q_{\rm in}$ and $q_{\rm out}$, of $\one$ or $Z$ on the register, and of an element of the commutant of the label twirl on $(l_{\rm in},l_{\rm out})$ (a basis of $2J^2-J$ elements). A pair is kept if its sector type is allowed (Lemma~\ref{lem:S-valid}), its total number of imaginary factors is even (so $E_t$ is real) and it is invariant under the GYNI generators. For $J=4$ there are $896$ candidate party operators and $1895$ invariant pairs ($520$ party operators occur in the final process); for $J=3$ there are $746$ invariant pairs. At fixed angles, maximising the objective over $\eta$ subject to $W\succeq0$ (imposed on the symmetry-reduced blocks) is an SDP, solved with a sparse interior-point method. In this basis the feasible set does not depend on the angles, so by the envelope theorem the gradient of the optimal value $V(t)$ is $\partial V/\partial t_j=2\langle\partial_ju|W^\ast|u\rangle$, with $u$ the vector of the objective and $W^\ast$ the optimal process; the angles were optimised with L-BFGS-B. At $J=4$ this converged to $V_4\approx0.6221659018$ (numerical, gradient norm about $3\times10^{-7}$).
+
+\subsection{Rationalisation and exact positivity}
+
+We then fixed rational $u_j=\tan(t_j/4)$ near the optimum, re-solved the SDP, rounded the coefficients to $y_t/2^{40}$ with integers $y_t$, and mixed in the maximally mixed process:
+\begin{equation}
+W=(1-2^{-k})\Big(c_0\one+\sum_t\frac{y_t}{2^{40}}E_t\Big)+2^{-k}c_0\one
+=c_0\one+(1-2^{-k})\sum_t\frac{y_t}{2^{40}}E_t .
+\end{equation}
+The exponent $k$ is chosen from the smallest eigenvalue of the rounded operator (in floating point, $-6.5\times10^{-12}$ for $J=4$, giving $k=30$; $k=49$ for $J=3$). Then $4J^2\cdot2^{40}\cdot2^kW$ is an integer matrix, and its blocks are checked for positive definiteness exactly by Bareiss elimination, first on the $91$ symmetry-reduced blocks during the construction and then, in the stand-alone verifier, on all $676$ blocks without any symmetry assumption.
+
+\subsection{Certificate format and stand-alone verification}\label{sec:strat-verify}
+
+The certificate \file{GYNI\_J4\_strategy\_cert.npz} (and \file{GYNI\_J3\_strategy\_cert.npz}) contains: $J$; the integer party operators $R_e$ ($520$ matrices of size $128\times128$ for $J=4$, entries bounded by $9$ in absolute value); the number $m_e$ of imaginary factors of each (the Hermitian party operator is $i^{m_e}R_e$); the list of pairs $(a,b)$; the integers $y_t$; $D=2^{40}$; $k$; the numerators and denominators of $c_j$ and $s_j$; and the claimed exact value as a fraction. The process is
+\begin{equation}
+W=c_0\one+(1-2^{-k})\sum_t\frac{y_t}{D}\,i^{m_a+m_b}\,(R_a\otimes R_b+R_b\otimes R_a),\qquad c_0=\frac{1}{4J^2}.
+\end{equation}
+The verifier \file{verify\_strategy.py} depends only on \file{numpy} and Python's \file{fractions}, and checks:
+\begin{enumerate}
+\setcounter{enumi}{-1}
+\item \emph{Overflow guard:} rigorous bounds, computed with Python integers, on all intermediate quantities of the \file{int64} computations below ($<2^{62}$).
+\item \emph{Realness:} each $R_e$ is symmetric if $m_e$ is even and antisymmetric if $m_e$ is odd, and every pair has $m_a+m_b$ even; hence $W$ is real symmetric.
+\item \emph{Validity:} each $R_e$ lies in exactly one of the four sectors $\mathcal S_\emptyset,\mathcal S_I,\mathcal S_O,\mathcal S_{IO}$ (decided with exact integer partial traces), every pair has an allowed type in both orders, and $\Tr W=c_0\,(d_{A_I}d_{A_O})^2=d_{A_O}^2$ ($=256$ for $J=4$). With (4) and Lemma~\ref{lem:S-valid}, $W$ is a process.
+\item \emph{Block structure:} every $R_e$ maps each class (register value, label sector) of its party into itself ($26$ classes per party for $J=4$), so $W$ is block diagonal with $26^2=676$ blocks.
+\item \emph{Positivity:} every block of the integer matrix $4J^2D\,2^kW$ is positive definite (Sylvester's criterion via Bareiss elimination).
+\item \emph{Instruments:} $c_j^2+s_j^2=1$ exactly, the $P_{a|x}$ are symmetric idempotents with $P_{0|x}+P_{1|x}=\one$, $C_{M_{a|x}}=\ket{v_{a,x}}\bra{v_{a,x}}\succeq0$, and $\Tr_{A_O}(C_{M_{0|x}}+C_{M_{1|x}})=\one_{A_I}$ exactly.
+\item \emph{Value:} $\Igy=\frac14\sum_{x,y}\Tr[W(C_{M_{y|x}}\otimes C_{M_{x|y}})]$ computed exactly, and compared with the stored fraction.
+\end{enumerate}
+In our runs all checks pass; for $J=4$ the verification took between $1489$\,s and $2326$\,s on one core. Independently, the test \file{tests/audit\_jstrat.py} recomputes the objective of both strategies from the certificate files, in floating point, and agrees with the stored exact values to $1.1\times10^{-16}$ (Sec.~\ref{sec:numerics}).
+
+\subsection{Parameters and values}
+
+\begin{table}[h]
+\caption{Parameters of the verified strategies. $t_j=4\arctan u_j$ (rounded to $10^{-5}$ degrees); $c_j=\cos(t_j/2)$ and $s_j=\sin(t_j/2)$ are exact rationals.}
+\label{tab:S-params}
+\begin{ruledtabular}
+\begin{tabular}{cclll}
+$J$ & $j$ & $t_j$ (degrees) & $u_j=\tan(t_j/4)$ & $(c_j,\,s_j)$\\
+\hline
+4 & 1 & 9.59850  & 73/1742  & (3029235/3039893, 254332/3039893)\\
+4 & 2 & 34.42477 & 163/1077 & (566680/593249, 175551/593249)\\
+4 & 3 & 51.18469 & 139/612  & (355223/393865, 170136/393865)\\
+4 & 4 & 84.13806 & 493/1282 & (1400475/1886573, 1264052/1886573)\\
+\hline
+3 & 1 & 13.77747 & 96/1595  & (2534809/2553241, 306240/2553241)\\
+3 & 2 & 40.23577 & 91/513   & (127444/135725, 46683/135725)\\
+3 & 3 & 82.68287 & 289/766  & (503235/670277, 442748/670277)\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\begin{table}[h]
+\caption{GYNI values of the $J$-block strategies: exact values to the digits shown, and rounded down to twelve digits. ``Verified'': all checks of the stand-alone verifier (certificates \file{GYNI\_J3\_strategy\_cert.npz} and \file{GYNI\_J4\_strategy\_cert.npz}). ``Exact'': exact value with a symmetry-reduced positivity check (certificate \file{j2\_exact2.pkl}; see text). The $J=1$ entry is a numerical optimum, at $t=36.06^\circ$.}
+\label{tab:S-values}
+\footnotesize
+\begin{ruledtabular}
+\begin{tabular}{cllll}
+$J$ & $(d_{A_I},d_{A_O})$ & $\Igy$ & rounded down & status\\
+\hline
+1 & (2, 4)   & $0.6067069$ & -- & numerical\\
+2 & (4, 8)   & $0.62178980278992\ldots$ & 0.621789802789 & exact\\
+3 & (6, 12)  & $0.62214671269042159\ldots$ & 0.622146712690 & verified\\
+4 & (8, 16)  & $0.62216590135390844\ldots$ & 0.622165901353 & verified\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+For $J=3$ the process has $746$ terms, $k=49$, $14$ classes per party and $196$ blocks, and the exact value has a $432$-bit denominator; for $J=4$, $1895$ terms, $k=30$, and a $548$-bit denominator. The $J=2$ strategy (angles $22.7154^\circ$ and $70.2806^\circ$ with rational $(c_j,s_j)=(459543/498185,192376/498185)$ and $(27393/81185,76424/81185)$) was verified with an earlier program that checks the $36$ symmetry-reduced sector blocks exactly; unlike the $J=3$ and $J=4$ certificates, its certificate cannot be re-checked with the stand-alone verifier. It is not needed for the main result and is listed for completeness. The $J=1$ value is the optimum of a numerical grid and Nelder--Mead search over the two angles, each point being an SDP solved in floating point.
+
+%======================================================================
+\section{Numerical validation (not part of the proofs)}\label{sec:numerics}
+%======================================================================
+
+\subsection{Containment tests of Theorem~\ref{thm:S-sound}}
+
+To test Theorem~\ref{thm:S-sound} and its implementation independently, the moment matrices of many strategies were computed with code that does not use \file{mc2}/\file{mc3} (these were only read to obtain the list of constraints, the objective and the basis labels), and every constraint of \file{mc3.build(L, sym=True)} was evaluated for $L=2,\dots,8$, including all $789{,}678$ constraints at $L=8$. For general strategies, Lemma~\ref{lem:S-lueders} was implemented literally (random isometry $J$ and random unitary completion $U_x$), and the group average of Theorem~\ref{thm:S-sound} was formed from explicitly transformed strategies. Table~\ref{tab:S-contain} summarises the results; Table~\ref{tab:S-neg} lists negative controls, which confirm that the tests detect errors.
+
+\begin{table}[h]
+\caption{Containment tests (levels $2$--$8$). ``(V2)'': largest residual $|a_i\cdot z-b_i|$ of the (V2) constraints; ``all'': largest residual of all constraints for the group average; ``min.\ eig.'': most negative eigenvalue of the blocks and of the full matrix (rounding only; $\Gamma$ is a Gram matrix); last column: $|o(\Gamma)-\Igy|$.}
+\label{tab:S-contain}
+\footnotesize
+\begin{ruledtabular}
+\begin{tabular}{lrllll}
+strategies & number & (V2) & all & min.\ eig.\ (blocks / full) & objective\\
+\hline
+general, via Lemma~\ref{lem:S-lueders}$^{a}$ & 40 & $6.9\times10^{-15}$ & $5.6\times10^{-15}$ & $-2.4\times10^{-14}$ / $-7.3\times10^{-14}$ & $5.0\times10^{-16}$\\
+see-saw optima ($0.5694$, $0.6046$) & 4 & $1.8\times10^{-14}$ & $1.4\times10^{-14}$ & $-4.9\times10^{-14}$ / $-8.7\times10^{-14}$ & $2.0\times10^{-15}$\\
+$J=3$ and $J=4$ strategies$^{b}$ & 2 & $6.7\times10^{-16}$ & $1.1\times10^{-15}$ & $-2.2\times10^{-15}$ / $-2.6\times10^{-15}$ & $1.1\times10^{-16}$\\
+generic L\"uders form$^{c}$ & 60 (+60) & $1.25\times10^{-14}$ & $6.0\times10^{-15}$ & $-7.8\times10^{-13}$ / $-2.0\times10^{-12}$ & $1.1\times10^{-16}$\\
+explicit $\widetilde W$$^{d}$ & 21 & $4.2\times10^{-15}$ & -- & $-8.9\times10^{-16}$ (of $\widetilde W$) & $1.3\times10^{-15}$ (on $p$)\\
+\end{tabular}
+\end{ruledtabular}
+\begin{flushleft}
+\footnotesize
+$^{a}$ Random general instruments with $3$--$4$ Kraus operators per outcome, passed through a literal implementation of Lemma~\ref{lem:S-lueders}; complex processes on the boundary of the valid set, the process of Ref.~\cite{Oreshkov2012} with local unitaries and mixtures thereof, causally separable, real and degenerate cases, unequal dimensions.\\
+$^{b}$ The (V2) column refers to all constraints for the moment matrix itself, before averaging.\\
+$^{c}$ Random complex processes drawn directly in L\"uders form, not register-diagonal, with projector pairs that are generic, equal, commuting, trivial ($0$ or $\one$) or orthogonal, and $\dim H\in\{1,2,3,4\}$. An earlier run with other random draws gave residuals up to $2.1\times10^{-14}$ (V2) and $1.1\times10^{-14}$ (all). Relative to the largest eigenvalue, the most negative eigenvalue is $-9.4\times10^{-15}$.\\
+$^{d}$ $\widetilde W=(\Phi_A^\dagger\otimes\Phi_B^\dagger)(W)$ formed explicitly as a $1024\times1024$ matrix; (V2) checked at $L=3$. The valid-subspace conditions hold to $8.4\times10^{-17}$, and the normalisation on random product channels to $1.6\times10^{-15}$.
+\end{flushleft}
+\end{table}
+
+\begin{table}[h]
+\caption{Negative controls: deliberately wrong inputs are detected.}
+\label{tab:S-neg}
+\footnotesize
+\begin{ruledtabular}
+\begin{tabular}{ll}
+perturbation & effect\\
+\hline
+random positive semidefinite but non-valid $\widetilde W$ & (V2) residual $0.72$\\
+forbidden term $10^{-6}Z$ on Alice's output register & residual $8.0\times10^{-6}$ (linear in the perturbation)\\
+term $10^{-4}X_{A_I}X_{A_O}$ (a ``causal loop'') & residual $7.9\times10^{-4}$\\
+$f_x$ without the register flip & $f_x$ residual $4.6\times10^{-2}$\\
+idempotent words fed to the dihedral constraints & residual $0.96$\\
+$J^\dagger$ instead of $J^\tp$ in Lemma~\ref{lem:S-lueders} & objective off by $1.0\times10^{-2}$\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Reproduction of known values}
+
+Our code reproduces the Liu--Chiribella bound for GYNI ($0.759190$; Ref.~\cite{LiuChiribella2025}: $0.7592$) and their LGYNI value ($0.819401$), and our real see-saw in $d=2$ reproduces $0.569401$ (Refs.~\cite{Branciard2016,BoghiuSimonov2026}: $0.5694$). A real see-saw in $d=3$ gave $0.604633$, below the complex value $0.6104$ of Refs.~\cite{Branciard2016,BoghiuSimonov2026}. Within the hierarchy, level $2$ gives $0.8194007$ for LGYNI, equal to the exact value of Ref.~\cite{LiuChiribella2025} to solver precision; for the game of Ref.~\cite{Oreshkov2012} (Bob with four settings, a word set with Alice's words of length at most $1$ and the words needed for the canonical processes on Bob's side) the solver returned $0.8535530$ (primal) and $0.8535532$ (dual), compared with $(2+\sqrt2)/4=0.8535534$~\cite{LiuChiribella2025}, and the optimal strategy of that game satisfies all constraints (residual $5.6\times10^{-16}$). These are numerical consistency checks, not certified statements.
+
+\subsection{A consistency identity for the level-8 certificate}
+
+Lemma~\ref{lem:S-weakdual} implies $\lambda\cdot b-o(\Gamma)=\sum_k\langle Y_k,\Gamma_k\rangle$ for every $\Gamma$ satisfying the linear constraints. This was evaluated in floating point, with independently computed constraints, for the earlier certificate \file{cert3\_L8.pkl}. The smallest eigenvalue of each $Y_k$ is $2.5\times10^{-8}$, and for the $J=4$ strategy $\lambda\cdot b-o(\Gamma)=\sum_k\langle Y_k,\Gamma_k\rangle=4.647\times10^{-5}$, the width of the interval obtained with that certificate; the identity holds to $10^{-16}$.
+
+\subsection{Numerical optima, extrapolation and flatness}
+
+The numerical optima of levels $1$--$8$ (Table~I of the main text) decrease with successive differences $0.1028$, $0.01673$, $0.003475$, $0.000866$, $0.000169$, $0.0000426$ (levels $1\to7$). A geometric (Aitken) extrapolation of levels $1$--$8$ gives $0.622177$; a power-law fit and a fit with linearly increasing ratios gave $0.622109$ and $0.622102$, below our rigorous lower bound, and were discarded. These extrapolations are heuristic. The optimal moment matrices are not flat: at $L=6$ the block $(0,0)$ has numerical rank $134$ of $169$ (tolerance $10^{-4}$), against $109$ of $121$ for its restriction to words of length at most $5$; hence no finite-dimensional strategy can be read off. The level-5 optimum is not reproduced by a single Jordan angle, consistent with the spread of angles in the explicit strategies.
+
+\subsection{Errors caught during the project}
+
+(i) A sign error in the right-hand side of the canonical-process constraints of an early version (not part of the certified program) was caught by evaluating a genuine strategy. (ii) At level $7$, a subset eigensolver returned, non-deterministically, an inaccurate null-space basis; the resulting value violated the monotonicity in $L$, which exposed the error. It was fixed (full eigendecomposition with a residual check) before any certificate was produced; certificates are unaffected in any case, since their verification is exact. (iii) Earlier versions of our documentation rounded some decimals to nearest; see Sec.~\ref{sec:erratum}.
+
+%======================================================================
+\section{Reproducibility}\label{sec:repro}
+%======================================================================
+
+\subsection{Repository}
+
+Code, certificates, logs and tests are available at \url{https://github.com/anshM123/GYNI-Causal-Problem}~\cite{repo}.
+Verification needs Python $\ge3.10$ with \file{numpy} and \file{scipy} (file \file{requirements.txt}); no SDP solver is required. Some of the containment tests also use \file{cvxpy}. The \file{.pkl} certificates are Python pickles of integers and fractions; as with any pickle, they should be loaded only after their checksums have been verified.
+
+\subsection{Verification commands and runtimes}
+
+All commands are run from the directory \file{src/}. Runtimes are from our runs on one core.
+
+\begin{table}[h]
+\caption{Verification commands (run in \file{src/}), what they check, and runtimes of our runs on one core. The first two establish Eq.~\eqref{eq:S-main}.}
+\label{tab:S-commands}
+\footnotesize
+\begin{ruledtabular}
+\begin{tabular}{lll}
+command & checks & runtime\\
+\hline
+\file{python verify3.py cert3\_L8\_e9.pkl} & level-8 upper bound & 502\,s\\
+\file{python verify\_strategy.py GYNI\_J4\_strategy\_cert.npz} & $J=4$ lower bound & 1489--2326\,s\\
+\file{python verify3.py cert3\_L8.pkl} & earlier level-8 certificate & 825--930\,s\\
+\file{python verify3.py cert3\_L7.pkl} & level 7 (also L4--L6) & 250\,s\\
+\file{python verify2.py cert2\_L4\_sym.pkl} & idempotent basis (also L2, L3) & 9.8\,s\\
+\file{python verify\_strategy.py GYNI\_J3\_strategy\_cert.npz} & $J=3$ strategy & 177--211\,s\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+The expected final lines of the two main checks are
+\begin{quote}
+\small
+\file{cert3\_L8\_e9.pkl: dihedral L=8: all dual blocks PD = True; VERIFIED BOUND <= 0.622183755532 (rounded up) (= 175129158097837/281474976710656)}\\
+\file{RESULT: all checks passed = True;  I\_GYNI >= 0.622165901353 (rounded down)}
+\end{quote}
+These lines are from \file{logs/verify\_L8\_e9.log} and \file{logs/verify\_strategy\_J4\_directed\_rounding.log}. Logs produced before the change to directed rounding show decimals rounded to nearest, and the certification log \file{logs/cert3\_L8\_e9\_certification.log} prints $\beta_8$ rounded to nearest; see Sec.~\ref{sec:erratum}.
+
+\subsection{Checksums}
+
+\begin{table}[h]
+\caption{SHA-256 checksums of the certificate files and of the saved level-8 solution \file{ipm\_L8.pkl} (file \file{CHECKSUMS.sha256}).}
+\label{tab:S-sha}
+\begin{ruledtabular}
+\begin{tabular}{ll}
+file & SHA-256\\
+\hline
+\scriptsize\file{src/GYNI\_J3\_strategy\_cert.npz} & \scriptsize\file{cb92900e790b9c458221506158d058a12dfd9cebdf6e41df10dda56299d59755}\\
+\scriptsize\file{src/GYNI\_J4\_strategy\_cert.npz} & \scriptsize\file{563a8261ee2c56b7c0e1b7cac22b112252c4ddff11d4646da01e4683b043fa6f}\\
+\scriptsize\file{src/cert2\_L2\_sym.pkl} & \scriptsize\file{94fed5ba500fa5d912339063d77e0eb1d12c9a0b0500a458c7376ba7cd0f6639}\\
+\scriptsize\file{src/cert2\_L3\_sym.pkl} & \scriptsize\file{567745c62cf9b2b10dc151ced903b8e6d6d6416a6a5d0aa92cf558054fa8ced6}\\
+\scriptsize\file{src/cert2\_L4\_sym.pkl} & \scriptsize\file{543d39ffc611484f37307a254bff5538ce126acb3c7b761e28118594fcba797b}\\
+\scriptsize\file{src/cert3\_L4.pkl} & \scriptsize\file{c40dfa9b88039dc32a7a81a1211f2c518ab25a39415fa4e6a8b4ca988495e199}\\
+\scriptsize\file{src/cert3\_L5.pkl} & \scriptsize\file{9bfe315d89f14ef101b082d51fd031d055fc41a974a4e55b8cbb3ba14a6834be}\\
+\scriptsize\file{src/cert3\_L6.pkl} & \scriptsize\file{bc8d3783a9b75942a5b3aef9c2d7b1cbaad3a2cfbbb89093bb8306a9a3404e23}\\
+\scriptsize\file{src/cert3\_L7.pkl} & \scriptsize\file{e933221f86ede7e3c4207d66e851a18d732c5b710989ce0b8b10739b369227ed}\\
+\scriptsize\file{src/cert3\_L8.pkl} & \scriptsize\file{f84dc6eb70fbfd3a892dcd0fe0c56aacbd0ca969e0219df99fdebf0859324303}\\
+\scriptsize\file{src/j2\_exact2.pkl} & \scriptsize\file{29ec48757f1fca59db56c4ce52d2866fc006a9d70a36f1ac6a6c742a6af203b8}\\
+\scriptsize\file{src/cert3\_L8\_e9.pkl} & \scriptsize\file{58152817e746978694999570638413dfd66363a198084edd6f0e03b2d7497700}\\
+\scriptsize\file{src/ipm\_L8.pkl} & \scriptsize\file{cba3170157608f847441ecd0fab4aaf926ec036439fb1fce36c2954443c8c523}\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\subsection{Regenerating the certificates}
+
+A numerical solver is needed only to regenerate the certificates: \file{hier3.py} and \file{hier\_ipm.py} solve the hierarchy, \file{certify3.py} (\file{certify2.py} for the idempotent formulation) produces the exact certificates, and \file{jexact.py} followed by \file{export\_strategy\_cert.py} builds the strategy certificates.
+The level-8 solve took $220$\,s (peak memory $2.6$\,GB). Including the exact check, the certification took $512$\,s (peak memory $1.0$\,GB) for \file{cert3\_L8\_e9.pkl} and $1005$\,s (peak memory $0.83$\,GB) for \file{cert3\_L8.pkl}.
+
+\subsection{Containment tests}
+
+The tests of Sec.~\ref{sec:numerics} are in the directory \file{tests/} (run from there): \file{audit\_contain.py} (random general strategies), \file{audit\_jstrat.py} (the $J=3$ and $J=4$ strategies at every level), \file{audit\_lemma1\_explicit.py} (explicit $\widetilde W$), \file{audit\_lueders\_direct.py} (generic L\"uders-form processes and negative controls) and \file{audit\_cert\_link.py} (the identity of Sec.~\ref{sec:numerics}); their outputs are in \file{tests/logs/}.
+
+\subsection{Formal verification}
+
+The lower bound is machine-checked in Lean~4 with Mathlib~\cite{Lean4}; the Lean project is in the directory \file{lean/} of the repository. The main theorems are:
+\begin{itemize}
+\item \texttt{gyni\_lower\_bound\_exact}: there are a valid process $W$ and valid instruments with $\Igy$ equal to the exact rational value of the $J=4$ strategy;
+\item \texttt{gyni\_lower\_bound}: the same with $\Igy\ge0.6221659013539$;
+\item \texttt{gyni\_lower\_bound\_beats\_previous}: $\Igy>0.6219$.
+\end{itemize}
+The formal proof contains:
+\begin{itemize}
+\item the normalisation $\Tr[W(C_A\otimes C_B)]=1$ for all Choi operators of CPTP maps;
+\item the instrument conditions;
+\item the exact value;
+\item positive semidefiniteness of $W$. This is shown by exact integer certificates $cA=LL^{\tp}+E$ with $E$ diagonally dominant, checked by the Lean kernel for the 351 blocks with $c_A\le c_B$, including the three ill-conditioned $256\times256$ blocks, which are checked with packed-row identities. The remaining blocks follow from a proved party-swap symmetry.
+\end{itemize}
+All theorems depend only on Lean's standard axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}). The files contain no \texttt{sorry} and no \texttt{native\_decide}. The full check (\file{check.sh} followed by \file{check\_big.sh}) takes about two hours on one core.
+
+%======================================================================
+\section{Erratum note: directed rounding of decimals}\label{sec:erratum}
+%======================================================================
+
+All certificates are checked in exact arithmetic, and every verifier compares exact rationals; the certificates themselves have not changed. Earlier versions of our repository documentation and verifier output, however, printed some decimals rounded to the nearest value, and some of these were rounded in the unsafe direction. A rigorous decimal statement requires rounding \emph{down} for lower bounds and \emph{up} for upper bounds. The affected statements were:
+\begin{itemize}
+\item the $J=4$ lower bound: the exact value is $0.62216590135390844\ldots$, so $\Imax\ge0.622165901353$ (not $0.622165901354$);
+\item the level-4 and level-6 bounds: $0.6233558$ and $0.6222569$ (not $0.6233557$ and $0.6222568$);
+\item the $J=3$ value to nine digits: $0.622146712$ (not $0.622146713$).
+\end{itemize}
+The level-8 bound $0.622212366531$ of the earlier certificate \file{cert3\_L8.pkl} was correct (the exact value is $0.62221236653099\ldots$), and the erratum did not change the width of the interval, which was $4.65\times10^{-5}$ at the time. That certificate has since been superseded by \file{cert3\_L8\_e9.pkl} (Sec.~\ref{sec:certificates}), which gives the width $1.79\times10^{-5}$ of Eq.~\eqref{eq:S-main}. Its exact value $0.6221837555310\ldots$ must be rounded up to $0.622183755532$; the value $0.622183755531$ rounded to nearest, printed in its certification log, is not a valid upper bound. The current verifiers print directed-rounded decimals; logs produced before this change show round-to-nearest values. All decimals in this manuscript were recomputed from the stored exact rationals with directed rounding.
+
+\bibliography{refs}
+
+\end{document}

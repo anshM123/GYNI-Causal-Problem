@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality"
+type: software
+authors:
+  - family-names: Mishra
+    given-names: Ansh
+  - family-names: Senthilkumar
+    given-names: Aryan
+version: "1.0"
+date-released: "2026-09-28"
+license: MIT
+repository-code: "https://github.com/anshM123/GYNI-Causal-Problem"
+keywords:
+  - "causal inequalities"
+  - "process matrices"
+  - "indefinite causal order"
+  - "GYNI"
+  - "semidefinite programming"
+  - "exact certificates"
+  - "Lean 4"

@@ -1,0 +1,181 @@
+% main.tex -- Letter (PRL style), GYNI causal inequality
+% Companion files: supplement.tex (Supplemental Material), refs.bib.
+% All decimals are directed-rounded from the stored exact rationals:
+% lower bounds rounded DOWN, upper bounds rounded UP (see Supplemental Material, Sec. S8).
+\documentclass[aps,prl,twocolumn,superscriptaddress,longbibliography,nofootinbib]{revtex4-2}
+
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{bm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+
+\newcommand{\Tr}{\operatorname{Tr}}
+\newcommand{\ket}[1]{\lvert #1\rangle}
+\newcommand{\bra}[1]{\langle #1\rvert}
+\newcommand{\one}{\mathbb{I}}
+\newcommand{\tp}{\mathsf{T}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\ZZ}{\mathbb{Z}}
+\newcommand{\Igy}{I_{\mathrm{GYNI}}}
+\newcommand{\Imax}{I_{\mathrm{GYNI}}^{\max}}
+\newcommand{\cW}{\mathcal{W}}
+
+\begin{document}
+
+\title{Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality}
+
+\author{Ansh Mishra}
+\author{Aryan Senthilkumar}
+\noaffiliation
+
+\date{\today}
+
+\begin{abstract}
+Causal inequalities bound the correlations that parties acting in a definite causal order can produce, and process matrices---quantum theory without a global causal order---can violate them. Determining the maximal violations, the analogues of Tsirelson's bound, is open in general. For the Guess-Your-Neighbour's-Input (GYNI) inequality, whose causal bound is $1/2$, the maximal success probability over finite-dimensional process-matrix strategies was known only to lie between the numerical see-saw value $0.6219$ and the upper bound $0.7592$. We prove $0.622165901353\le\Imax\le0.622183755532$, narrowing this interval by a factor of about $7700$. The upper bound comes from a new hierarchy of semidefinite relaxations, built on a L\"uders normal form for local instruments and on a moment matrix indexed by words in the infinite dihedral group; at level 8 it is certified by an exact rational dual certificate checked in integer arithmetic. The lower bound is an explicit process with four coherently superposed qubit Jordan blocks, verified in exact rational arithmetic.
+\end{abstract}
+
+\maketitle
+
+\emph{Introduction.}---Correlations between parties whose operations are embedded in a definite causal order, or in a probabilistic mixture of such orders, satisfy \emph{causal inequalities}~\cite{Oreshkov2012,Branciard2016,OreshkovGiarmatzi2016,Abbott2016}. Oreshkov, Costa and Brukner showed that the process-matrix framework, which assumes quantum theory in each local laboratory but no global causal structure, predicts violations of such inequalities~\cite{Oreshkov2012}; see Ref.~\cite{Costa2026review} for a review, and Ref.~\cite{Chiribella2013} for a related model of indefinite causal order, the quantum switch. How large can these violations be? For Bell inequalities the analogous question is answered by Tsirelson bounds~\cite{Tsirelson1980}, and the NPA hierarchy of semidefinite programs (SDPs)~\cite{NPA2007,NPA2008} computes them systematically. For causal inequalities, upper bounds on process-matrix violations have been derived only recently~\cite{Brukner2015,LiuChiribella2025}. Liu and Chiribella derived an SDP bound for every causal inequality, determined the exact maximal violations for a class that includes a biased version of the inequality of Ref.~\cite{Oreshkov2012} and the ``lazy'' GYNI inequality (LGYNI)~\cite{Branciard2016}, and suggested that their relaxation may be the first level of a hierarchy~\cite{LiuChiribella2025}.
+
+The Guess-Your-Neighbour's-Input (GYNI) inequality and LGYNI represent the two families of nonequivalent causal inequalities of the simplest bipartite scenario, with binary inputs and outputs~\cite{Branciard2016}. In the GYNI game Alice and Bob receive independent, uniformly random bits $x$ and $y$ and output bits $a$ and $b$; they win if each guesses the other's input:
+\begin{equation}
+\Igy=\frac14\sum_{x,y\in\{0,1\}}p(a=y,b=x\,|\,x,y)\le\frac12
+\label{eq:gyni}
+\end{equation}
+for all causal correlations~\cite{Branciard2016}. For the maximal value $\Imax$ over process matrices, the best upper bound valid in all dimensions was $0.7592$~\cite{LiuChiribella2025}. See-saw optimisation in fixed local dimension $d=d_{A_I}=d_{A_O}=d_{B_I}=d_{B_O}$ found $0.6218$ for $d=5$~\cite{Branciard2016} and $0.6219$ for $d=6,7$ (in floating-point arithmetic), with no significant gain up to $d=8$~\cite{BoghiuSimonov2026}. The value of $\Imax$ was open~\cite{Branciard2016,LiuChiribella2025,BoghiuSimonov2026}.
+
+In this Letter we prove
+\begin{equation}
+0.622165901353\;\le\;\Imax\;\le\;0.622183755532 ,
+\label{eq:main}
+\end{equation}
+where $\Imax$ is the supremum over strategies whose local systems have finite, but arbitrary, dimension; local ancillas and shared entanglement are included. The interval has width $1.79\times10^{-5}$, compared with $0.137$ before. The upper bound comes from a new NPA-type hierarchy for process-matrix correlations, whose validity we prove (Theorem~\ref{thm:sound}), evaluated at level~8. The lower bound is an explicit strategy in which the two measurements of each party are built from four coherently superposed qubit ``Jordan blocks''. Both bounds are certified by exact computations, which stand-alone programs check in integer or rational arithmetic without any numerical solver~\cite{repo}.
+
+\emph{Setting.}---Alice has input and output spaces $A_I,A_O$, Bob has $B_I,B_O$, all of finite dimension. An instrument $\{M_{a|x}\}_a$ is a family of completely positive (CP) maps from operators on $A_I$ to operators on $A_O$ such that $\sum_aM_{a|x}$ is trace preserving (TP); likewise $\{N_{b|y}\}_b$ for Bob. We use Choi operators $C_F=\sum_{ij}\ket{i}\bra{j}\otimes F(\ket{i}\bra{j})$~\cite{Choi1975}. A \emph{process} is an operator $W\succeq0$ on $A_I\otimes A_O\otimes B_I\otimes B_O$ with $\Tr[W(C_A\otimes C_B)]=1$ for all Choi operators $C_A,C_B$ of CPTP maps~\cite{Oreshkov2012,Araujo2015}; equivalently, $W\succeq0$, $\Tr W=d_{A_O}d_{B_O}$, and $W$ lies in the subspace of valid processes~\cite{Araujo2015}. A strategy $S=(W;M;N)$ yields $p(a,b|x,y)=\Tr[W(C_{M_{a|x}}\otimes C_{N_{b|y}})]$; we write $\Igy(S)$ for the left-hand side of Eq.~\eqref{eq:gyni} and $\Imax=\sup_S\Igy(S)$. Local ancillas and shared entangled states are covered, as they can be absorbed into $W$. (Our Choi convention differs from that of Ref.~\cite{Oreshkov2012} by the transposition $W\mapsto W^\tp$, which maps processes onto processes and leaves $\Imax$ unchanged.)
+
+\emph{L\"uders normal form.}---The first step removes the generality of the instruments.
+
+\begin{lemma}[L\"uders normal form]\label{lem:lueders}
+For every strategy there are finite-dimensional spaces $H_A,H_B$, projective measurements $\{P_{a|x}\}_a$ on $H_A$ and $\{Q_{b|y}\}_b$ on $H_B$, and a process $\widetilde W$ with inputs $H_A,H_B$ and outputs $H_A\otimes X$, $H_B\otimes Y$ ($X=Y=\CC^2$), which reproduces $p(a,b|x,y)$ with the L\"uders instruments
+\begin{equation}
+\widetilde M_{a|x}(\rho)=P_{a|x}\rho P_{a|x}\otimes\ket{x}\bra{x}_X ,\quad
+\widetilde N_{b|y}(\sigma)=Q_{b|y}\sigma Q_{b|y}\otimes\ket{y}\bra{y}_Y .
+\label{eq:lueders}
+\end{equation}
+Moreover, $\widetilde W$ is block diagonal in the register values.
+\end{lemma}
+
+The proof [Supplemental Material (SM), Sec.~S3] dilates each instrument as $M_{a|x}(\rho)=\sum_eT_{x,e}P_{a|x}J\rho J^\dagger P_{a|x}T_{x,e}^\dagger$, with a fixed isometry $J$ from $A_I$ into $H_A$, projectors $P_{a|x}$ obtained from a unitary completion of the Stinespring isometry of $\{M_{a|x}\}_a$, and Kraus operators $T_{x,e}$ of a channel. The $x$-independent pre-processing $J$ and the post-processing, which is controlled by the setting register, are then absorbed into $\widetilde W=(\Phi_A^\dagger\otimes\Phi_B^\dagger)(W)$, where $\Phi_A(C)=\sum_{x,e}\hat K_{x,e}C\hat K_{x,e}^\dagger$ with $\hat K_{x,e}=J^\tp\otimes T_{x,e}\otimes\bra{x}_X$ maps Choi operators of channels to Choi operators of channels. The transpose is essential: pre-composition with $J$ acts on Choi operators as $C\mapsto(J^\tp\otimes\one)C(J^\tp\otimes\one)^\dagger$, while $J^\dagger$ in place of $J^\tp$ would implement pre-composition with the complex-conjugate isometry $\bar J$, which for complex $J$ does not reproduce the statistics.
+
+\emph{Moment hierarchy.}---In L\"uders form the measurements of each party are described by two unitary involutions $O_x=P_{0|x}-P_{1|x}$. By the universal property of the free product, $g_x\mapsto O_x$ defines a unitary representation $\pi_A$ of the infinite dihedral group $G=\ZZ_2*\ZZ_2=\langle g_0,g_1\,|\,g_0^2=g_1^2=e\rangle$, whose elements are the reduced words $w=(x_1,\dots,x_n)$ with $x_i\neq x_{i+1}$. Let $\cW_L$ be the $2L+1$ words of length at most $L$. For $k=(w,r)\in\cW_L\times\{0,1\}$ we define the word vector
+\begin{equation}
+\ket{k}=(\one\otimes\pi_A(w))\ket{\Phi}\otimes\ket{r}\in H_A\otimes H_A\otimes X ,
+\end{equation}
+with $\ket{\Phi}=\sum_i\ket{i}\ket{i}$, and analogously $\ket{l}$ for $l=(v,s)$ on Bob's side. The level-$L$ moment matrix is the Gram matrix of $\widetilde W$ on these vectors,
+\begin{equation}
+\Gamma[(k,l),(k',l')]=\bra{k,l}\widetilde W\ket{k',l'} .
+\label{eq:gamma}
+\end{equation}
+The operator $\ket{k'}\bra{k}$ is the Choi operator of $\rho\mapsto\pi_A(w')\rho\,\pi_A(w)^\dagger\otimes\ket{r'}\bra{r}$, and its partial trace over the output equals $\delta_{rr'}[\pi_A(w^{-1}w')]^\tp$. Hence a combination $C(c)=\sum c_{kk'}\ket{k'}\bra{k}$ over pairs with $r=r'$ satisfies $\Tr_{\rm out}C(c)=\lambda\one$ \emph{in every realisation} whenever $\sum c_{kk'}\,w^{-1}w'=\lambda e$ holds in the group algebra $\RR[G]$; we then say that $c$ has scalar trace $\lambda$. Validity of the process enters through the following lemma.
+
+\begin{lemma}[Scalar-trace factorisation]\label{lem:v2}
+Let $W$ be a process and let $C_A$, $C_B$ be arbitrary, not necessarily Hermitian, operators with $\Tr_{A_O}C_A=\lambda_A\one$ and $\Tr_{B_O}C_B=\lambda_B\one$. Then $\Tr[W(C_A\otimes C_B)]=\lambda_A\lambda_B$.
+\end{lemma}
+
+Indeed, every such $C_A$ is a complex linear combination $\sum_i\alpha_iC_i$ of Choi operators of CPTP maps with $\sum_i\alpha_i=\lambda_A$ (SM, Sec.~S3), and the claim follows by bilinearity.
+
+The certified level-$L$ relaxation consists of the following constraints on a real symmetric $\Gamma$, with $\langle c\otimes d,\Gamma\rangle:=\sum c_{kk'}d_{ll'}\Gamma[(k,l),(k',l')]$:
+(V1)~$\Gamma\succeq0$. Since $\Gamma$ vanishes unless $r=r'$ and $s=s'$ (Lemma~\ref{lem:lueders}), this amounts to four positive semidefinite (PSD) real blocks $\Gamma_{rs}$ of size $n_L=(2L+1)^2$.
+(V2)~$\langle c\otimes d,\Gamma\rangle=\lambda_A\lambda_B$ whenever $c$ and $d$ have scalar traces $\lambda_A$ and $\lambda_B$. These constraints are spanned by differences of pairs with the same group element $w^{-1}w'$ (``trace annihilating'') combined with such differences or with the pair of empty words (``trace preserving'') on the other side.
+(S)~Invariance under the symmetries of the game: party exchange and the relabellings $(x\to1-x,\,b\to1-b)$ and $(y\to1-y,\,a\to1-a)$. In the dihedral word basis they act on $\Gamma$ by signed permutations; e.g., the first exchanges the letters of Alice's words, flips her register and multiplies Bob's word vectors by $(-1)^{|v|}$.
+Finally, $P_{a|x}=[\pi_A(e)+(-1)^a\pi_A(g_x)]/2$, so every probability, and hence $\Igy$, is a linear function $o(\Gamma)$.
+
+\begin{theorem}[Soundness]\label{thm:sound}
+For every $L\ge1$ and every strategy $S$ with finite-dimensional local systems there is a real $\Gamma$ satisfying (V1), (V2) and (S) with $o(\Gamma)=\Igy(S)$. Hence $\Imax\le\beta_L:=\sup\{o(\Gamma):\text{(V1), (V2), (S)}\}$.
+\end{theorem}
+
+The proof (SM, Sec.~S3) combines Lemmas~\ref{lem:lueders} and \ref{lem:v2} with two further observations: the real part of $\Gamma$ is again feasible, and averaging over the finite group generated by the three symmetries preserves feasibility and the objective. Only the relations $g_x^2=e$ are used, never a relation specific to particular projectors, so the constraints hold in every dimension. The constraints of level $L$ are contained in those of level $L+1$, so $\beta_L$ does not increase with $L$.
+
+The positivity (V1) is the key new ingredient. Numerically, level~1 already gives $\beta_1\approx0.7463<0.7592$, while at level~2 dropping (V1) but imposing validity of the canonical processes of Ref.~\cite{LiuChiribella2025}, which are linear images of $\Gamma$, reproduces $0.7592$. The certified program does not contain these canonical-process constraints (at level~2, adding them does not change the numerical value), and none of our bounds relies on them.
+
+\emph{Exact certificates.}---We solve the relaxations numerically (Table~\ref{tab:levels}) and then certify each bound with an exact dual certificate. Write the linear constraints (V2) and (S) as $Az=b$, where $z$ collects the independent entries of the four blocks $\Gamma_k(z)$, and $o(\Gamma)=o\cdot z$. For multipliers $\lambda$, define symmetric matrices $Y_k(\lambda)$ by stationarity, $\sum_k\langle Y_k,\Gamma_k(z)\rangle=(A^\tp\lambda-o)\cdot z$ for all $z$. Every feasible $z$ then satisfies
+\begin{equation}
+o\cdot z=\lambda\cdot b-\sum_k\langle Y_k,\Gamma_k(z)\rangle\le\lambda\cdot b\quad\text{if all }Y_k\succeq0 .
+\label{eq:weakdual}
+\end{equation}
+We shift a numerical dual solution by $\varepsilon\one$ to make it strictly feasible ($\varepsilon=10^{-7}$ for $5\le L\le7$ and $\varepsilon=10^{-9}$ at $L=8$), solve for multipliers of all constraints by least squares, and round them to $\lambda\in2^{-50}\ZZ^m$. The $Y_k$ are then \emph{defined} exactly from $\lambda$, and their positive definiteness is checked with Sylvester's criterion: all leading principal minors of the integer matrices $2^{54}Y_k$ are computed exactly by fraction-free Bareiss elimination~\cite{Bareiss1968} and found to be positive. The bound $\lambda\cdot b$ is an exact rational number. (Rounding numerical solutions to exact certificates is standard in sums-of-squares optimisation~\cite{PeyrlParrilo2008}.) Every diagonal entry of $\Gamma$ belongs to a trace-preserving pair and is fixed to $1$ by (V2), so $\Tr\Gamma_k=n_L$ on the feasible set; the margin therefore raises the bound by $\varepsilon n_L$ relative to the numerical dual value.
+
+At level~8 the certified program has $167{,}620$ variables, $m=789{,}678$ linear constraints and four blocks of size $n_8=289$. The certificate gives
+\begin{equation}
+\beta_8\le\frac{175129158097837}{2^{48}}=0.6221837555310\ldots ,
+\end{equation}
+which proves the upper bound in Eq.~\eqref{eq:main}; the margin costs only $\varepsilon n_8=2.89\times10^{-7}$. A stand-alone verifier rebuilds the constraints, recomputes the $Y_k$ from the stored integers and checks all minors in about $8$ minutes on one core; the decisive steps use exact integer arithmetic only~\cite{repo}. Beyond the proof, we evaluated all $789{,}678$ level-8 constraints on the moment matrices of more than $100$ strategies---general instruments passed through a separately written implementation of Lemma~\ref{lem:lueders}, generic L\"uders-form processes, see-saw optima, and the strategies below---and found no residual above $2.1\times10^{-14}$ (SM, Sec.~S6).
+
+\begin{table}[t]
+\caption{Certified upper bounds on the level-$L$ value $\beta_L$, and hence on $\Imax$ (rounded up). $n_L=(2L+1)^2$ is the size of each of the four PSD blocks and $m_L$ the number of linear constraints. The last column is the optimum returned by an interior-point solver (numerical, not rigorous); the certified bounds exceed it essentially by the margin $\varepsilon n_L$, with $\varepsilon=10^{-6}$ at $L=4$, $10^{-7}$ at $L=5,6,7$ and $10^{-9}$ at $L=8$. Entries marked $\dagger$ were certified in the equivalent formulation with words in the two projectors $P_{0|x}$ (SM, Sec.~S4).}
+\label{tab:levels}
+\begin{ruledtabular}
+\begin{tabular}{rrrll}
+$L$ & $n_L$ & $m_L$ & certified bound & numerical\\
+\hline
+1 & 9   & --                    & --                          & 0.7462629\\
+2 & 25  & $5{,}486^\dagger$     & $0.6434871^\dagger$         & 0.6434843\\
+3 & 49  & $21{,}708^\dagger$    & $0.6267932^\dagger$         & 0.6267499\\
+4 & 81  & $59{,}326$            & $0.6233558$                 & 0.6232747\\
+5 & 121 & $134{,}604$           & $0.6224213$                 & 0.6224092\\
+6 & 169 & $265{,}742$           & $0.6222569$                 & 0.6222399\\
+7 & 225 & $475{,}300$           & $0.6222199$                 & 0.6221974\\
+8 & 289 & $789{,}678$           & $\mathbf{0.622183755532}$   & 0.6221835\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\emph{Explicit strategy.}---By Jordan's lemma~\cite{Pironio2009}, two binary projective measurements decompose the local space into invariant blocks of dimension at most two, each characterised by one angle. This motivates the following family of L\"uders-form strategies, identical for Alice and Bob: $H=\CC^2\otimes\CC^J$ (a ``Jordan qubit'' and a label), $A_I=H$, $A_O=H\otimes\CC^2$, the instruments~\eqref{eq:lueders}, and
+\begin{equation}
+P_{0|x}=\sum_{j=1}^J\ket{\phi_j^x}\bra{\phi_j^x}\otimes\ket{j}\bra{j},\;\;
+\ket{\phi_j^x}=\cos\tfrac{t_j}{2}\ket{0}+(-1)^{x+1}\sin\tfrac{t_j}{2}\ket{1},
+\label{eq:jordan}
+\end{equation}
+so that the two measurement vectors in block $j$ enclose the angle $t_j$, $\langle\phi_j^0|\phi_j^1\rangle=\cos t_j$. For fixed angles the optimal process is the solution of an SDP, which we reduce with symmetries (twirls of the register and of the label phases, and the GYNI group); we optimise the angles with gradients obtained from the envelope theorem.
+
+A single block ($J=1$) reaches only $\approx0.6067$ numerically; the higher values in Table~\ref{tab:strategies} come from processes that are coherent across blocks with different angles. For $J=4$ the angles are $(t_1,\dots,t_4)=(9.59850^\circ,34.42477^\circ,51.18469^\circ,84.13806^\circ)$, chosen with rational $\tan(t_j/4)$ so that all entries of the $P_{a|x}$ are rational. The process is
+\begin{equation}
+W=\frac{1}{64}\one+(1-2^{-30})\sum_{t=1}^{1895}\frac{y_t}{2^{40}}E_t ,
+\label{eq:Wexplicit}
+\end{equation}
+with integers $y_t$ and integer matrices $E_t$; each $E_t$ is a symmetrised tensor product of two local operators, each of which lies in a single Hilbert--Schmidt sector of $A_I\otimes A_O$ (resp.\ $B_I\otimes B_O$). The factor $1-2^{-30}$ mixes in a small amount of the maximally mixed process to make $W$ positive definite. $W$ is a real $16384\times16384$ matrix with $\Tr W=256=d_{A_O}d_{B_O}$. A stand-alone verifier checks in exact arithmetic that (i) every $E_t$ lies in the subspace of valid processes~\cite{Oreshkov2012,Araujo2015}, (ii) $W$ is block diagonal with $676$ blocks, each positive definite (Bareiss), (iii) the instruments are valid, and (iv) the value is
+\begin{equation}
+\Igy=0.62216590135390844\ldots ,
+\end{equation}
+a rational number with a $548$-bit denominator. This proves the lower bound in Eq.~\eqref{eq:main}. The check takes under $40$ minutes on one core, uses no symmetry assumption, and is independent of the hierarchy.
+
+\begin{table}[t]
+\caption{Explicit $J$-block strategies of Eq.~\eqref{eq:jordan}, with $d_{A_I}=2J$ and $d_{A_O}=4J$ (including the setting register); angles rounded to $0.1^\circ$, values rounded down. v: exact value, and all checks of the stand-alone verifier passed without symmetry assumptions. e: exact value, obtained with an earlier, symmetry-reduced positivity check (SM, Sec.~S5). n: numerical optimum.}
+\label{tab:strategies}
+\begin{ruledtabular}
+\begin{tabular}{cll}
+$J$ & angles $t_j$ (degrees) & $\Igy$\\
+\hline
+1 & 36.1                   & $0.6067^{\rm n}$\\
+2 & 22.7, 70.3             & $0.621789802^{\rm e}$\\
+3 & 13.8, 40.2, 82.7       & $0.622146712690^{\rm v}$\\
+4 & 9.6, 34.4, 51.2, 84.1  & $\mathbf{0.622165901353}^{\rm v}$\\
+\end{tabular}
+\end{ruledtabular}
+\end{table}
+
+\emph{Discussion.}---Equation~\eqref{eq:main} determines $\Imax$ to within $1.79\times10^{-5}$. Nearly all of this width is the gap of $1.76\times10^{-5}$ between the numerical level-8 optimum, $0.6221835$, and our lower bound; the margin of the level-8 certificate accounts for only $2.89\times10^{-7}$. No certificate for level~8 can go below the level-8 value $\beta_8$, so a narrower interval requires higher levels ($L\ge9$; the level-8 solve took $220$~s with a custom interior-point method) or larger $J$. Whether $\beta_L$ converges to $\Imax$ is open: unlike for the NPA hierarchy~\cite{NPA2008}, we have no convergence theorem, and the moment matrices we computed are not flat (e.g., numerical rank $134$ of $169$ at $L=6$, versus $109$ of $121$ on the words of length at most $5$), so no strategy can be read off from them. A geometric (Aitken) extrapolation of the numerical values in Table~\ref{tab:levels} gives about $0.62218$; such extrapolations are heuristic (other fits we tried are already excluded by our lower bound), and we make no claim about the exact value of $\Imax$.
+
+The method is not specific to GYNI. Lemmas~\ref{lem:lueders} and~\ref{lem:v2} do not refer to the game, and our implementation handles any number of settings with binary outcomes. As consistency checks, the relaxation reproduces numerically, to solver precision, the exact LGYNI value $0.8194$ of Ref.~\cite{LiuChiribella2025} at level~2 and, with a suitable word set, the maximal success probability $(2+\sqrt2)/4$ of the game of Ref.~\cite{Oreshkov2012}, proven optimal in Ref.~\cite{LiuChiribella2025}. We expect that Lemma~\ref{lem:lueders}, applied party by party, together with a multilinear version of Lemma~\ref{lem:v2}, extends the hierarchy to multipartite causal inequalities~\cite{BaumelerWolf2014,Abbott2016}, where the structure of valid processes is richer~\cite{Araujo2015,OreshkovGiarmatzi2016}; working this out, and comparing with block-matrix relaxations~\cite{DAlessandro2026}, is left for future work. Our bounds concern processes of finite dimension; Lemma~\ref{lem:lueders} does not cover infinite-dimensional processes.
+
+The lower bound is also machine-checked in Lean~4 with Mathlib~\cite{Lean4}. The theorem \texttt{gyni\_lower\_bound\_exact} exhibits the explicit process and instruments, proves that they are valid, and proves that their GYNI value equals the rational number above. Positive semidefiniteness is established by kernel-checked integer certificates for the blocks with $c_A\le c_B$ together with a proved party-swap symmetry. The theorem \texttt{gyni\_lower\_bound} states $\Igy\ge0.6221659013539$. Both depend only on Lean's standard axioms.
+
+All code, certificates, verification logs and tests are available in Ref.~\cite{repo}.
+
+\bibliography{refs}
+
+\end{document}

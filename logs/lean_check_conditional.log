@@ -1,0 +1,307 @@
+== GYNIProof/IntLit.lean  (start 18:42:55)
+   RESULT GYNIProof/IntLit.lean: exit=0 wall=3.9s peakWS=239MB peakPrivate=456MB (attempt 1)
+== GYNIProof/Data.lean  (start 18:43:01)
+   RESULT GYNIProof/Data.lean: exit=0 wall=13.2s peakWS=711MB peakPrivate=944MB (attempt 1)
+== GYNIProof/Core.lean  (start 18:43:16)
+   RESULT GYNIProof/Core.lean: exit=0 wall=15.5s peakWS=1,588MB peakPrivate=1,824MB (attempt 1)
+== GYNIProof/ValueData.lean  (start 18:43:33)
+   RESULT GYNIProof/ValueData.lean: exit=0 wall=3.9s peakWS=222MB peakPrivate=447MB (attempt 1)
+== GYNIProof/ValueTabs.lean  (start 18:43:39)
+   RESULT GYNIProof/ValueTabs.lean: exit=0 wall=4.4s peakWS=278MB peakPrivate=486MB (attempt 1)
+== GYNIProof/ValueCore.lean  (start 18:43:45)
+   RESULT GYNIProof/ValueCore.lean: exit=0 wall=17.6s peakWS=796MB peakPrivate=1,036MB (attempt 1)
+== GYNIProof/ValueQ.lean  (start 18:44:05)
+   RESULT GYNIProof/ValueQ.lean: exit=0 wall=17.0s peakWS=620MB peakPrivate=844MB (attempt 1)
+== GYNIProof/CertSmall0.lean  (start 18:44:24)
+   RESULT GYNIProof/CertSmall0.lean: exit=0 wall=41.2s peakWS=820MB peakPrivate=1,092MB (attempt 1)
+== GYNIProof/CertSmall1.lean  (start 18:45:07)
+   RESULT GYNIProof/CertSmall1.lean: exit=0 wall=41.2s peakWS=826MB peakPrivate=1,097MB (attempt 1)
+== GYNIProof/CertSmall2.lean  (start 18:45:50)
+   RESULT GYNIProof/CertSmall2.lean: exit=0 wall=39.3s peakWS=825MB peakPrivate=1,057MB (attempt 1)
+== GYNIProof/CertSmall3.lean  (start 18:46:32)
+   RESULT GYNIProof/CertSmall3.lean: exit=0 wall=29.4s peakWS=815MB peakPrivate=1,035MB (attempt 1)
+== GYNIProof/CertSmall4.lean  (start 18:47:03)
+   RESULT GYNIProof/CertSmall4.lean: exit=0 wall=36.1s peakWS=794MB peakPrivate=1,064MB (attempt 1)
+== GYNIProof/CertSmall5.lean  (start 18:47:41)
+   RESULT GYNIProof/CertSmall5.lean: exit=0 wall=42.5s peakWS=825MB peakPrivate=1,064MB (attempt 1)
+== GYNIProof/CertSmall6.lean  (start 18:48:25)
+   RESULT GYNIProof/CertSmall6.lean: exit=0 wall=44.1s peakWS=815MB peakPrivate=1,058MB (attempt 1)
+== GYNIProof/CertSmall7.lean  (start 18:49:11)
+   RESULT GYNIProof/CertSmall7.lean: exit=0 wall=36.8s peakWS=729MB peakPrivate=954MB (attempt 1)
+== GYNIProof/CertMid0.lean  (start 18:49:50)
+   RESULT GYNIProof/CertMid0.lean: exit=0 wall=112.8s peakWS=2,014MB peakPrivate=2,234MB (attempt 1)
+== GYNIProof/CertMid1.lean  (start 18:51:45)
+   RESULT GYNIProof/CertMid1.lean: exit=0 wall=142.9s peakWS=2,013MB peakPrivate=2,235MB (attempt 1)
+== GYNIProof/CertMid2.lean  (start 18:54:10)
+   RESULT GYNIProof/CertMid2.lean: exit=0 wall=108.4s peakWS=2,003MB peakPrivate=2,233MB (attempt 1)
+== GYNIProof/CertMid3.lean  (start 18:56:00)
+   RESULT GYNIProof/CertMid3.lean: exit=0 wall=124.3s peakWS=2,000MB peakPrivate=2,233MB (attempt 1)
+== GYNIProof/CertMid4.lean  (start 18:58:06)
+   RESULT GYNIProof/CertMid4.lean: exit=0 wall=106.6s peakWS=2,009MB peakPrivate=2,269MB (attempt 1)
+== GYNIProof/CertMid5.lean  (start 18:59:55)
+   RESULT GYNIProof/CertMid5.lean: exit=0 wall=136.9s peakWS=2,009MB peakPrivate=2,237MB (attempt 1)
+== GYNIProof/CertMid6.lean  (start 19:02:13)
+   RESULT GYNIProof/CertMid6.lean: exit=0 wall=95.4s peakWS=2,006MB peakPrivate=2,233MB (attempt 1)
+== GYNIProof/CertMid7.lean  (start 19:03:51)
+   RESULT GYNIProof/CertMid7.lean: exit=0 wall=126.5s peakWS=2,005MB peakPrivate=2,230MB (attempt 1)
+== GYNIProof/CertMid8.lean  (start 19:05:59)
+   RESULT GYNIProof/CertMid8.lean: exit=0 wall=141.4s peakWS=2,021MB peakPrivate=2,261MB (attempt 1)
+== GYNIProof/CertMid9.lean  (start 19:08:22)
+   RESULT GYNIProof/CertMid9.lean: exit=0 wall=129.2s peakWS=2,044MB peakPrivate=2,265MB (attempt 1)
+== GYNIProof/CertMid10.lean  (start 19:10:33)
+   RESULT GYNIProof/CertMid10.lean: exit=0 wall=133.6s peakWS=2,030MB peakPrivate=2,265MB (attempt 1)
+== GYNIProof/CertMid11.lean  (start 19:12:49)
+   RESULT GYNIProof/CertMid11.lean: exit=0 wall=129.0s peakWS=2,021MB peakPrivate=2,266MB (attempt 1)
+== GYNIProof/CertMid12.lean  (start 19:15:00)
+   RESULT GYNIProof/CertMid12.lean: exit=0 wall=101.8s peakWS=2,019MB peakPrivate=2,245MB (attempt 1)
+== GYNIProof/CertMid13.lean  (start 19:16:44)
+   RESULT GYNIProof/CertMid13.lean: exit=0 wall=105.6s peakWS=1,993MB peakPrivate=2,232MB (attempt 1)
+== GYNIProof/CertMid14.lean  (start 19:18:31)
+   RESULT GYNIProof/CertMid14.lean: exit=0 wall=113.5s peakWS=2,010MB peakPrivate=2,228MB (attempt 1)
+== GYNIProof/CertMid15.lean  (start 19:20:26)
+   RESULT GYNIProof/CertMid15.lean: exit=0 wall=134.7s peakWS=2,007MB peakPrivate=2,235MB (attempt 1)
+== GYNIProof/Defs.lean  (start 19:22:43)
+   RESULT GYNIProof/Defs.lean: exit=0 wall=84.5s peakWS=3,213MB peakPrivate=7,941MB (attempt 1)
+== GYNIProof/Structure.lean  (start 19:24:09)
+GYNIProof/Structure.lean:39:0: warning: automatically included section variable(s) unused in theorem `GYNIProof.formW_eq`:
+  [Fintype AO]
+  [Fintype BO]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype AO] [Fintype BO] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+GYNIProof/Structure.lean:51:65: warning: This simp argument is unused:
+  Finset.sum_ite_eq
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [h, Matrix.single_apply, Matrix.one_apply, ite_and, Finset.sum_ite_eq']
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+GYNIProof/Structure.lean:53:17: warning: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [h]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+GYNIProof/Structure.lean:55:65: warning: This simp argument is unused:
+  Finset.sum_ite_eq
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [h, Matrix.single_apply, Matrix.one_apply, ite_and, Finset.sum_ite_eq']
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+GYNIProof/Structure.lean:57:17: warning: This simp argument is unused:
+  Matrix.one_apply
+
+Hint: Omit it from the simp argument list.
+  [apply] simp [h]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+GYNIProof/Structure.lean:68:69: warning: This simp argument is unused:
+  Finset.sum_ite_eq'
+
+Hint: Omit it from the simp argument list.
+  [apply] simp only [ite_and, ite_mul, one_mul, zero_mul, Finset.sum_ite_eq, Finset.mem_univ, if_true,
+    Finset.sum_ite_irrel, Finset.sum_const_zero]
+
+Note: This linter can be disabled with `set_option linter.unusedSimpArgs false`
+GYNIProof/Structure.lean:110:0: warning: automatically included section variable(s) unused in theorem `GYNIProof.formW_map`:
+  [Fintype AI]
+  [Fintype AO]
+  [Fintype BI]
+  [Fintype BO]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype AI] [Fintype AO] [Fintype BI] [Fintype BO] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+GYNIProof/Structure.lean:118:0: warning: automatically included section variable(s) unused in theorem `GYNIProof.formW_smul`:
+  [Fintype AI]
+  [Fintype AO]
+  [Fintype BI]
+  [Fintype BO]
+consider restructuring your `variable` declarations so that the variables are not in scope or explicitly omit them:
+  omit [Fintype AI] [Fintype AO] [Fintype BI] [Fintype BO] in theorem ...
+
+Note: This linter can be disabled with `set_option linter.unusedSectionVars false`
+   RESULT GYNIProof/Structure.lean: exit=0 wall=28.5s peakWS=3,461MB peakPrivate=8,006MB (attempt 1)
+== GYNIProof/BlockPSD.lean  (start 19:24:39)
+   RESULT GYNIProof/BlockPSD.lean: exit=0 wall=26.8s peakWS=3,542MB peakPrivate=8,100MB (attempt 1)
+== GYNIProof/Model.lean  (start 19:25:08)
+GYNIProof/Model.lean:171:4: warning: Unused tactic linter: `beta_reduce  at key` does nothing
+
+Note: This linter can be disabled with `set_option linter.unusedTactic false`
+   RESULT GYNIProof/Model.lean: exit=0 wall=26.4s peakWS=3,499MB peakPrivate=8,055MB (attempt 1)
+== GYNIProof/Value.lean  (start 19:25:36)
+   RESULT GYNIProof/Value.lean: exit=0 wall=27.4s peakWS=3,473MB peakPrivate=8,022MB (attempt 1)
+== GYNIProof/BlockCerts.lean  (start 19:26:06)
+GYNIProof/BlockCerts.lean:1438:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1444:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1450:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1456:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1462:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1468:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1474:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1480:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1486:24: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1492:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1498:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1504:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1516:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1522:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1528:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1534:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1540:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1546:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1552:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1558:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1564:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1570:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1576:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+GYNIProof/BlockCerts.lean:1582:25: warning: Variable name `hbig` is not explicitly referenced.
+
+Hint: The binding can be removed (if unused) or named `_` (if used implicitly). Alternatively, prefix the name with `_` to silence this warning:
+  [apply] _hbig
+
+Note: This linter can be disabled with `set_option linter.unusedVariables false`
+   RESULT GYNIProof/BlockCerts.lean: exit=0 wall=30.3s peakWS=3,570MB peakPrivate=8,853MB (attempt 1)
+== GYNIProof/PSD.lean  (start 19:26:38)
+   RESULT GYNIProof/PSD.lean: exit=0 wall=28.1s peakWS=3,518MB peakPrivate=8,771MB (attempt 1)
+== GYNIProof/LowerBound.lean  (start 19:27:08)
+   RESULT GYNIProof/LowerBound.lean: exit=0 wall=30.4s peakWS=3,506MB peakPrivate=8,756MB (attempt 1)
+== GYNIProof/Axioms.lean  (start 19:27:40)
+'GYNIProof.trace_formW_of_tp' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.posSemidef_of_blocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.posSemidef_of_diagDom' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.posSemidef_of_cert' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.posSemidef_of_chk' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.Wc_normalized' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.Mc_instrument' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.gyniValue_eq' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.cert_1_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.cert_0_1' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.blockPSD_le' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.Wc_posSemidef' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.Wc_isProcess' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.gyni_lower_bound_exact_of_bigBlocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.gyni_lower_bound_of_bigBlocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+'GYNIProof.gyni_beats_previous_of_bigBlocks' depends on axioms: [propext, Classical.choice, Quot.sound]
+   RESULT GYNIProof/Axioms.lean: exit=0 wall=29.8s peakWS=3,274MB peakPrivate=8,747MB (attempt 1)
+== forbidden keywords (sorry/admit/axiom/native_decide) in GYNIProof/**/*.lean:
+none
+== check.sh done: 2717 s
