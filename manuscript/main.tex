@@ -13,6 +13,8 @@
 \usepackage[super,sort&compress,comma]{natbib}
 \usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage{authblk}
+\usepackage[font=small,labelfont=bf]{caption}
+\setlength{\textfloatsep}{12pt plus 2pt minus 2pt}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}{Lemma}
@@ -44,7 +46,7 @@
 Causal inequalities bound the correlations that parties acting in a definite causal order can produce, and the process-matrix framework, which keeps quantum theory in every local laboratory but drops a global causal order, violates them. The largest possible violations, the analogues of Tsirelson's bound for Bell inequalities, are known only in a few cases. For the guess-your-neighbour's-input (GYNI) inequality, one of the two simplest bipartite causal inequalities, the maximal success probability was known only to lie between 0.6219 and 0.7592. Here we prove that it lies between 0.622165901353 and 0.622183755532, an interval about 7,700 times narrower. The upper bound comes from a new dimension-free hierarchy of semidefinite relaxations for process-matrix correlations, certified at level eight by an exact rational dual certificate. The lower bound is an explicit process, verified in exact arithmetic. Both bounds, including the soundness of the hierarchy, are machine-checked in the Lean proof assistant.
 \end{abstract}
 
-\doublespacing
+\onehalfspacing
 \linenumbers
 
 \section*{Introduction}
@@ -62,6 +64,13 @@ Here we determine it to within $1.79\times10^{-5}$. We introduce a hierarchy of 
 \subsection*{The GYNI game}
 Alice has input and output spaces $A_I,A_O$ and Bob has $B_I,B_O$, all of finite dimension (Fig.~\ref{fig:game}). An instrument $\{M_{a|x}\}_a$ is a family of completely positive (CP) maps from operators on $A_I$ to operators on $A_O$ whose sum is trace preserving (TP); likewise $\{N_{b|y}\}_b$ for Bob. Using Choi operators $C_F=\sum_{ij}\ket{i}\bra{j}\otimes F(\ket{i}\bra{j})$ (ref.~\citenum{Choi1975}), a \emph{process} is an operator $W\succeq0$ on $A_I\otimes A_O\otimes B_I\otimes B_O$ with $\Tr[W(C_A\otimes C_B)]=1$ for all Choi operators $C_A,C_B$ of CPTP maps\cite{Oreshkov2012,Araujo2015}. A strategy $S=(W;M;N)$ produces the correlations $p(a,b|x,y)=\Tr[W(C_{M_{a|x}}\otimes C_{N_{b|y}})]$. Local ancillas and shared entanglement are included, as they can be absorbed into $W$.
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.55\textwidth]{figures/fig1_gyni_game.pdf}
+\caption{\textbf{The GYNI game with a process matrix.} Alice and Bob receive uniformly random input bits $x$ and $y$ and output bits $a$ and $b$. Their laboratories receive quantum systems on the input spaces $A_I,B_I$ and send them out on $A_O,B_O$, connected by a process matrix $W$ that need not respect any global causal order. They win if $a=y$ and $b=x$. Causally ordered strategies win with probability at most $1/2$.}
+\label{fig:game}
+\end{figure}
+
 In the GYNI game the parties receive independent uniformly random bits $x,y$ and output bits $a,b$; they win if each guesses the other's input. The success probability
 \begin{equation}
 \Igy=\frac14\sum_{x,y\in\{0,1\}}p(a=y,\,b=x\,|\,x,y)
@@ -76,6 +85,20 @@ $0.622165901353\;\le\;\Imax\;\le\;0.622183755532$.
 \end{theorem}
 
 The interval has width $1.79\times10^{-5}$, compared with $0.137$ before (Fig.~\ref{fig:bounds}). The upper bound is the certified value of the eighth level of the hierarchy introduced below, and the lower bound is the exact value of an explicit strategy. The two ingredients are independent of each other. Both are verified by stand-alone programs in integer or rational arithmetic, without any numerical solver\cite{repo}, and both are machine-checked in Lean (Fig.~\ref{fig:verification}).
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig2_bounds.pdf}
+\caption{\textbf{Certified bounds on the maximal GYNI violation.} \textbf{a}, Certified upper bounds from levels $L=2,\dots,8$ of the hierarchy (blue, downward triangles; level one numerical, open symbol) and exact values of the explicit strategies with $J=1,\dots,4$ Jordan blocks (orange, upward triangles; $J=1$ numerical). The grey band is the previously known interval $[0.6219,0.7592]$. \textbf{b}, Close-up: the final interval $0.622165901353\le\Imax\le0.622183755532$ (shaded).}
+\label{fig:bounds}
+\end{figure}
+
+\begin{figure}[t]
+\centering
+\includegraphics[width=\textwidth]{figures/fig3_verification.pdf}
+\caption{\textbf{How the two bounds are established.} Top row: the upper bound follows from the L\"uders normal form and the soundness of the hierarchy, a numerical solution of the level-eight relaxation, its conversion to an exact rational dual certificate, and an exact positivity check in integer arithmetic. Bottom row: the lower bound is an explicit rational process checked in exact arithmetic. Both chains, including the soundness theorem, are verified by the Lean proof kernel.}
+\label{fig:verification}
+\end{figure}
 
 \subsection*{A L\"uders normal form for local instruments}
 The first step removes the generality of the instruments.
@@ -120,6 +143,26 @@ At level eight the certified program has $167{,}620$ variables, $789{,}678$ line
 \end{equation}
 which proves the upper bound in Theorem~\ref{thm:main}. The margin used to make the certificate strictly feasible costs only $2.89\times10^{-7}$. A stand-alone verifier rebuilds all constraints, recomputes the four matrices from the stored integers and checks all minors in about eight minutes on one processor core. Independently of the proof, all $789{,}678$ constraints were evaluated on the moment matrices of more than $100$ strategies (general instruments passed through a separately written implementation of Lemma~\ref{lem:lueders}, generic L\"uders-form processes, see-saw optima, and the strategies below), with no residual above $2.1\times10^{-14}$ (Supplementary Note~6).
 
+\begin{table}[t]
+\centering
+\caption{\textbf{Certified upper bounds on the level-$L$ value $\beta_L$, and hence on $\Imax$ (rounded up).} $n_L=(2L+1)^2$ is the size of each of the four positive semidefinite blocks and $m_L$ the number of linear constraints. The last column is the optimum returned by the interior-point solver (numerical, not rigorous); the certified bounds exceed it essentially by the margin $\varepsilon n_L$, with $\varepsilon=10^{-6}$ at $L=4$, $10^{-7}$ at $L=5,6,7$ and $10^{-9}$ at $L=8$. Entries marked $\dagger$ were certified in an equivalent formulation with words in the two projectors $P_{0|x}$ (Supplementary Note~4).}
+\label{tab:levels}
+\begin{tabular}{rrrll}
+\toprule
+$L$ & $n_L$ & $m_L$ & certified bound & numerical\\
+\midrule
+1 & 9   & --                    & --                          & 0.7462629\\
+2 & 25  & $5{,}486^\dagger$     & $0.6434871^\dagger$         & 0.6434843\\
+3 & 49  & $21{,}708^\dagger$    & $0.6267932^\dagger$         & 0.6267499\\
+4 & 81  & $59{,}326$            & $0.6233558$                 & 0.6232747\\
+5 & 121 & $134{,}604$           & $0.6224213$                 & 0.6224092\\
+6 & 169 & $265{,}742$           & $0.6222569$                 & 0.6222399\\
+7 & 225 & $475{,}300$           & $0.6222199$                 & 0.6221974\\
+8 & 289 & $789{,}678$           & $\mathbf{0.622183755532}$   & 0.6221835\\
+\bottomrule
+\end{tabular}
+\end{table}
+
 \subsection*{An explicit strategy from coherently superposed Jordan blocks}
 By Jordan's lemma\cite{Pironio2009}, two binary projective measurements decompose the local space into invariant blocks of dimension at most two, each characterised by one angle. This suggests the following family of L\"uders-form strategies, identical for Alice and Bob: $H=\CC^2\otimes\CC^J$ (a ``Jordan qubit'' and a label), the instruments of equation~\eqref{eq:lueders}, and
 \begin{equation}
@@ -129,11 +172,34 @@ P_{0|x}=\sum_{j=1}^J\ket{\phi_j^x}\bra{\phi_j^x}\otimes\ket{j}\bra{j},\qquad
 \end{equation}
 so that the two measurement vectors in block $j$ enclose the angle $t_j$ (Fig.~\ref{fig:strategy}). For fixed angles the best process is the solution of an SDP, which we reduce with symmetries; the angles are optimised with gradients obtained from the envelope theorem (Methods).
 
+\begin{figure}[t]
+\centering
+\includegraphics[width=0.6\textwidth]{figures/fig4_strategy.pdf}
+\caption{\textbf{The explicit $J=4$ strategy.} \textbf{a}, In each Jordan block $j$ the two measurement vectors $\ket{\phi^0_j}$ (dashed) and $\ket{\phi^1_j}$ (solid) of equation~\eqref{eq:jordan} enclose the angle $t_j$; Alice and Bob use the same measurements. \textbf{b}, The four angles, $(9.6^\circ,34.4^\circ,51.2^\circ,84.1^\circ)$ rounded to $0.1^\circ$. The process is coherent across the blocks; a single block reaches only $0.6067$.}
+\label{fig:strategy}
+\end{figure}
+
 A single block ($J=1$) reaches only $0.6067$. The higher values in Table~\ref{tab:strategies} come from processes that are \emph{coherent across blocks} with different angles: the label is not a classical flag but carries coherence that the process exploits. For $J=4$ the angles are $(t_1,\dots,t_4)=(9.59850^\circ,34.42477^\circ,51.18469^\circ,84.13806^\circ)$, chosen with rational $\tan(t_j/4)$ so that all entries of the measurements are rational. The process is a real $16384\times16384$ matrix with rational entries. A stand-alone verifier checks in exact arithmetic that it is a valid process, that it is block diagonal with $676$ blocks that are all positive definite, that the instruments are valid, and that
 \begin{equation}
 \Igy=0.62216590135390844\ldots ,
 \end{equation}
 a rational number with a $548$-bit denominator. This proves the lower bound in Theorem~\ref{thm:main}. The check uses no symmetry assumption and is independent of the hierarchy.
+
+\begin{table}[t]
+\centering
+\caption{\textbf{Explicit $J$-block strategies of equation~\eqref{eq:jordan}}, with $d_{A_I}=2J$ and $d_{A_O}=4J$ (including the setting register); angles rounded to $0.1^\circ$, values rounded down. v: exact value, with all checks of the stand-alone verifier passed without symmetry assumptions. e: exact value, obtained with an earlier, symmetry-reduced positivity check (Supplementary Note~5). n: numerical optimum.}
+\label{tab:strategies}
+\begin{tabular}{cll}
+\toprule
+$J$ & angles $t_j$ (degrees) & $\Igy$\\
+\midrule
+1 & 36.1                   & $0.6067^{\rm n}$\\
+2 & 22.7, 70.3             & $0.621789802^{\rm e}$\\
+3 & 13.8, 40.2, 82.7       & $0.622146712690^{\rm v}$\\
+4 & 9.6, 34.4, 51.2, 84.1  & $\mathbf{0.622165901353}^{\rm v}$\\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection*{Machine-checked proofs}
 Both bounds of Theorem~\ref{thm:main} are formalised in Lean~4 with Mathlib, for every strategy with finite-dimensional local systems and with the standard definitions of processes and instruments. The theorem \texttt{gyni\_lower\_bound\_exact} exhibits the explicit process and instruments, proves that they are valid, and proves that their GYNI value equals the rational number above; positive semidefiniteness is established by kernel-checked integer certificates together with a proved party-swap symmetry. The theorem \texttt{gyni\_upper\_bound} states $\Igy\le175129158097837/2^{48}$ for every strategy. Its proof formalises the whole argument: Lemma~\ref{lem:lueders} (with an explicit Stinespring dilation and unitary completion), the factorisation lemma, the constraints (V1) and (V2), weak duality and the level-eight certificate, whose positivity is checked by the Lean kernel. Before the formal check the dual certificate is averaged over the symmetry group of the game; the averaged certificate is valid for the relaxation without (S), with the same bound, so the symmetry reduction is not needed in the formal proof. All theorems depend only on Lean's standard axioms. To our knowledge these are the first machine-checked bounds on the maximal violation of a causal inequality.
@@ -179,7 +245,7 @@ W=\frac{1}{64}\one+(1-2^{-30})\sum_{t=1}^{1895}\frac{y_t}{2^{40}}E_t ,
 with integers $y_t$ and integer matrices $E_t$, each a symmetrised tensor product of two local operators lying in single Hilbert--Schmidt sectors. The factor $1-2^{-30}$ mixes in a small amount of the maximally mixed process to make $W$ positive definite. The verifier checks that every $E_t$ lies in the subspace of valid processes, that the $676$ diagonal blocks of $W$ are positive definite (exact Bareiss elimination), that the instruments are valid, and computes the exact value; it takes under $40$ minutes on one core. Details and the strategies for $J=2,3$ are in Supplementary Note~5.
 
 \subsection*{Formal verification}
-The Lean development consists of two parts. The lower-bound part defines processes, instruments and the GYNI value with Mathlib's matrices, and proves the theorems \texttt{gyni\_lower\_bound\_exact}, \texttt{gyni\_lower\_bound} ($\Igy\ge0.6221659013539$) and \texttt{gyni\_lower\_bound\_beats\_previous} ($\Igy>0.6219$). Positive semidefiniteness of the explicit process is proved with kernel-checked integer certificates $cA=LL^{\tp}+E$, with $E$ diagonally dominant. The upper-bound part proves \texttt{gyni\_upper\_bound} for all finite-dimensional strategies, formalising the L\"uders normal form, the factorisation lemma, the moment-matrix constraints, weak duality and the symmetry-averaged level-eight certificate. Both parts were re-checked from clean builds; all theorems depend only on the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, and the files contain no \texttt{sorry}. Build instructions and logs are in Supplementary Note~7 and the repository\cite{repo}.
+The Lean development consists of two parts. The lower-bound part defines processes, instruments and the GYNI value with Mathlib's matrices, and proves the theorems \texttt{gyni\_lower\_\allowbreak bound\_\allowbreak exact}, \texttt{gyni\_lower\_\allowbreak bound} ($\Igy\ge0.6221659013539$) and \texttt{gyni\_lower\_\allowbreak bound\_\allowbreak beats\_\allowbreak previous} ($\Igy>0.6219$). Positive semidefiniteness of the explicit process is proved with kernel-checked integer certificates $cA=LL^{\tp}+E$, with $E$ diagonally dominant. The upper-bound part proves \texttt{gyni\_upper\_bound} for all finite-dimensional strategies, formalising the L\"uders normal form, the factorisation lemma, the moment-matrix constraints, weak duality and the symmetry-averaged level-eight certificate. Both parts were re-checked from clean builds; all theorems depend only on the axioms \texttt{propext}, \texttt{Classical.choice} and \texttt{Quot.sound}, and the files contain no \texttt{sorry}. Build instructions and logs are in Supplementary Note~7 and the repository\cite{repo}.
 
 \subsection*{Rounding conventions}
 Every verifier compares exact rationals. All decimal values in this paper are rounded in the safe direction: lower bounds are rounded down and upper bounds are rounded up (Supplementary Note~8).
@@ -190,8 +256,13 @@ The exact certificates for the upper bounds (levels two to eight), the explicit 
 \section*{Code availability}
 The stand-alone verifiers, the code that builds and solves the relaxations, the strategy generators, the containment tests and the complete Lean~4 project are available in the same repository\cite{repo} under the MIT licence. The verifiers need Python $\ge3.10$ with NumPy and SciPy only.
 
+\begingroup
+\small
+\singlespacing
+\setlength{\bibsep}{1.5pt}
 \bibliographystyle{naturemag}
 \bibliography{refs}
+\endgroup
 
 \section*{Acknowledgements}
 This work received no specific funding.
@@ -201,75 +272,5 @@ A.M. and A.S. jointly conceived the project, developed the methods, carried out 
 
 \section*{Competing interests}
 The authors declare no competing interests.
-
-\clearpage
-\section*{Figures}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.55\textwidth]{figures/fig1_gyni_game.pdf}
-\caption{\textbf{The GYNI game with a process matrix.} Alice and Bob receive uniformly random input bits $x$ and $y$ and output bits $a$ and $b$. Their laboratories receive quantum systems on the input spaces $A_I,B_I$ and send them out on $A_O,B_O$, connected by a process matrix $W$ that need not respect any global causal order. They win if $a=y$ and $b=x$. Causally ordered strategies win with probability at most $1/2$.}
-\label{fig:game}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{figures/fig2_bounds.pdf}
-\caption{\textbf{Certified bounds on the maximal GYNI violation.} \textbf{a}, Certified upper bounds from levels $L=2,\dots,8$ of the hierarchy (blue, downward triangles; level one numerical, open symbol) and exact values of the explicit strategies with $J=1,\dots,4$ Jordan blocks (orange, upward triangles; $J=1$ numerical). The grey band is the previously known interval $[0.6219,0.7592]$. \textbf{b}, Close-up: the final interval $0.622165901353\le\Imax\le0.622183755532$ (shaded).}
-\label{fig:bounds}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.6\textwidth]{figures/fig3_strategy.pdf}
-\caption{\textbf{The explicit $J=4$ strategy.} \textbf{a}, In each Jordan block $j$ the two measurement vectors $\ket{\phi^0_j}$ (dashed) and $\ket{\phi^1_j}$ (solid) of equation~\eqref{eq:jordan} enclose the angle $t_j$; Alice and Bob use the same measurements. \textbf{b}, The four angles, $(9.6^\circ,34.4^\circ,51.2^\circ,84.1^\circ)$ rounded to $0.1^\circ$. The process is coherent across the blocks; a single block reaches only $0.6067$.}
-\label{fig:strategy}
-\end{figure}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=\textwidth]{figures/fig4_verification.pdf}
-\caption{\textbf{How the two bounds are established.} Top row: the upper bound follows from the L\"uders normal form and the soundness of the hierarchy, a numerical solution of the level-eight relaxation, its conversion to an exact rational dual certificate, and an exact positivity check in integer arithmetic. Bottom row: the lower bound is an explicit rational process checked in exact arithmetic. Both chains, including the soundness theorem, are verified by the Lean proof kernel.}
-\label{fig:verification}
-\end{figure}
-
-\clearpage
-\section*{Tables}
-
-\begin{table}[h]
-\centering
-\caption{\textbf{Certified upper bounds on the level-$L$ value $\beta_L$, and hence on $\Imax$ (rounded up).} $n_L=(2L+1)^2$ is the size of each of the four positive semidefinite blocks and $m_L$ the number of linear constraints. The last column is the optimum returned by the interior-point solver (numerical, not rigorous); the certified bounds exceed it essentially by the margin $\varepsilon n_L$, with $\varepsilon=10^{-6}$ at $L=4$, $10^{-7}$ at $L=5,6,7$ and $10^{-9}$ at $L=8$. Entries marked $\dagger$ were certified in an equivalent formulation with words in the two projectors $P_{0|x}$ (Supplementary Note~4).}
-\label{tab:levels}
-\begin{tabular}{rrrll}
-\toprule
-$L$ & $n_L$ & $m_L$ & certified bound & numerical\\
-\midrule
-1 & 9   & --                    & --                          & 0.7462629\\
-2 & 25  & $5{,}486^\dagger$     & $0.6434871^\dagger$         & 0.6434843\\
-3 & 49  & $21{,}708^\dagger$    & $0.6267932^\dagger$         & 0.6267499\\
-4 & 81  & $59{,}326$            & $0.6233558$                 & 0.6232747\\
-5 & 121 & $134{,}604$           & $0.6224213$                 & 0.6224092\\
-6 & 169 & $265{,}742$           & $0.6222569$                 & 0.6222399\\
-7 & 225 & $475{,}300$           & $0.6222199$                 & 0.6221974\\
-8 & 289 & $789{,}678$           & $\mathbf{0.622183755532}$   & 0.6221835\\
-\bottomrule
-\end{tabular}
-\end{table}
-
-\begin{table}[h]
-\centering
-\caption{\textbf{Explicit $J$-block strategies of equation~\eqref{eq:jordan}}, with $d_{A_I}=2J$ and $d_{A_O}=4J$ (including the setting register); angles rounded to $0.1^\circ$, values rounded down. v: exact value, with all checks of the stand-alone verifier passed without symmetry assumptions. e: exact value, obtained with an earlier, symmetry-reduced positivity check (Supplementary Note~5). n: numerical optimum.}
-\label{tab:strategies}
-\begin{tabular}{cll}
-\toprule
-$J$ & angles $t_j$ (degrees) & $\Igy$\\
-\midrule
-1 & 36.1                   & $0.6067^{\rm n}$\\
-2 & 22.7, 70.3             & $0.621789802^{\rm e}$\\
-3 & 13.8, 40.2, 82.7       & $0.622146712690^{\rm v}$\\
-4 & 9.6, 34.4, 51.2, 84.1  & $\mathbf{0.622165901353}^{\rm v}$\\
-\bottomrule
-\end{tabular}
-\end{table}
 
 \end{document}

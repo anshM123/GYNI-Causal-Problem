@@ -9,6 +9,11 @@
   verifier and Lean theorem.
 - `logs/coord_verify_*.log` are renamed `logs/independent_verify_*.log`. Their content is unchanged.
 - The mathematical content, certificates, code and Lean project are unchanged.
+- Manuscript layout:
+  - figures and tables are placed in the text next to their first mention;
+  - the text uses 1.5 line spacing and the reference list is single spaced (12 pages instead of 17);
+  - the figures are numbered in order of first citation, so Fig. 3 is now the verification overview
+    (`fig3_verification`) and Fig. 4 is the J = 4 strategy (`fig4_strategy`).
 
 ## 1.x (2026-09-28 to 2026-09-29)
 - **2026-09-29.** The upper bound is machine-checked in Lean 4 (`lean/GYNIUpper/`, theorem

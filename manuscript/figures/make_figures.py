@@ -81,6 +81,28 @@ def fig2():
 
 
 def fig3():
+    """How the two bounds are established."""
+    fig, ax = plt.subplots(figsize=(7.0, 1.95)); ax.axis("off"); ax.set_xlim(0, 20); ax.set_ylim(0, 5)
+    boxes = [
+        (0.2, 2.8, "Lüders normal form\n+ moment hierarchy\n(soundness theorem)", BLUE),
+        (5.2, 2.8, "numerical SDP at level 8\n(167,620 variables,\n789,678 constraints)", GREY),
+        (10.2, 2.8, "rational dual certificate\n(multipliers in $2^{-50}\\mathbb{Z}$)", BLUE),
+        (15.2, 2.8, "exact positivity check of\nfour 289 x 289 blocks\n(integer arithmetic)", GREEN),
+        (5.2, 0.2, "explicit J = 4 strategy\n(rational 16384 x 16384\nprocess matrix)", ORANGE),
+        (10.2, 0.2, "exact checks: validity,\n676 positive definite\nblocks, exact value", GREEN),
+        (15.2, 0.2, "Lean 4 + Mathlib:\nboth bounds checked\nby the proof kernel", RED),
+    ]
+    for x, y, txt, c in boxes:
+        ax.add_patch(FancyBboxPatch((x, y), 4.4, 1.9, boxstyle="round,pad=0.1", fc="white", ec=c, lw=1.0))
+        ax.text(x + 2.2, y + 0.95, txt, ha="center", va="center", fontsize=6.5)
+    for (x0, y0, x1, y1) in ((4.75, 3.75, 5.1, 3.75), (9.75, 3.75, 10.1, 3.75), (14.75, 3.75, 15.1, 3.75),
+                             (9.75, 1.15, 10.1, 1.15), (14.75, 1.15, 15.1, 1.15), (17.4, 2.7, 17.4, 2.25)):
+        ax.annotate("", xy=(x1, y1), xytext=(x0, y0), arrowprops=dict(arrowstyle="->", lw=0.9))
+    ax.text(2.4, 1.15, "upper bound: top row\nlower bound: bottom row", ha="center", va="center", fontsize=6.6)
+    save(fig, "fig3_verification")
+
+
+def fig4():
     """The J = 4 strategy: measurement directions in the four Jordan blocks."""
     t = np.array([9.59850, 34.42477, 51.18469, 84.13806])
     cols = ["#1f5aa6", "#2e8b57", "#d9822b", "#b03a2e"]
@@ -103,29 +125,7 @@ def fig3():
     for k, v in enumerate(t):
         ax2.text(v + 2, k, f"{v:.1f}", va="center", fontsize=6.5)
     ax2.text(-0.5, 1.06, "b", transform=ax2.transAxes, fontsize=10, weight="bold")
-    save(fig, "fig3_strategy")
-
-
-def fig4():
-    """How the two bounds are established."""
-    fig, ax = plt.subplots(figsize=(7.0, 1.95)); ax.axis("off"); ax.set_xlim(0, 20); ax.set_ylim(0, 5)
-    boxes = [
-        (0.2, 2.8, "Lüders normal form\n+ moment hierarchy\n(soundness theorem)", BLUE),
-        (5.2, 2.8, "numerical SDP at level 8\n(167,620 variables,\n789,678 constraints)", GREY),
-        (10.2, 2.8, "rational dual certificate\n(multipliers in $2^{-50}\\mathbb{Z}$)", BLUE),
-        (15.2, 2.8, "exact positivity check of\nfour 289 x 289 blocks\n(integer arithmetic)", GREEN),
-        (5.2, 0.2, "explicit J = 4 strategy\n(rational 16384 x 16384\nprocess matrix)", ORANGE),
-        (10.2, 0.2, "exact checks: validity,\n676 positive definite\nblocks, exact value", GREEN),
-        (15.2, 0.2, "Lean 4 + Mathlib:\nboth bounds checked\nby the proof kernel", RED),
-    ]
-    for x, y, txt, c in boxes:
-        ax.add_patch(FancyBboxPatch((x, y), 4.4, 1.9, boxstyle="round,pad=0.1", fc="white", ec=c, lw=1.0))
-        ax.text(x + 2.2, y + 0.95, txt, ha="center", va="center", fontsize=6.5)
-    for (x0, y0, x1, y1) in ((4.75, 3.75, 5.1, 3.75), (9.75, 3.75, 10.1, 3.75), (14.75, 3.75, 15.1, 3.75),
-                             (9.75, 1.15, 10.1, 1.15), (14.75, 1.15, 15.1, 1.15), (17.4, 2.7, 17.4, 2.25)):
-        ax.annotate("", xy=(x1, y1), xytext=(x0, y0), arrowprops=dict(arrowstyle="->", lw=0.9))
-    ax.text(2.4, 1.15, "upper bound: top row\nlower bound: bottom row", ha="center", va="center", fontsize=6.6)
-    save(fig, "fig4_verification")
+    save(fig, "fig4_strategy")
 
 
 if __name__ == "__main__":
