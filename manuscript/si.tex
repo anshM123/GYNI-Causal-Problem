@@ -1,5 +1,4 @@
-% supplement.tex -- Supplemental Material for main.tex (GYNI causal inequality)
-% Sources: publish/GYNI-Causal-Problem/{PROOF.md, AUDIT_REPORT.md, README.md, src/, logs/, tests/}.
+% si.tex -- Supplementary Information for main.tex (Nature Communications article, GYNI causal inequality)
 % All decimals are directed-rounded from the stored exact rationals (lower bounds DOWN, upper bounds UP).
 \documentclass[aps,pra,onecolumn,notitlepage,superscriptaddress,longbibliography,nofootinbib,11pt]{revtex4-2}
 
@@ -14,10 +13,11 @@
 \theoremstyle{remark}
 \newtheorem{remark}{Remark}
 
-\renewcommand{\thesection}{S\arabic{section}}
-\renewcommand{\thesubsection}{\thesection.\Alph{subsection}}
+\renewcommand{\thesection}{Supplementary Note \arabic{section}}
+\renewcommand{\thesubsection}{\arabic{section}.\Alph{subsection}}
 \renewcommand{\theequation}{S\arabic{equation}}
-\renewcommand{\thetable}{S\arabic{table}}
+\renewcommand{\thetable}{\arabic{table}}
+\renewcommand{\tablename}{Supplementary Table}
 \renewcommand{\thedefinition}{S\arabic{definition}}
 
 \newcommand{\Tr}{\operatorname{Tr}}
@@ -37,11 +37,12 @@
 
 \begin{document}
 
-\title{Supplemental Material for ``Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality''}
+\title{Supplementary Information for ``Pinning down the maximal quantum violation of the guess-your-neighbour's-input causal inequality''}
 
 \author{Ansh Mishra}
+\affiliation{Independent researcher, Cumming, GA, USA}
 \author{Aryan Senthilkumar}
-\noaffiliation
+\affiliation{Independent researcher, Johns Creek, GA, USA}
 
 \date{\today}
 
@@ -56,20 +57,20 @@ The main result is
 0.622165901353\;\le\;\Imax\;\le\;0.622183755532 ,
 \label{eq:S-main}
 \end{equation}
-where $\Imax$ is the supremum of the GYNI success probability over process-matrix strategies with finite-dimensional local systems (Definition~\ref{def:strategy}). This Supplemental Material contains complete proofs, the certificate formats and verification algorithms, the construction of the explicit strategies, numerical validation and reproducibility information. We distinguish three kinds of statements.
+where $\Imax$ is the supremum of the GYNI success probability over process-matrix strategies with finite-dimensional local systems (Definition~\ref{def:strategy}). This Supplementary Information contains complete proofs, the certificate formats and verification algorithms, the construction of the explicit strategies, numerical validation and reproducibility information. We distinguish three kinds of statements.
 \begin{itemize}
 \item \emph{Proved}: Theorem~\ref{thm:S-sound} (soundness of the relaxation) and Lemmas~\ref{lem:S-lueders}--\ref{lem:S-valid}.
 \item \emph{Certified by exact computation}: the rational upper bounds of Table~\ref{tab:S-certs} and the exact values of the strategies of Table~\ref{tab:S-values}. Each is checked by a stand-alone program in exact integer or rational arithmetic; no numerical solver is involved in the check.
-\item \emph{Numerical, not rigorous}: solver optima of the relaxations, the $J=1$ value, extrapolations, flatness, the LGYNI and OCB consistency checks, and the containment tests of Sec.~\ref{sec:numerics}.
+\item \emph{Numerical, not rigorous}: solver optima of the relaxations, the $J=1$ value, extrapolations, flatness, the LGYNI and OCB consistency checks, and the containment tests of \ref{sec:numerics}.
 \end{itemize}
 
-\emph{What the upper bound rests on.} (i) Theorem~\ref{thm:S-sound}; (ii) the correctness of the constraint generator \file{mc3.build} of our code~\cite{repo}, which implements the constraint families of Sec.~\ref{sec:relaxation} (Remark~\ref{rem:code} gives the correspondence, and Sec.~\ref{sec:numerics} reports independent numerical tests of the generated constraints); (iii) the short exact verification routine of Sec.~\ref{sec:cert-verify}. In addition, the whole argument is machine-checked in Lean (Sec.~\ref{sec:lean-formal}). There, the certificate data are checked by the Lean kernel against constraints derived inside Lean from the definitions, so neither (ii) nor (iii) needs to be trusted for the formal statement.
+\emph{What the upper bound rests on.} (i) Theorem~\ref{thm:S-sound}; (ii) the correctness of the constraint generator \file{mc3.build} of our code~\cite{repo}, which implements the constraint families of \ref{sec:relaxation} (Remark~\ref{rem:code} gives the correspondence, and \ref{sec:numerics} reports independent numerical tests of the generated constraints); (iii) the short exact verification routine of \ref{sec:cert-verify}. In addition, the whole argument is machine-checked in Lean (\ref{sec:lean-formal}). There, the certificate data are checked by the Lean kernel against constraints derived inside Lean from the definitions, so neither (ii) nor (iii) needs to be trusted for the formal statement.
 
-\emph{What the lower bound rests on.} (i) Lemma~\ref{lem:S-valid}, a sufficient condition for validity of a process; (ii) the stand-alone verifier of Sec.~\ref{sec:strat-verify}. The lower bound does not depend on the hierarchy.
+\emph{What the lower bound rests on.} (i) Lemma~\ref{lem:S-valid}, a sufficient condition for validity of a process; (ii) the stand-alone verifier of \ref{sec:strat-verify}. The lower bound does not depend on the hierarchy.
 
 \emph{Scope.} All statements concern strategies whose local Hilbert spaces have finite, but arbitrary, dimension. Local ancillas and shared entanglement are included, since they are absorbed into the process. Infinite-dimensional processes are not covered by Lemma~\ref{lem:S-lueders} as stated.
 
-\emph{Checks.} An internal, independent re-derivation of the proof of Theorem~\ref{thm:S-sound}, together with numerical containment tests written with separate code, is part of the repository (files \file{AUDIT\_REPORT.md} and \file{tests/})~\cite{repo}; its results are summarised in Sec.~\ref{sec:numerics}.
+\emph{Checks.} An internal, independent re-derivation of the proof of Theorem~\ref{thm:S-sound}, together with numerical containment tests written with separate code, is part of the repository (files \file{AUDIT\_REPORT.md} and \file{tests/})~\cite{repo}; its results are summarised in \ref{sec:numerics}.
 
 %======================================================================
 \section{Conventions and definitions}\label{sec:conventions}
@@ -123,7 +124,7 @@ This section states the relaxation exactly as certified (the constraints generat
 
 \subsection{Words and index sets}
 
-Let $G:=\ZZ_2*\ZZ_2=\langle g_0,g_1\,|\,g_0^2=g_1^2=e\rangle$ be the infinite dihedral group. Its elements are the reduced words $w=(x_1,\dots,x_n)$ with $x_i\in\{0,1\}$ and $x_i\neq x_{i+1}$; $|w|=n$ is the length, and $()$ denotes the empty word $e$. Let $\cW_L$ be the set of reduced words of length at most $L$; $|\cW_L|=2L+1$. For $w,w'\in\cW_L$, $w^{-1}w'$ denotes the reduced word of the product in $G$ (the inverse of a word is its reversal). Let $\sigma$ be the letter exchange $0\leftrightarrow1$, an automorphism of $G$.
+Let $G:=\ZZ_2*\ZZ_2=\langle g_0,g_1\,|\,g_0^2=g_1^2=e\rangle$ be the infinite dihedral group. Its elements are the reduced words $w=(x_1,\dots,x_n)$ with $x_i\in\{0,1\}$ and $x_i\neq x_{i+1}$; $|w|=n$ is the length, and $()$ denotes the empty word $e$. Let $\cW_L$ be the set of reduced words of length at most $L$; $|\cW_L|=2L+1$. For $w,w'\in\cW_L$, $w^{-1}w'$ denotes the reduced word of the product in $G$ (the inverse of a word is its reversal). Let $\sigma$ be the main text exchange $0\leftrightarrow1$, an automorphism of $G$.
 
 Each party has the index set $\cK:=\cW_L\times\{0,1\}$ (word, register value). A pair $(k,k')=((w,r),(w',r'))$ with $r=r'$ is called \emph{admissible}; its \emph{class} is $t(k,k'):=w^{-1}w'\in G$.
 
@@ -169,7 +170,7 @@ For every $L\ge1$ and every strategy $S$ (Definition~\ref{def:strategy}, any fin
 The certificate \file{cert3\_L8\_e9.pkl} provides rational multipliers $\lambda$ for all $789{,}678$ linear constraints of level $8$ such that the matrices $Y_k(\lambda)$ of Lemma~\ref{lem:S-weakdual} are positive definite. Hence $\Imax\le\beta_8\le\lambda\cdot b=175129158097837/2^{48}=0.6221837555310\ldots\le0.622183755532$. (The earlier certificate \file{cert3\_L8.pkl} for the same program gives the weaker bound $700548845513581/2^{50}=0.62221236653099\ldots$.)
 \end{corollary}
 
-The proof of Theorem~\ref{thm:S-sound} occupies Lemmas~\ref{lem:S-lueders}--\ref{lem:S-sym}; Lemma~\ref{lem:S-weakdual} (Sec.~\ref{sec:certificates}) gives the corollary.
+The proof of Theorem~\ref{thm:S-sound} occupies Lemmas~\ref{lem:S-lueders}--\ref{lem:S-sym}; Lemma~\ref{lem:S-weakdual} (\ref{sec:certificates}) gives the corollary.
 
 \subsection{Proofs}
 
@@ -203,7 +204,7 @@ Define $\widetilde W:=(\Phi_A^\dagger\otimes\Phi_B^\dagger)(W)=\sum(\hat K_{x,e}
 \end{proof}
 
 \begin{remark}[Why $J^\tp$ and not $J^\dagger$]\label{rem:transpose}
-The transpose in $\hat K_{x,e}$ is essential. By the transpose trick, $(J^\tp\otimes\one)\ket{\Phi}=\sum_i\ket{i}\otimes J\ket{i}$, which is why pre-composition with $\mathcal J$ acts on Choi operators through $J^\tp$ [Eq.~\eqref{eq:F3}]. Replacing $J^\tp$ by $J^\dagger$ gives instead $(J^\dagger\otimes\one)\ket{\Phi}=\sum_i\ket{i}\otimes\bar J\ket{i}$, i.e., pre-composition with the complex-conjugate isometry $\bar J$. For example, for $J=\mathrm{diag}(1,i)$ on $\CC^2$ one has $(J^\tp\otimes\one)\ket{\Phi}=\ket{00}+i\ket{11}$ but $(J^\dagger\otimes\one)\ket{\Phi}=\ket{00}-i\ket{11}$. Since the unitary completion $U_xJ=V_x$ involves $J$ and not $\bar J$, only $J^\tp$ reproduces the statistics for complex $J$; for real $J$ the two coincide. In the numerical tests of Sec.~\ref{sec:numerics}, using $J^\dagger$ changed the objective by $1.0\times10^{-2}$.
+The transpose in $\hat K_{x,e}$ is essential. By the transpose trick, $(J^\tp\otimes\one)\ket{\Phi}=\sum_i\ket{i}\otimes J\ket{i}$, which is why pre-composition with $\mathcal J$ acts on Choi operators through $J^\tp$ [Eq.~\eqref{eq:F3}]. Replacing $J^\tp$ by $J^\dagger$ gives instead $(J^\dagger\otimes\one)\ket{\Phi}=\sum_i\ket{i}\otimes\bar J\ket{i}$, i.e., pre-composition with the complex-conjugate isometry $\bar J$. For example, for $J=\mathrm{diag}(1,i)$ on $\CC^2$ one has $(J^\tp\otimes\one)\ket{\Phi}=\ket{00}+i\ket{11}$ but $(J^\dagger\otimes\one)\ket{\Phi}=\ket{00}-i\ket{11}$. Since the unitary completion $U_xJ=V_x$ involves $J$ and not $\bar J$, only $J^\tp$ reproduces the statistics for complex $J$; for real $J$ the two coincide. In the numerical tests of \ref{sec:numerics}, using $J^\dagger$ changed the objective by $1.0\times10^{-2}$.
 \end{remark}
 
 \begin{remark}
@@ -282,7 +283,7 @@ The canonical single-trigger processes of Liu and Chiribella~\cite{LiuChiribella
 \end{remark}
 
 \begin{remark}[Idempotent word basis]\label{rem:idempotent}
-Words in the projectors $P_{0|x}$ (elements of the free algebra of two idempotents, which is isomorphic to $\RR[G]$ via $P_{0|x}=(e+g_x)/2$) of length at most $L$ span the same subspace as $\cW_L$. The same proof applies to the relaxation formulated in that basis, with trace functionals evaluated in the free algebra of two idempotents; the symmetry maps then act by general linear maps instead of signed permutations, because $P_{1|y}=\one-P_{0|y}$. The certificates of levels $2$ and $3$ in Table~I of the main text refer to that formulation (Sec.~\ref{sec:idempotent}). The level-8 bound does not use it, and the independent tests of Sec.~\ref{sec:numerics} were run on the dihedral formulation only.
+Words in the projectors $P_{0|x}$ (elements of the free algebra of two idempotents, which is isomorphic to $\RR[G]$ via $P_{0|x}=(e+g_x)/2$) of length at most $L$ span the same subspace as $\cW_L$. The same proof applies to the relaxation formulated in that basis, with trace functionals evaluated in the free algebra of two idempotents; the symmetry maps then act by general linear maps instead of signed permutations, because $P_{1|y}=\one-P_{0|y}$. The certificates of levels $2$ and $3$ in Table~1 of the main text refer to that formulation (\ref{sec:idempotent}). The level-8 bound does not use it, and the independent tests of \ref{sec:numerics} were run on the dihedral formulation only.
 \end{remark}
 
 \begin{remark}[Scope]
@@ -311,13 +312,13 @@ For feasible $z$, $\lambda\cdot b=\sum_i\lambda_i\,a_i\cdot z=o\cdot z+\sum_k\la
 
 \subsection{Construction of the certificates}\label{sec:cert-construct}
 
-The certificates were produced by \file{certify3.py} (dihedral basis) as follows. Floating-point arithmetic is used only to produce a candidate $\lambda$; correctness rests on the exact check of Sec.~\ref{sec:cert-verify}.
+The certificates were produced by \file{certify3.py} (dihedral basis) as follows. Floating-point arithmetic is used only to produce a candidate $\lambda$; correctness rests on the exact check of \ref{sec:cert-verify}.
 \begin{enumerate}
 \item \emph{Numerical solution.} By (S), the four blocks are signed permutations of $\Gamma_{00}$, and $\Gamma_{00}$ splits into parts symmetric and antisymmetric under party exchange. The linear constraints are eliminated with a sparse null-space basis (computed component-wise and checked), and the remaining positive semidefinite program is solved either with Clarabel including a margin $\varepsilon\Tr\Gamma_{00}$ in the objective ($L=4,5$), or with a custom primal--dual interior-point method (HKM direction with Mehrotra predictor--corrector) without margin ($L=6,7,8$).
 \item \emph{Strictly feasible dual.} On block $(0,0)$, $\hat Y:=\varepsilon\one+Y_{\rm num}$; it is spread to all four blocks by the signed permutations of (S), $Y_k=S_k^\tp\hat YS_k/4$. We used $\varepsilon=10^{-6}$ at $L=4$, $\varepsilon=10^{-7}$ at $L=5,6,7$ and for the earlier level-8 certificate \file{cert3\_L8.pkl}, and $\varepsilon=10^{-9}$ for the headline level-8 certificate \file{cert3\_L8\_e9.pkl}.
 \item \emph{Multipliers.} With $u_v:=\sum_k\langle Y_k,\partial\Gamma_k/\partial z_v\rangle$, the vector $o+u$ is projected, where necessary, onto the row space of the constraint matrix $A$ (removing its null-space component), and $A^\tp\lambda=o+u$ is solved by least squares (LSQR). At $L=8$ the residual is $2.1\times10^{-12}$ for both certificates, below the margin.
 \item \emph{Rounding.} $\lambda_{\rm int}:={\rm round}(2^{50}\lambda)$, i.e., $\lambda\in2^{-50}\ZZ^m$.
-\item \emph{Exact verification} (Sec.~\ref{sec:cert-verify}).
+\item \emph{Exact verification} (\ref{sec:cert-verify}).
 \end{enumerate}
 Both level-8 certificates were derived from the same saved interior-point solution \file{ipm\_L8.pkl} (level-8 dual value $0.6221834652$, duality gap $7.7\times10^{-10}$); the headline certificate with the command \file{python certify3.py --L 8 --eps 1e-9 --from\_file ipm\_L8.pkl --noproj}, and \file{cert3\_L8.pkl} with \file{--eps 1e-7}.
 
@@ -363,11 +364,11 @@ For the headline certificate \file{cert3\_L8\_e9.pkl}, $602{,}882$ of the $789{,
 
 \subsection{Idempotent-basis certificates}\label{sec:idempotent}
 
-The certificates for $L=2,3$ (and an alternative one for $L=4$) were produced with \file{certify2.py}. Their constraints are generated by \file{mc2.build\_system} with the canonical-process constraints switched off, and by \file{symmetry.gyni\_symmetry\_rows}: (V2) with trace functionals in the free algebra of two idempotents, and invariance of $\Gamma$ under $\Gamma\mapsto(T_A\otimes T_B)\Gamma(T_A\otimes T_B)^\tp$ for the linear maps $T_A,T_B$ induced by the letter exchange, by $P_{0|y}\mapsto\one-P_{0|y}$ and by the register flips, together with party exchange. The margin entered as $\varepsilon\sum_k\Tr\Gamma_k$ in the objective and as a shift $\varepsilon\one$ of the numerical dual ($\varepsilon=10^{-7}$, $10^{-6}$ and $2\times10^{-6}$ for $L=2,3,4$). Soundness of this formulation follows by the argument of Sec.~\ref{sec:relaxation} (Remark~\ref{rem:idempotent}); numerically, both formulations have the same optimum (e.g., $0.6434843$ at $L=2$).
+The certificates for $L=2,3$ (and an alternative one for $L=4$) were produced with \file{certify2.py}. Their constraints are generated by \file{mc2.build\_system} with the canonical-process constraints switched off, and by \file{symmetry.gyni\_symmetry\_rows}: (V2) with trace functionals in the free algebra of two idempotents, and invariance of $\Gamma$ under $\Gamma\mapsto(T_A\otimes T_B)\Gamma(T_A\otimes T_B)^\tp$ for the linear maps $T_A,T_B$ induced by the main text exchange, by $P_{0|y}\mapsto\one-P_{0|y}$ and by the register flips, together with party exchange. The margin entered as $\varepsilon\sum_k\Tr\Gamma_k$ in the objective and as a shift $\varepsilon\one$ of the numerical dual ($\varepsilon=10^{-7}$, $10^{-6}$ and $2\times10^{-6}$ for $L=2,3,4$). Soundness of this formulation follows by the argument of \ref{sec:relaxation} (Remark~\ref{rem:idempotent}); numerically, both formulations have the same optimum (e.g., $0.6434843$ at $L=2$).
 
 \subsection{Size of the margin}
 
-In the dihedral basis every diagonal entry of $\Gamma$ equals $1$ on the feasible set (Sec.~\ref{sec:relaxation}), so $\Tr\Gamma_k=n_L$ for each block. Shifting each $Y_k$ by $(\varepsilon/4)\one$ therefore raises $\lambda\cdot b$ by exactly $\varepsilon n_L$. This explains the difference between the certified bounds and the numerical optima in Table~I of the main text; at $L=8$ it is $289\times10^{-9}=2.89\times10^{-7}$ for the headline certificate and $289\times10^{-7}=2.89\times10^{-5}$ for the earlier one. Consistently, the two level-8 bounds differ by $(10^{-7}-10^{-9})\times289=2.8611\times10^{-5}$. The numerical level-8 optimum is $0.6221834652$ (dual) and $0.6221834665$ (primal); these numbers are not rigorous. No certificate for level~8 can go below the level-8 value $\beta_8$, so a narrower interval requires higher levels or better strategies.
+In the dihedral basis every diagonal entry of $\Gamma$ equals $1$ on the feasible set (\ref{sec:relaxation}), so $\Tr\Gamma_k=n_L$ for each block. Shifting each $Y_k$ by $(\varepsilon/4)\one$ therefore raises $\lambda\cdot b$ by exactly $\varepsilon n_L$. This explains the difference between the certified bounds and the numerical optima in Table~1 of the main text; at $L=8$ it is $289\times10^{-9}=2.89\times10^{-7}$ for the headline certificate and $289\times10^{-7}=2.89\times10^{-5}$ for the earlier one. Consistently, the two level-8 bounds differ by $(10^{-7}-10^{-9})\times289=2.8611\times10^{-5}$. The numerical level-8 optimum is $0.6221834652$ (dual) and $0.6221834665$ (primal); these numbers are not rigorous. No certificate for level~8 can go below the level-8 value $\beta_8$, so a narrower interval requires higher levels or better strategies.
 
 %======================================================================
 \section{Explicit lower-bound strategies}\label{sec:strategies}
@@ -400,7 +401,7 @@ Let $C_A$, $C_B$ be Choi operators of CPTP maps, so $\Tr_{A_O}C_A=\one$ and $\Tr
 
 \subsection{How the process was found}
 
-This subsection describes how $W$ was obtained; the verification (Sec.~\ref{sec:strat-verify}) does not use any of it. The strategies are invariant under three kinds of symmetries, which we use to reduce the SDP for $W$ at fixed angles: (i) the register twirl (so $W$ is block diagonal in the registers); (ii) the twirl of the label phases, $U\otimes\bar U$ on $(l_{\rm in},l_{\rm out})$ for diagonal unitaries $U$, which leaves the L\"uders Choi operators invariant because $U$ commutes with the $P_{a|x}$ (so $W$ is block diagonal in label sectors: the ``charge-zero'' sector spanned by $\ket{j}_{l_{\rm in}}\ket{j}_{l_{\rm out}}$ and the sectors $\ket{j}\ket{j'}$, $j\neq j'$); and (iii) the GYNI group, which in the chosen basis acts by angle-independent signs (conjugation by $Z$ on Alice's Jordan qubits together with her register flip, and conjugation by a $90^\circ$ rotation on Bob's Jordan qubits, for $f_x$; mirror images for $f_y$; and party exchange). Accordingly, we write
+This subsection describes how $W$ was obtained; the verification (\ref{sec:strat-verify}) does not use any of it. The strategies are invariant under three kinds of symmetries, which we use to reduce the SDP for $W$ at fixed angles: (i) the register twirl (so $W$ is block diagonal in the registers); (ii) the twirl of the label phases, $U\otimes\bar U$ on $(l_{\rm in},l_{\rm out})$ for diagonal unitaries $U$, which leaves the L\"uders Choi operators invariant because $U$ commutes with the $P_{a|x}$ (so $W$ is block diagonal in label sectors: the ``charge-zero'' sector spanned by $\ket{j}_{l_{\rm in}}\ket{j}_{l_{\rm out}}$ and the sectors $\ket{j}\ket{j'}$, $j\neq j'$); and (iii) the GYNI group, which in the chosen basis acts by angle-independent signs (conjugation by $Z$ on Alice's Jordan qubits together with her register flip, and conjugation by a $90^\circ$ rotation on Bob's Jordan qubits, for $f_x$; mirror images for $f_y$; and party exchange). Accordingly, we write
 \begin{equation}
 W=c_0\one+\sum_t\eta_tE_t,\qquad E_t=\pm\,(R_a\otimes R_b+R_b\otimes R_a)\quad(\text{a single term if }a=b),
 \end{equation}
@@ -432,7 +433,7 @@ The verifier \file{verify\_strategy.py} depends only on \file{numpy} and Python'
 \item \emph{Instruments:} $c_j^2+s_j^2=1$ exactly, the $P_{a|x}$ are symmetric idempotents with $P_{0|x}+P_{1|x}=\one$, $C_{M_{a|x}}=\ket{v_{a,x}}\bra{v_{a,x}}\succeq0$, and $\Tr_{A_O}(C_{M_{0|x}}+C_{M_{1|x}})=\one_{A_I}$ exactly.
 \item \emph{Value:} $\Igy=\frac14\sum_{x,y}\Tr[W(C_{M_{y|x}}\otimes C_{M_{x|y}})]$ computed exactly, and compared with the stored fraction.
 \end{enumerate}
-In our runs all checks pass; for $J=4$ the verification took between $1489$\,s and $2326$\,s on one core. Independently, the test \file{tests/audit\_jstrat.py} recomputes the objective of both strategies from the certificate files, in floating point, and agrees with the stored exact values to $1.1\times10^{-16}$ (Sec.~\ref{sec:numerics}).
+In our runs all checks pass; for $J=4$ the verification took between $1489$\,s and $2326$\,s on one core. Independently, the test \file{tests/audit\_jstrat.py} recomputes the objective of both strategies from the certificate files, in floating point, and agrees with the stored exact values to $1.1\times10^{-16}$ (\ref{sec:numerics}).
 
 \subsection{Parameters and values}
 
@@ -533,11 +534,11 @@ Lemma~\ref{lem:S-weakdual} implies $\lambda\cdot b-o(\Gamma)=\sum_k\langle Y_k,\
 
 \subsection{Numerical optima, extrapolation and flatness}
 
-The numerical optima of levels $1$--$8$ (Table~I of the main text) decrease with successive differences $0.1028$, $0.01673$, $0.003475$, $0.000866$, $0.000169$, $0.0000426$ (levels $1\to7$). A geometric (Aitken) extrapolation of levels $1$--$8$ gives $0.622177$; a power-law fit and a fit with linearly increasing ratios gave $0.622109$ and $0.622102$, below our rigorous lower bound, and were discarded. These extrapolations are heuristic. The optimal moment matrices are not flat: at $L=6$ the block $(0,0)$ has numerical rank $134$ of $169$ (tolerance $10^{-4}$), against $109$ of $121$ for its restriction to words of length at most $5$; hence no finite-dimensional strategy can be read off. The level-5 optimum is not reproduced by a single Jordan angle, consistent with the spread of angles in the explicit strategies.
+The numerical optima of levels $1$--$8$ (Table~1 of the main text) decrease with successive differences $0.1028$, $0.01673$, $0.003475$, $0.000866$, $0.000169$, $0.0000426$ (levels $1\to7$). A geometric (Aitken) extrapolation of levels $1$--$8$ gives $0.622177$; a power-law fit and a fit with linearly increasing ratios gave $0.622109$ and $0.622102$, below our rigorous lower bound, and were discarded. These extrapolations are heuristic. The optimal moment matrices are not flat: at $L=6$ the block $(0,0)$ has numerical rank $134$ of $169$ (tolerance $10^{-4}$), against $109$ of $121$ for its restriction to words of length at most $5$; hence no finite-dimensional strategy can be read off. The level-5 optimum is not reproduced by a single Jordan angle, consistent with the spread of angles in the explicit strategies.
 
 \subsection{Errors caught during the project}
 
-(i) A sign error in the right-hand side of the canonical-process constraints of an early version (not part of the certified program) was caught by evaluating a genuine strategy. (ii) At level $7$, a subset eigensolver returned, non-deterministically, an inaccurate null-space basis; the resulting value violated the monotonicity in $L$, which exposed the error. It was fixed (full eigendecomposition with a residual check) before any certificate was produced; certificates are unaffected in any case, since their verification is exact. (iii) Earlier versions of our documentation rounded some decimals to nearest; see Sec.~\ref{sec:erratum}.
+(i) A sign error in the right-hand side of the canonical-process constraints of an early version (not part of the certified program) was caught by evaluating a genuine strategy. (ii) At level $7$, a subset eigensolver returned, non-deterministically, an inaccurate null-space basis; the resulting value violated the monotonicity in $L$, which exposed the error. It was fixed (full eigendecomposition with a residual check) before any certificate was produced; certificates are unaffected in any case, since their verification is exact. (iii) Earlier versions of our documentation rounded some decimals to nearest; see \ref{sec:erratum}.
 
 %======================================================================
 \section{Reproducibility}\label{sec:repro}
@@ -576,7 +577,7 @@ The expected final lines of the two main checks are
 \file{cert3\_L8\_e9.pkl: dihedral L=8: all dual blocks PD = True; VERIFIED BOUND <= 0.622183755532 (rounded up) (= 175129158097837/281474976710656)}\\
 \file{RESULT: all checks passed = True;  I\_GYNI >= 0.622165901353 (rounded down)}
 \end{quote}
-These lines are from \file{logs/verify\_L8\_e9.log} and \file{logs/verify\_strategy\_J4\_directed\_rounding.log}. Logs produced before the change to directed rounding show decimals rounded to nearest, and the certification log \file{logs/cert3\_L8\_e9\_certification.log} prints $\beta_8$ rounded to nearest; see Sec.~\ref{sec:erratum}.
+These lines are from \file{logs/verify\_L8\_e9.log} and \file{logs/verify\_strategy\_J4\_directed\_rounding.log}. Logs produced before the change to directed rounding show decimals rounded to nearest, and the certification log \file{logs/cert3\_L8\_e9\_certification.log} prints $\beta_8$ rounded to nearest; see \ref{sec:erratum}.
 
 \subsection{Checksums}
 
@@ -611,13 +612,13 @@ The level-8 solve took $220$\,s (peak memory $2.6$\,GB). Including the exact che
 
 \subsection{Containment tests}
 
-The tests of Sec.~\ref{sec:numerics} are in the directory \file{tests/} (run from there): \file{audit\_contain.py} (random general strategies), \file{audit\_jstrat.py} (the $J=3$ and $J=4$ strategies at every level), \file{audit\_lemma1\_explicit.py} (explicit $\widetilde W$), \file{audit\_lueders\_direct.py} (generic L\"uders-form processes and negative controls) and \file{audit\_cert\_link.py} (the identity of Sec.~\ref{sec:numerics}); their outputs are in \file{tests/logs/}.
+The tests of \ref{sec:numerics} are in the directory \file{tests/} (run from there): \file{audit\_contain.py} (random general strategies), \file{audit\_jstrat.py} (the $J=3$ and $J=4$ strategies at every level), \file{audit\_lemma1\_explicit.py} (explicit $\widetilde W$), \file{audit\_lueders\_direct.py} (generic L\"uders-form processes and negative controls) and \file{audit\_cert\_link.py} (the identity of \ref{sec:numerics}); their outputs are in \file{tests/logs/}.
 
 \subsection{Formal verification}\label{sec:lean-formal}
 
 Both bounds are machine-checked in Lean~4 with Mathlib~\cite{Lean4}. The Lean projects are in the directory \file{lean/} of the repository: \file{GYNIProof/} for the lower bound and \file{GYNIUpper/} for the upper bound.
 
-\emph{Upper bound.} For all finite types $A_I,A_O,B_I,B_O$, every process $W$ and all instruments $M,N$ (the standard definitions of Sec.~\ref{sec:conventions}), the theorem \texttt{gyni\_upper\_bound} states $\Igy\le175129158097837/2^{48}$, and \texttt{gyni\_upper\_bound\_decimal} states $\Igy\le0.622183755532$. The formal proof contains:
+\emph{Upper bound.} For all finite types $A_I,A_O,B_I,B_O$, every process $W$ and all instruments $M,N$ (the standard definitions of \ref{sec:conventions}), the theorem \texttt{gyni\_upper\_bound} states $\Igy\le175129158097837/2^{48}$, and \texttt{gyni\_upper\_bound\_decimal} states $\Igy\le0.622183755532$. The formal proof contains:
 \begin{itemize}
 \item Lemma~\ref{lem:S-lueders} (\texttt{lueders\_normal\_form}). The Kraus operators come from a factorisation of the Choi matrices. The projective measurements come from an explicit self-adjoint unitary completion of the Stinespring isometry, and the transformed process is $(\Phi_A^\dagger\otimes\Phi_B^\dagger)(W)$ with Kraus operators $J^{\tp}\otimes T_{x,e}\otimes\langle x|$.
 \item The scalar-trace factorisation (Lemma~\ref{lem:S-v2}) and the constraints (V1), (V2) on the moment matrix of a L\"uders-form strategy.
@@ -642,7 +643,7 @@ The formal proof contains:
 All theorems depend only on Lean's standard axioms (\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}). The files contain no \texttt{sorry} and no \texttt{native\_decide}. The full check (\file{check.sh} followed by \file{check\_big.sh}) takes about two hours on one core.
 
 %======================================================================
-\section{Erratum note: directed rounding of decimals}\label{sec:erratum}
+\section{Note on decimal rounding}\label{sec:erratum}
 %======================================================================
 
 All certificates are checked in exact arithmetic, and every verifier compares exact rationals; the certificates themselves have not changed. Earlier versions of our repository documentation and verifier output, however, printed some decimals rounded to the nearest value, and some of these were rounded in the unsafe direction. A rigorous decimal statement requires rounding \emph{down} for lower bounds and \emph{up} for upper bounds. The affected statements were:
@@ -651,7 +652,7 @@ All certificates are checked in exact arithmetic, and every verifier compares ex
 \item the level-4 and level-6 bounds: $0.6233558$ and $0.6222569$ (not $0.6233557$ and $0.6222568$);
 \item the $J=3$ value to nine digits: $0.622146712$ (not $0.622146713$).
 \end{itemize}
-The level-8 bound $0.622212366531$ of the earlier certificate \file{cert3\_L8.pkl} was correct (the exact value is $0.62221236653099\ldots$), and the erratum did not change the width of the interval, which was $4.65\times10^{-5}$ at the time. That certificate has since been superseded by \file{cert3\_L8\_e9.pkl} (Sec.~\ref{sec:certificates}), which gives the width $1.79\times10^{-5}$ of Eq.~\eqref{eq:S-main}. Its exact value $0.6221837555310\ldots$ must be rounded up to $0.622183755532$; the value $0.622183755531$ rounded to nearest, printed in its certification log, is not a valid upper bound. The current verifiers print directed-rounded decimals; logs produced before this change show round-to-nearest values. All decimals in this manuscript were recomputed from the stored exact rationals with directed rounding.
+The level-8 bound $0.622212366531$ of the earlier certificate \file{cert3\_L8.pkl} was correct (the exact value is $0.62221236653099\ldots$), and this correction did not change the width of the interval, which was $4.65\times10^{-5}$ at the time. That certificate has since been superseded by \file{cert3\_L8\_e9.pkl} (\ref{sec:certificates}), which gives the width $1.79\times10^{-5}$ of Eq.~\eqref{eq:S-main}. Its exact value $0.6221837555310\ldots$ must be rounded up to $0.622183755532$; the value $0.622183755531$ rounded to nearest, printed in its certification log, is not a valid upper bound. The current verifiers print directed-rounded decimals; logs produced before this change show round-to-nearest values. All decimals in this manuscript were recomputed from the stored exact rationals with directed rounding.
 
 \bibliography{refs}
 

@@ -1,13 +1,13 @@
 cff-version: 1.2.0
 message: "If you use this work, please cite the preprint below."
-title: "Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality"
+title: "Pinning down the maximal quantum violation of the guess-your-neighbour's-input causal inequality"
 authors:
   - family-names: Mishra
     given-names: Ansh
   - family-names: Senthilkumar
     given-names: Aryan
-version: "1.0"
-date-released: "2026-09-28"
+version: "2.0"
+date-released: "2026-10-21"
 license: MIT
 repository-code: "https://github.com/anshM123/GYNI-Causal-Problem"
 keywords:
@@ -21,14 +21,14 @@ keywords:
 preferred-citation:
   type: article
   status: preprint
-  title: "Pinning down the maximal quantum violation of the Guess-Your-Neighbour's-Input causal inequality"
+  title: "Pinning down the maximal quantum violation of the guess-your-neighbour's-input causal inequality"
   authors:
     - family-names: Mishra
       given-names: Ansh
     - family-names: Senthilkumar
       given-names: Aryan
   year: 2026
-  month: 9
+  month: 10
   url: "https://github.com/anshM123/GYNI-Causal-Problem"
   keywords:
     - "causal inequalities"

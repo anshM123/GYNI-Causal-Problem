@@ -127,7 +127,7 @@ Checks: (a) every row of `mc3.build(L, sym=True)`, (b) PSD of every block, (c) o
 
 The most negative eigenvalue relative to ||Gamma|| is -9.4e-15 (generic Lueders-form draws; -8.5e-15 in the level-8
 certificate-link test, `tests/logs/cert_link.log`), below n*eps = 2.5e-13, so it is rounding (Gamma is a Gram matrix).
-[Coordinator note, 2026-09-28: the two figures were reconciled; previously only -8.5e-15 was quoted here.]
+[Note, 2026-09-28: the two figures were reconciled; previously only -8.5e-15 was quoted here.]
 
 **Negative controls (the test detects errors):**
 
